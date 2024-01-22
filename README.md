@@ -30,8 +30,8 @@ _________________________________
               • Commentaires sur les articles du blog de conseils. 
   ###  Technologies Utilisées 
         • Frontend : 
-        • Backend : Laravel 
+        • Backend : Laravel 10
         • Base de données : MySQL
 
-### Note : Assurez-vous de consulter la documentation fournie pour obtenir des informations détaillées sur l'utilisation et la personnalisation de l'application. Nous vous encourageons également à participer à l'amélioration de cette plateforme en soumettant des problèmes et des deman
+### Note : Assurez-vous de consulter la documentation fournie pour obtenir des informations détaillées sur l'utilisation et la personnalisation de l'application. Nous vous encourageons également à participer à l'amélioration de cette plateforme en soumettant des problèmes et des demandes de fusion.
 
