@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class InformationsSupp extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'presentation',
+        'NINEA',
+        'nom_entreprise',
+        'forme_juridique',
+        'annee_creation',
+    ];
+    public function user(){
+      return $this->belongsToOne(User::class);
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Souscription;
 use Illuminate\Http\Request;
+use App\Http\Requests\SouscriptionStoreRequest;
+use App\Http\Requests\SouscriptionUpdateRequest;
 
 class SouscriptionController extends Controller
 {
@@ -26,9 +28,9 @@ class SouscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SouscriptionStoreRequest $request)
     {
-        //
+        
     }
 
     /**
@@ -50,7 +52,7 @@ class SouscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Souscription $souscription)
+    public function update(SouscriptionUpdateRequest $request, Souscription $souscription)
     {
         //
     }

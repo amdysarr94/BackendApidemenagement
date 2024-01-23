@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class DemandeDevisStoreRequest extends FormRequest
+class SouscriptionUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,32 +24,32 @@ class DemandeDevisStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_entreprise' => 'required|string|max:255', 
+            'prix_total' => 'required|integer', 
             'adresse_actuelle' => 'required|string|max:300',
             'nouvelle_adresse' => 'required|string|max:300',
-            'informations_bagages'=> 'required|string|max:900',
+            'description'=> 'required|string|max:900',
             'date_demenagement' => 'required|date'
         ];
     }
     public function messages(){
         return[
-            'nom_entreprise.required'=>"Le nom de l'entreprise doit être fourni",
-            'nom_entreprise.max'=>"Le nom de l'entreprise ne doit pas dépassé 255 caractères",
-            'nom_entreprise.string'=>"Le nom de l'entreprise doit être une chaîne de caractères",
-            'nom_client.required'=>"Le nom du client doit être fourni",
-            'nom_client.max'=>"Le nom du client ne doit pas dépassé 255 caractères",
-            'nom_client.string'=>"Le nom du client doit être une chaîne de caractères",
+            'prix_total.required'=>"Le prix total doit être fourni",
+            'prix_total.integer'=>"Le prix total  doit être un entier",
+
             'adresse_actuelle.required'=>"L'adresse actuelle du client doit être fourni",
             'adresse_actuelle.max'=>"L'adresse actuelle du client ne doit pas dépassé 300 caractères",
             'adresse_actuelle.string'=>"L'adresse actuelle du client doit être une chaîne de caractères",
+
             'nouvelle_adresse.required'=>"La nouvelle adresse du client doit être fourni",
             'nouvelle_adresse.max'=>"La nouvelle adresse du client ne doit pas dépassé 300 caractères",
             'nouvelle_adresse.string'=>"La nouvelle adresse du client doit être une chaîne de caractères",
-            'informations_bagages.required'=>"Les informations sur les bagages du client doit être fourni",
-            'informations_bagages.max'=>"Les informations sur les bagages du client ne doit pas dépassé 300 caractères",
-            'informations_bagages.string'=>"Les informations sur les bagages du client doit être une chaîne de caractères",
+
+            'description.required'=>"La description du devis du client doit être fourni",
+            'description.max'=>"La description du devis du client ne doit pas dépassé 300 caractères",
+            'description.string'=>"La description du devis du client doit être une chaîne de caractères",
+            
             'date_demenagement.required' =>"La date du déménagement doit être renseignée",
-            'date_demenagement.date' =>"format de date invalide",
+            'date_demenagement.date' =>"Format de date invalide ! ",
         ];
     }
     public function failedValidation(Validator $validator){

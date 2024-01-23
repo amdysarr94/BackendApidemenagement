@@ -25,29 +25,29 @@ class DemandeDevisUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_entreprise' => 'sometimes|string|max:255', 
-            'nom_client' => 'sometimes|string|max:255',
-            'adresse_actuelle' => 'sometimes|string|max:300',
-            'nouvelle_adresse' => 'sometimes|string|max:300',
-            'informations_bagages'=> 'sometimes|string|max:900',
+            'nom_entreprise' => 'required|string|max:255', 
+            // 'nom_client' => 'required|string|max:255',
+            'adresse_actuelle' => 'required|string|max:300',
+            'nouvelle_adresse' => 'required|string|max:300',
+            'informations_bagages'=> 'required|string|max:900',
             'date_demenagement' => 'required|date'
         ];
     }
     public function messages(){
         return[
-            'nom_entreprise.sometimes'=>"Le nom de l'entreprise doit être fourni",
+            'nom_entreprise.required'=>"Le nom de l'entreprise doit être fourni",
             'nom_entreprise.max'=>"Le nom de l'entreprise ne doit pas dépassé 255 caractères",
             'nom_entreprise.string'=>"Le nom de l'entreprise doit être une chaîne de caractères",
-            'nom_client.sometimes'=>"Le nom du client doit être fourni",
+            'nom_client.required'=>"Le nom du client doit être fourni",
             'nom_client.max'=>"Le nom du client ne doit pas dépassé 255 caractères",
             'nom_client.string'=>"Le nom du client doit être une chaîne de caractères",
-            'adresse_actuelle.sometimes'=>"L'adresse actuelle du client doit être fourni",
+            'adresse_actuelle.required'=>"L'adresse actuelle du client doit être fourni",
             'adresse_actuelle.max'=>"L'adresse actuelle du client ne doit pas dépassé 300 caractères",
             'adresse_actuelle.string'=>"L'adresse actuelle du client doit être une chaîne de caractères",
-            'nouvelle_adresse.sometimes'=>"La nouvelle adresse du client doit être fourni",
+            'nouvelle_adresse.required'=>"La nouvelle adresse du client doit être fourni",
             'nouvelle_adresse.max'=>"La nouvelle adresse du client ne doit pas dépassé 300 caractères",
             'nouvelle_adresse.string'=>"La nouvelle adresse du client doit être une chaîne de caractères",
-            'informations_bagages.sometimes'=>"Les informations sur les bagages du client doit être fourni",
+            'informations_bagages.required'=>"Les informations sur les bagages du client doit être fourni",
             'informations_bagages.max'=>"Les informations sur les bagages du client ne doit pas dépassé 900 caractères",
             'informations_bagages.string'=>"Les informations sur les bagages du client doit être une chaîne de caractères",
             'date_demenagement.required' =>"La date du déménagement doit être renseignée",

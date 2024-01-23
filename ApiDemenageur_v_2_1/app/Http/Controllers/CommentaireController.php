@@ -64,13 +64,16 @@ class CommentaireController extends Controller
      */
     public function update(CommentUpdateRequest $request, Commentaire $commentaire)
     {
-        $commentaire->contenu = $request->contenu;
-        $commentaire->update();
-        return response()->json([
+        if(auth()->user()->id = $commentaire->user_id){
+            $commentaire->contenu = $request->contenu;
+            $commentaire->update();
+            return response()->json([
             'status' => 'success',
             'Message' => 'Commentaire modifié avec succès',
             'Commentaire' => $commentaire->contenu
-        ], 200);
+            ], 200);
+        }
+        
 
     }
 
@@ -79,29 +82,38 @@ class CommentaireController extends Controller
      */
     public function destroy(Commentaire $commentaire)
     {
-        $commentaire->delete();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'Commentaire supprimé avec succès',
-            'Commentaire' => $commentaire->contenu
-        ], 200);
+        if(auth()->user()->id = $commentaire->user_id || auth()->user()->role == 'Admin'){
+            $commentaire->delete();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'Commentaire supprimé avec succès',
+                'Commentaire' => $commentaire->contenu
+            ], 200);
+        }
+        
     }
     public function activate(Commentaire $commentaire){
-        $commentaire->statut = "Actif";
-        $commentaire->update();
-        return response()->json([
+        if(auth()->user()->role == 'Admin'){
+            $commentaire->statut = "Actif";
+            $commentaire->update();
+            return response()->json([
             'status' => 'success',
             'Message' => 'Commentaire activé avec succès',
             'Commentaire' => $commentaire->contenu
-        ], 200);
+            ], 200);
+        }
+        
     }
     public function desactivate(Commentaire $commentaire){
-        $commentaire->statut = "Inactif";
-        $commentaire->update();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'Commentaire désactivé avec succès',
-            'Commentaire' => $commentaire->contenu
-        ], 200);
+        if(auth()->user()->id = $commentaire->user_id || auth()->user()->role == 'Admin'){
+            $commentaire->statut = "Inactif";
+            $commentaire->update();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'Commentaire désactivé avec succès',
+                'Commentaire' => $commentaire->contenu
+            ], 200);
+        }
+        
     }
 }

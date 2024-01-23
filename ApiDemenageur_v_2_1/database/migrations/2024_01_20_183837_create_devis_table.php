@@ -21,9 +21,10 @@ return new class extends Migration
             $table->dateTime('date_demenagement');
             $table->integer('prix_total');
             $table->string('adresse_actuelle');
-            $table->string('nouvvelle_adresse');
+            $table->string('nouvelle_adresse');
             $table->string('description');
             $table->enum('statut', ['Actif', 'Inactif'])->default('Actif');
+            $table->enum('action', ['En cours', 'Valide', 'Refuse'])->default('En cours');
             $table->timestamps();
         });
     }

@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Offre extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'nom_offre',
+        'description_offre',
+        'prix_offre',
+    ];
+    public function user(){
+      return $this->belongsToMany(User::class);
+    }
 }

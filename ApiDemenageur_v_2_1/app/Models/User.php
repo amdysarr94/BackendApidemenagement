@@ -24,7 +24,13 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
     public function demandedevis(){
-      return $this->belongsToMany(DemandeDevis::class);
+      return $this->hasMany(DemandeDevis::class);
+    }
+    public function offre(){
+      return $this->hasMany(Offre::class);
+    }
+    public function informationssupp(){
+      return $this->hasOne(InformationsSupp::class);
     }
     /**
      * The attributes that should be hidden for serialization.

@@ -53,7 +53,6 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
         $credentials = $request->only('email', 'password');
-
         $token = Auth::guard('api')->attempt($credentials);
         if (!$token) {
             return response()->json([
@@ -63,6 +62,12 @@ class AuthController extends Controller
         }
 
         $user = Auth::guard('api')->user();
+        if($user->etat == 'Inactif'){
+            return response()->json([
+                'status' => 'error',
+                'message' => "Ce compte n'existe plus !!!",
+            ], 401);
+        }
         return response()->json([
                 'status' => 'success',
                 'user' => [
@@ -73,7 +78,7 @@ class AuthController extends Controller
                     'token' => $token,
                     'type' => 'bearer',
                 ]
-            ]);
+            ], 200);
 
     }
     public function logout()
