@@ -93,6 +93,10 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return response()->json([
+            "message"=>"Article supprimé avec succès",
+            "article"=> $article->titre
+        ], 200);
     }
 }

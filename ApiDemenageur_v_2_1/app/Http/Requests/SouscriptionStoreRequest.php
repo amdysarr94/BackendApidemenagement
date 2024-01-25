@@ -24,17 +24,15 @@ class SouscriptionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'prix_total' => 'required|integer', 
+            
             'adresse_actuelle' => 'required|string|max:300',
             'nouvelle_adresse' => 'required|string|max:300',
-            'description'=> 'required|string|max:900',
             'date_demenagement' => 'required|date'
         ];
     }
     public function messages(){
         return[
-            'prix_total.required'=>"Le prix total doit être fourni",
-            'prix_total.integer'=>"Le prix total  doit être un entier",
+           
 
             'adresse_actuelle.required'=>"L'adresse actuelle du client doit être fourni",
             'adresse_actuelle.max'=>"L'adresse actuelle du client ne doit pas dépassé 300 caractères",
@@ -44,9 +42,6 @@ class SouscriptionStoreRequest extends FormRequest
             'nouvelle_adresse.max'=>"La nouvelle adresse du client ne doit pas dépassé 300 caractères",
             'nouvelle_adresse.string'=>"La nouvelle adresse du client doit être une chaîne de caractères",
 
-            'description.required'=>"La description du devis du client doit être fourni",
-            'description.max'=>"La description du devis du client ne doit pas dépassé 300 caractères",
-            'description.string'=>"La description du devis du client doit être une chaîne de caractères",
             
             'date_demenagement.required' =>"La date du déménagement doit être renseignée",
             'date_demenagement.date' =>"Format de date invalide ! ",

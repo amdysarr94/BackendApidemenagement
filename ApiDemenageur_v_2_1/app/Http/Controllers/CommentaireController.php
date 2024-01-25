@@ -101,6 +101,11 @@ class CommentaireController extends Controller
             'Message' => 'Commentaire activé avec succès',
             'Commentaire' => $commentaire->contenu
             ], 200);
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'Message' => "Vous n'êtes pas autorisé à effectuer cet action"
+            ]);
         }
         
     }

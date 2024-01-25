@@ -14,7 +14,5 @@ class Offre extends Model
         'description_offre',
         'prix_offre',
     ];
-    public function user(){
-      return $this->belongsToMany(User::class);
-    }
+    
 }

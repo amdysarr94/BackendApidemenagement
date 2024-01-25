@@ -30,7 +30,7 @@ class DevisListener
         $prestation->nom_client = $devis->nom_client;
         $prestation->prix_total = $devis->prix_total;
         $prestation->adresse_actuelle = $devis->adresse_actuelle;
-        $prestation->nouvvelle_adresse = $devis->nouvvelle_adresse;
+        $prestation->nouvelle_adresse = $devis->nouvelle_adresse;
         $prestation->description = $devis->description;
         //gestion des dates 
         $prestation->date_demenagement = $devis->date_demenagement;

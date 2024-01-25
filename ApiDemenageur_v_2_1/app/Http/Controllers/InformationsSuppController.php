@@ -69,20 +69,23 @@ class InformationsSuppController extends Controller
      */
     public function update(InformationsSuppUpdateRequest $request, InformationsSupp $informationsSupp)
     {
-        $informationsSupp = $request->nom_entreprise ;  
-        $informationsSupp = $request->presentation ; 
-        $informationsSupp = $request->NINEA; 
-        $informationsSupp = $request->forme_juridique; 
-        $informationsSupp = $request->annee_creation; 
-        $informationsSupp->update();
-        return response()->json([
-            'status' => 'success',
-            'Message' => "Informations de l'entreprise mises-à-jour avec succès",
-            'Infos offre' => [
-                "Nom de l'entreprise" => $informationsSupp->presentation,
-                "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
-                ]
-        ], 200);
+        if(auth()->user()->id == $informationsSupp->user_id){
+            $informationsSupp = $request->nom_entreprise ;  
+            $informationsSupp = $request->presentation ; 
+            $informationsSupp = $request->NINEA; 
+            $informationsSupp = $request->forme_juridique; 
+            $informationsSupp = $request->annee_creation; 
+            $informationsSupp->update();
+            return response()->json([
+                'status' => 'success',
+                'Message' => "Informations de l'entreprise mises-à-jour avec succès",
+                'Infos offre' => [
+                    "Nom de l'entreprise" => $informationsSupp->presentation,
+                    "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
+                    ]
+            ], 200);
+        }
+        
     }
 
     /**
@@ -105,16 +108,19 @@ class InformationsSuppController extends Controller
      * Désactiver une information supplémentaires.
      */
     public function desactivate(InformationsSupp $informationsSupp){
-        $informationsSupp->statut = 'Inactif';
-        $informationsSupp->update();
-        return response()->json([
-            'status' => 'success',
-            'Message' => "Informations de l'entreprise désactivées avec succès",
-            'Infos offre' => [
-                "Nom de l'entreprise" => $informationsSupp->presentation,
-                "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
-                ]
-        ], 200);
+        if(auth()->user()->id == $informationsSupp->user_id){
+            $informationsSupp->statut = 'Inactif';
+            $informationsSupp->update();
+            return response()->json([
+                'status' => 'success',
+                'Message' => "Informations de l'entreprise désactivées avec succès",
+                'Infos offre' => [
+                    "Nom de l'entreprise" => $informationsSupp->presentation,
+                    "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
+                    ]
+            ], 200);
+        }
+        
     }
 
 
@@ -123,14 +129,17 @@ class InformationsSuppController extends Controller
      */
     public function destroy(InformationsSupp $informationsSupp)
     {
-        $informationsSupp->delete();
-        return response()->json([
-            'status' => 'success',
-            'Message' => "Informations de l'entreprise supprimées avec succès",
-            'Infos offre' => [
-                "Nom de l'entreprise" => $informationsSupp->presentation,
-                "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
-                ]
-        ], 200);
+        if(auth()->user()->id = $informationsSupp->user_id){
+            $informationsSupp->delete();
+            return response()->json([
+                'status' => 'success',
+                'Message' => "Informations de l'entreprise supprimées avec succès",
+                'Infos offre' => [
+                    "Nom de l'entreprise" => $informationsSupp->presentation,
+                    "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
+                    ]
+            ], 200);
+        }
+        
     }
 }

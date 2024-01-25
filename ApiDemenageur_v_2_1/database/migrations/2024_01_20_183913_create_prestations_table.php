@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime('delai');
             $table->dateTime('date_demenagement');
             $table->string('adresse_actuelle');
-            $table->string('nouvvelle_adresse');
+            $table->string('nouvelle_adresse');
             $table->string('description');
             $table->integer('prix_total');
             $table->enum('statut', ['En Cours', 'Termine', 'Annule'])->default('En Cours');

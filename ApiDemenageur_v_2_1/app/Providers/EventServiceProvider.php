@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Listeners\DevisListener;
 use App\Events\DevisValiderEvent;
+use App\Events\SouscriptionValiderEvent;
+use App\Listeners\SouscriptionListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         DevisValiderEvent::class =>[
             DevisListener::class,
+        ],
+        SouscriptionValiderEvent::class =>[
+            SouscriptionListener::class,
         ],
     ];
 

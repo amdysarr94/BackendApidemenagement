@@ -62,4 +62,7 @@ class PrestationController extends Controller
     {
         //
     }
+    public function cancel(Prestation $prestation){
+     
+    }
 }

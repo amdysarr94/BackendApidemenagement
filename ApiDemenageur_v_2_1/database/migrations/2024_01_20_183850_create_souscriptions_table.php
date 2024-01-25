@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('nom_client');
             $table->integer('prix_total');
             $table->string('adresse_actuelle');
-            $table->string('nouvvelle_adresse');
+            $table->string('nouvelle_adresse');
             $table->string('description');
             $table->dateTime('date_demenagement');
             $table->enum('statut', ['Actif', 'Inactif'])->default('Actif');
