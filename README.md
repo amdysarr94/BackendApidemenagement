@@ -32,11 +32,11 @@ _________________________________
         • Frontend : 
         • Backend : Laravel 10
         • Base de données : MySQL
-
+-----------------------------------------------------------------------------------------
 ### Note : Assurez-vous de consulter la documentation fournie pour obtenir des informations détaillées sur l'utilisation et la personnalisation de l'application. Nous vous encourageons également à participer à l'amélioration de cette plateforme en soumettant des problèmes et des demandes de fusion.
 ## Installer et démarrer l'Api
 ------------------------------------------------------------------------------------------
-##Installer composer sur sa machine, si c'est pas déjà fait. 
+## Installer composer sur sa machine, si c'est pas déjà fait. 
 
 1) Créer un fichier .env
 
