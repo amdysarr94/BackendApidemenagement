@@ -14,4 +14,7 @@ class Devis extends Model
     public function demandedevis(){
         return $this->belongsTo(DemandeDevis::class);
     }
+    public function prestation(){
+        return $this->hasOne(Prestation::class);
+    }
 }

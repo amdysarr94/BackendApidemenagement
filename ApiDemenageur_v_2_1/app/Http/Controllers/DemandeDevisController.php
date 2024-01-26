@@ -6,7 +6,7 @@ use App\Models\DemandeDevis;
 use Illuminate\Http\Request;
 use App\Http\Requests\DemandeDevisStoreRequest;
 use App\Http\Requests\DemandeDevisUpdateRequest;
-use Illuminate\Support\Carbon;
+// use Illuminate\Support\Carbon;
 use DateTime;
 
 class DemandeDevisController extends Controller
@@ -39,25 +39,12 @@ class DemandeDevisController extends Controller
         $demandedevis->adresse_actuelle = $request->adresse_actuelle;
         $demandedevis->nouvelle_adresse = $request->nouvelle_adresse;
         $demandedevis->informations_bagages = $request->informations_bagages;
-        // $demandedevis->date_demenagement = $request->date_demenagement;
-        $date = new DateTime($request->date_demenagement);
-        $jour_j = Carbon::parse($date);
-        $interval = $jour_j->subDays(10);
-        $currentDay = Carbon::now();
-        $dateLimiteMax = $currentDay->addDays(40);
-        dd(
-            'ok',
-            $currentDay, 
-        );
-        if($interval->gt($currentDay) ){
-            // if($jour_j->lte($dateLimiteMax)){
-            //     dd('ouf');
-            // }
-            dd(
-                'ok',
-                $currentDay,
-                $interval->isPast() 
-            );
+        $currentDay = new DateTime();
+        $jour_j = new DateTime($request->date_demenagement);
+        $diff = $jour_j->diff($currentDay);
+        $limiteMax = $currentDay->modify('+60 days');
+        // dd($limiteMax, $jour_j, );
+        if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
             $demandedevis->date_demenagement = $request->date_demenagement;
             $demandedevis->save();
             return response()->json([
@@ -71,10 +58,10 @@ class DemandeDevisController extends Controller
             ], 201);
         }else{
             return response()->json([
-                'message' => "Votre date de déménagement doit être à plus de 10 jours de la date d'aujourd'hui"
+                'message' => "Votre date de déménagement doit être à plus de 10 jours et 60 jours de la date d'aujourd'hui"
             ]);
-            dd("c'est passé");
         }
+        
         
     }
 
@@ -104,17 +91,29 @@ class DemandeDevisController extends Controller
             $demandeDevis->adresse_actuelle = $request->adresse_actuelle;
             $demandeDevis->nouvelle_adresse = $request->nouvelle_adresse;
             $demandeDevis->informations_bagages = $request->informations_bagages;
-            $demandeDevis->date_demenagement = $request->date_demenagement;
-            $demandeDevis->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'Demande de devis modifié avec succès',
-                'Infos demande de devis' => [
-                    $demandeDevis->nom_client,
-                    $demandeDevis->adresse_actuelle,
-                    $demandeDevis->nouvelle_adresse
-                    ]
-            ], 200);
+            $currentDay = new DateTime();
+            $jour_j = new DateTime($request->date_demenagement);
+            $diff = $jour_j->diff($currentDay);
+            $limiteMax = $currentDay->modify('+60 days');
+            // dd($limiteMax, $jour_j, );
+            if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
+                $demandeDevis->date_demenagement = $request->date_demenagement;
+                $demandeDevis->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'Demande de devis modifié avec succès',
+                    'Infos demande de devis' => [
+                        $demandeDevis->nom_client,
+                        $demandeDevis->adresse_actuelle,
+                        $demandeDevis->nouvelle_adresse
+                        ]
+                ], 200);
+            }else{
+                return response()->json([
+                    'message' => "Votre date de déménagement doit être à plus de 10 jours et 60 jours de la date d'aujourd'hui"
+                ]);
+            }
+            
         }
     }
     public function desactivate(DemandeDevis $demandeDevis){

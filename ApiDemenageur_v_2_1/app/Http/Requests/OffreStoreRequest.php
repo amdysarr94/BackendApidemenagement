@@ -24,7 +24,7 @@ class OffreStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_offre' => 'required|string|max:255', 
+            'nom_offre' => 'required|string|max:255|unique:offres', 
             'description_offre' => 'required|string|max:900',
             'prix_offre' => 'required|integer',
             
@@ -35,6 +35,7 @@ class OffreStoreRequest extends FormRequest
             'nom_offre.required'=>"Le nom de l'offre doit être fourni",
             'nom_offre.max'=>"Le nom de l'offre ne doit pas dépassé 255 caractères",
             'nom_offre.string'=>"Le nom de l'offre doit être une chaîne de caractères",
+            'nom_offre.unique'=>"Cet offre existe déjà",
             'description_offre.required'=>"La description de l'offre doit être fourni",
             'description_offre.max'=>"La description de l'offre ne doit pas dépassé 900 caractères",
             'description_offre.string'=>"La description de l'offre doit être une chaîne de caractères",

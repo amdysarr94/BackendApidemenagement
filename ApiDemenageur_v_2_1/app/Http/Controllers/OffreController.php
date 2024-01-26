@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Offre;
+use App\Models\Prestation;
+use Illuminate\Http\Request;
 use App\Http\Requests\OffreStoreRequest;
 use App\Http\Requests\OffreUpdateRequest;
-use App\Models\Offre;
-use Illuminate\Http\Request;
 
 class OffreController extends Controller
 {
@@ -29,7 +30,7 @@ class OffreController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(OffreStoreRequest $request)
-    {
+    {   
         $offre = Offre::create([
             'user_id'=> auth()->user()->id,
             'nom_offre' => $request->nom_offre,

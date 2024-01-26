@@ -14,4 +14,5 @@ class Souscription extends Model
     public function offre(){
         return $this->belongsTo(Offre::class);
     }
+    
 }

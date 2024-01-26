@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prestation;
+use DateTime;
 use Illuminate\Http\Request;
 
 class PrestationController extends Controller
@@ -63,6 +64,13 @@ class PrestationController extends Controller
         //
     }
     public function cancel(Prestation $prestation){
-     
+        if(auth()->user()->name == $prestation->nom_client){
+            $currentDate = new DateTime();
+            if($currentDate <= $prestation->delai){
+                
+            }else{
+
+            }
+        }
     }
 }

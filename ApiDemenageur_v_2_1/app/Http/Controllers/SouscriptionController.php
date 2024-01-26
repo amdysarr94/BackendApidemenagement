@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DateTime;
 use App\Events\SouscriptionValiderEvent;
 use App\Models\Souscription;
 use Illuminate\Http\Request;
@@ -41,16 +41,28 @@ class SouscriptionController extends Controller
         $souscription->adresse_actuelle = $request->adresse_actuelle;
         $souscription->nouvelle_adresse = $request->nouvelle_adresse;
         $souscription->description = $offre->description_offre;
-        $souscription->date_demenagement = $request->date_demenagement;
-        $souscription->save();
-        return response()->json([
-            "message"=>"Souscription enregistrée avec succès",
-            "Informations de la souscription"=> [
-                "Nom de l'offre" => $souscription->nom_offre,
-                "Description de l'offre" => $souscription->description,
-                "Nom du client" => $souscription->nom_client
-            ]
-        ], 201);
+        $currentDay = new DateTime();
+        $jour_j = new DateTime($request->date_demenagement);
+        $diff = $jour_j->diff($currentDay);
+        $limiteMax = $currentDay->modify('+60 days');
+        // dd($limiteMax, $jour_j, );
+        if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
+            $souscription->date_demenagement = $request->date_demenagement;
+            $souscription->save();
+            return response()->json([
+                "message"=>"Souscription enregistrée avec succès",
+                "Informations de la souscription"=> [
+                    "Nom de l'offre" => $souscription->nom_offre,
+                    "Description de l'offre" => $souscription->description,
+                    "Nom du client" => $souscription->nom_client
+                ]
+            ], 201);
+        }else{
+            return response()->json([
+                'message' => "Votre date de déménagement doit être à plus de 10 jours et 60 jours de la date d'aujourd'hui"
+            ]);
+        }
+        
 
     }
 
@@ -75,19 +87,32 @@ class SouscriptionController extends Controller
      */
     public function update(SouscriptionUpdateRequest $request, Souscription $souscription)
     {
+
         if(auth()->user()->id == $souscription->client_id){
             $souscription->adresse_actuelle = $request->adresse_actuelle;
             $souscription->nouvelle_adresse = $request->nouvelle_adresse;
-            $souscription->date_demenagement = $request->date_demenagement;
-            $souscription->update();
-            return response()->json([
-                "message"=>"Souscription modifiée avec succès",
-                "Informations de la souscription"=> [
-                    "Nom de l'offre" => $souscription->nom_offre,
-                    "Description de l'offre" => $souscription->description,
-                    "Nom du client" => $souscription->nom_client
-                ]
-            ], 200);
+            $currentDay = new DateTime();
+            $jour_j = new DateTime($request->date_demenagement);
+            $diff = $jour_j->diff($currentDay);
+            $limiteMax = $currentDay->modify('+60 days');
+            // dd($limiteMax, $jour_j, );
+            if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
+                $souscription->date_demenagement = $request->date_demenagement;
+                $souscription->update();
+                return response()->json([
+                    "message"=>"Souscription modifiée avec succès",
+                    "Informations de la souscription"=> [
+                        "Nom de l'offre" => $souscription->nom_offre,
+                        "Description de l'offre" => $souscription->description,
+                        "Nom du client" => $souscription->nom_client
+                    ]
+                ], 200);
+            }else{
+                return response()->json([
+                    'message' => "Votre date de déménagement doit être à plus de 10 jours et 60 jours de la date d'aujourd'hui"
+                ]);
+            }
+            
         }else{
             return response()->json([
                 'message'=> "Vous n'êtes pas autorisé à effectuer cette action"
