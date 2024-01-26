@@ -34,4 +34,33 @@ _________________________________
         • Base de données : MySQL
 
 ### Note : Assurez-vous de consulter la documentation fournie pour obtenir des informations détaillées sur l'utilisation et la personnalisation de l'application. Nous vous encourageons également à participer à l'amélioration de cette plateforme en soumettant des problèmes et des demandes de fusion.
+## Installer et démarrer l'Api
+------------------------------------------------------------------------------------------
+##Installer composer sur sa machine, si c'est pas déjà fait. 
 
+1) Créer un fichier .env
+
+2) Copier le contenu du  fichier .env.example qui se trouve dans le répertoire courant du projet dans le fichier .env
+
+3) Installer composer sur le projet
+```bash
+  composer install
+```
+4) Définir le nom de la  base de données dans le fichier .env 
+
+5) Effectuer une migration
+```bash
+  php artisan migrate
+```
+6) Executer un seeder pour créer un Admin 
+```bash
+  php artisan db:seed
+```
+7) Générer la clé Jwt
+```bash
+  php artisan jwt:secret
+```
+8) Activer le server pour run le projet laravel avec : 
+```bash
+  php artisan serve
+```
