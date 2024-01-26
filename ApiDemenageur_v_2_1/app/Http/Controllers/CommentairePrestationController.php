@@ -89,15 +89,24 @@ class CommentairePrestationController extends Controller
     }
     public function desactiver(CommentairePrestation $commentairePrestation){
         if(auth()->user()->id == $commentairePrestation->user_id){
-            $commentairePrestation->statut = 'Inactif';
-            $commentairePrestation->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'Commentaire desactivé avec succès',
-                'Commentaire' => $commentairePrestation->contenu
-            ], 200);
+            if($commentairePrestation->statut == 'Actif'){
+                $commentairePrestation->statut = 'Inactif';
+                $commentairePrestation->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'Commentaire desactivé avec succès',
+                    'Commentaire' => $commentairePrestation->contenu
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Ce commentaire n'existe plus"
+                ]);
+            }
+            
         }else{
-
+            return response()->json([
+                'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
+            ], 403);
         }
         
     }
@@ -107,14 +116,23 @@ class CommentairePrestationController extends Controller
     public function destroy(CommentairePrestation $commentairePrestation)
     {
         if(auth()->user()->id == $commentairePrestation->user_id){
-            $commentairePrestation->delete();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'Commentaire supprimé avec succès',
-                'Commentaire' => $commentairePrestation->contenu
-            ], 200);
-        }else{
+            if($commentairePrestation){
+                $commentairePrestation->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'Commentaire supprimé avec succès',
+                    'Commentaire' => $commentairePrestation->contenu
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Ce commentaire n'existe plus"
+                ]);
+            }
             
+        }else{
+            return response()->json([
+                'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
+            ], 403);
         }
         
     }

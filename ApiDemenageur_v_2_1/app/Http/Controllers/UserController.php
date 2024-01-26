@@ -6,25 +6,79 @@ use App\Http\Requests\resetPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
+    public function allActifUser(){
+        $usersActifs = User::where('etat', 'Actif')->paginate(10);
+        return UserResource::collection($usersActifs);
+    }
+    public function allInactifUser(){
+        $usersInactifs = User::where('etat', 'Inactif')->paginate(10);
+        return UserResource::collection($usersInactifs);
+    }
+    public function allCustomerUser(){
+        $usersCustomer = User::where('role', 'Client')->paginate(10);
+        return UserResource::collection($usersCustomer);
+    }
+    public function allMoverUser(){
+        $usersCustomer = User::where('role', 'Demenageur')->paginate(10);
+        return UserResource::collection($usersCustomer);
+    }
+    public function show(User $user){
+        if(auth()->user()->id == $user->id || auth()->user()->role == 'Admin'){
+            return response()->json([
+                'status'=> 'success',
+                'message'=> "Les informations de l'utilisateur",
+                'Informations' => [
+                    'Nom' => $user->name,
+                    'Email' => $user->email,
+                    'telephone'=> $user->telephone,
+                    'role'=> $user->role
+                ]
+            ]);
+        }else{
+            return response()->json([
+                'message'=>"Vous n'êtes pas autorisé à consulter ce profil"
+            ], 403);
+        }
+        
+    }
     public function update(UserUpdateRequest $request, User $user){
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->photo_profile = $request->photo_profile;
-        $user->password = $request->password;
-        $user->telephone = $request->telephone;
-        $user->role = $request->role;
-        $user->localite = $request->localite;
-        $user->update();
-        return response()->json([
-            'status_message'=> "Information de compte modifiées avec succès!",
-            'user'=>[
-                'Nom' => $user->name,
-                'Email' => $user->email
-            ]
-        ], 200);
+        if(auth()->user()->id == $user->id){
+            $user->name = $request->name;
+            $user->email = $request->email;
+            // $user->photo_profile = $request->photo_profile;
+            $user->password = $request->password;
+            $user->telephone = $request->telephone;
+            switch($user->role){
+                case 'Admin':
+                    $user->role = 'Admin';
+                    break;
+                case 'Client':
+                    $user->role = 'Client';
+                    break;
+                case 'Demenageur':
+                    $user->role = 'Demenageur';
+                    break;
+            }
+            // $user->role = $request->role;
+            $user->localite = $request->localite;
+            $user->update();
+            return response()->json([
+                'status_message'=> "Information de compte modifiées avec succès!",
+                'user'=>[
+                    'Nom' => $user->name,
+                    'Email' => $user->email
+                ]
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
+            ]);
+        }
+        
     }
     public function resetPassword(resetPasswordRequest $request){
         if($request->telephone && $request->email){

@@ -75,18 +75,25 @@ class SouscriptionController extends Controller
      */
     public function update(SouscriptionUpdateRequest $request, Souscription $souscription)
     {
-        $souscription->adresse_actuelle = $request->adresse_actuelle;
-        $souscription->nouvelle_adresse = $request->nouvelle_adresse;
-        $souscription->date_demenagement = $request->date_demenagement;
-        $souscription->update();
-        return response()->json([
-            "message"=>"Souscription modifiée avec succès",
-            "Informations de la souscription"=> [
-                "Nom de l'offre" => $souscription->nom_offre,
-                "Description de l'offre" => $souscription->description,
-                "Nom du client" => $souscription->nom_client
-            ]
-        ], 200);
+        if(auth()->user()->id == $souscription->client_id){
+            $souscription->adresse_actuelle = $request->adresse_actuelle;
+            $souscription->nouvelle_adresse = $request->nouvelle_adresse;
+            $souscription->date_demenagement = $request->date_demenagement;
+            $souscription->update();
+            return response()->json([
+                "message"=>"Souscription modifiée avec succès",
+                "Informations de la souscription"=> [
+                    "Nom de l'offre" => $souscription->nom_offre,
+                    "Description de l'offre" => $souscription->description,
+                    "Nom du client" => $souscription->nom_client
+                ]
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "Vous n'êtes pas autorisé à effectuer cette action"
+            ], 403);
+        }
+        
     }
     public function valider(Souscription $souscription){
         $user_id= auth()->user()->id;
@@ -98,54 +105,74 @@ class SouscriptionController extends Controller
         })->get();
         foreach($souscriptions as $souscript){
             if($souscript == $souscription){
-                dd('ok');
+                if(auth()->user()->role == 'Demenageur'){
+                    event(new SouscriptionValiderEvent($souscription->id));
+                    return response()->json([
+                        "message"=>"Souscription validée avec succès",
+                        "Informations de la souscription"=> [
+                            "Nom de l'offre" => $souscription->nom_offre,
+                            "Description de l'offre" => $souscription->description,
+                            "Nom du client" => $souscription->nom_client
+                        ]
+                    ], 200);
+                    } else {
+                        return response()->json([
+                            "message"=>"Accès refusé !",
+                        ], 403);
+                    }
             }else{
-                dd('failed');
+                return response()->json([
+                    'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
+                ], 403);
             }
         }
-        dd('Y a rien');
-        // dd($offresOfDemenageur);
-        if(auth()->user()->role == 'Demenageur'){
-            event(new SouscriptionValiderEvent($souscription->id));
+        
+        
+    }
+    public function activate(Souscription $souscription){
+        if($souscription->statut == 'Inactif'){
+            $souscription->statut = 'Actif';
+            $souscription->update();
             return response()->json([
-                "message"=>"Souscription validée avec succès",
+                "message"=>"Souscription activée avec succès",
                 "Informations de la souscription"=> [
                     "Nom de l'offre" => $souscription->nom_offre,
                     "Description de l'offre" => $souscription->description,
                     "Nom du client" => $souscription->nom_client
                 ]
             ], 200);
-        } else {
+        }else{
+            return response()->json([
+                "message"=>"Cette souscription est déjà activé",
+            ], 200);
+        }
+        
+    }
+    public function desactivate(Souscription $souscription){
+        if(auth()->user()->id == $souscription->client_id){
+            if($souscription->statut == 'Actif'){
+                $souscription->statut = 'Inactif';
+                $souscription->update();
+                return response()->json([
+                    "message"=>"Souscription résiliée avec succès",
+                    "Informations de la souscription"=> [
+                        "Nom de l'offre" => $souscription->nom_offre,
+                        "Description de l'offre" => $souscription->description,
+                        "Nom du client" => $souscription->nom_client
+                    ]
+                ], 200);
+            }else{
+                return response()->json([
+                    "message"=>"Cette souscription est déjà résilié",
+                ], 200);
+            }
+            
+        }else{
             return response()->json([
                 "message"=>"Accès refusé !",
             ], 403);
         }
-    }
-    public function activate(Souscription $souscription){
-
-        $souscription->statut = 'Actif';
-        $souscription->update();
-        return response()->json([
-            "message"=>"Souscription activée avec succès",
-            "Informations de la souscription"=> [
-                "Nom de l'offre" => $souscription->nom_offre,
-                "Description de l'offre" => $souscription->description,
-                "Nom du client" => $souscription->nom_client
-            ]
-        ], 200);
-    }
-    public function desactivate(Souscription $souscription){
-
-        $souscription->statut = 'Inactif';
-        $souscription->update();
-        return response()->json([
-            "message"=>"Souscription désactivée avec succès",
-            "Informations de la souscription"=> [
-                "Nom de l'offre" => $souscription->nom_offre,
-                "Description de l'offre" => $souscription->description,
-                "Nom du client" => $souscription->nom_client
-            ]
-        ], 200);
+        
     }
     /**
      * Remove the specified resource from storage.

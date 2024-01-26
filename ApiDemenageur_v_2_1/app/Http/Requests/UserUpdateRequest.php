@@ -24,9 +24,9 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'telephone' => ['sometimes', 'regex:/^\+221(77|78|76|70)\d{7}$/'],
-            'role' => ['required'], 
+            // 'role' => ['required'], 
             // 'exists:roles,nom_role' dans le tableau après | 'regex:/^(Client|Demenageur)$/i'
             'localite' => 'required|string|max:255',
             'photo_profile' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -52,14 +52,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 |       - réinitialiser le mot de passe => resetpassword;
 |
 */
-// ------------------------------Affichage article------------------------------------//
+// ------------------------------AFFICHAGE ARTICLE------------------------------------//
 
 // ----------------------------------------------------------------------------------//
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 //-----------------------------REINITIALISER LE MOT DE PASSE-----------------------------------//
-Route::post('resetpassword', [UserController::class, 'resetPassword']);
+Route::put('resetpassword', [UserController::class, 'resetPassword']);
 //------------------------------------------------------------------------------------------//
 
 
@@ -86,6 +86,8 @@ Route::post('resetpassword', [UserController::class, 'resetPassword']);
 |       MODIFIER LES INFORMATIONS DE PROFILS
 |       - modifier les information de compte => /editprofil;
 |-------------------------------------------------------------------------------------------------------------------
+|       ROUTES D'AFFICHAGE
+|       - Affichage des informations d'un user => /showuser/{user}
 |        
 */
 Route::middleware(['auth:api'])->group(function (){
@@ -100,8 +102,15 @@ Route::middleware(['auth:api'])->group(function (){
     Route::delete('/deletecommentarticle/{commentaire}', [CommentaireController::class, 'destroy']);
     //-------------------------------------------------------------------------------------------------//
     //----------------------------------MODIFIER LES INFORMATIONS DE PROFILS---------------------------------------//
-    Route::post('/editprofil', [UserController::class, 'update']);
+    Route::put('/editprofil/{user}', [UserController::class, 'update']);
     //-----------------------------------------------------------------------------------------------------------//
+    /**********************************************************************************************
+    *                           LES ROUTES D'AFFICHAGES [CONNECTED]
+    *********************************************************************************************/
+    //----------------------------------AFFICHAGE INFORMATIONS USER---------------------------------------------//
+    Route::get('/showuser/{user}', [UserController::class, 'show']);
+    //-----------------------------------------------------------------------------------------------------------//
+    
 });
 
 
@@ -127,8 +136,18 @@ Route::middleware(['auth:api'])->group(function (){
 |       - Ajouter un role => storerole;
 |       - Modifier un role  => updaterole;
 |       - Supprimer un role => deleterole;
+|------------------------------------------------------------------------------------------------------------
+|           Route d'affichage :
+|           UTILISATEURS ACTIFS
+|       - Liste de tous les users actifs => /allactifuser
+|       - Liste de tous les users inactifs => /allinactifuser
+|       - Liste de tous les clients => /allcustomers
+|       - Liste de tous les déménageurs => /allmovers
 */
 Route::middleware(['auth:api','role:Admin'])->group(function (){
+    /****************************************************************************************
+    *                               LES CRUD [ADMIN]
+    ***************************************************************************************/
     //---------------------------CRUD article--------------------------------------------//
     Route::post('/storearticle', [ArticleController::class, 'store']);
     Route::put('/editarticle/{article}', [ArticleController::class, 'update']);
@@ -144,6 +163,21 @@ Route::middleware(['auth:api','role:Admin'])->group(function (){
     //-----------------------------------CRUD demande de devis-------------------------------------//
     Route::put('/demandedevissuppress/{demandeDevis}', [DemandeDevisController::class, 'destroy']);
     //--------------------------------------------------------------------------------------------//
+    /**********************************************************************************************
+    *                           LES ROUTES D'AFFICHAGES [ADMIN]
+    *********************************************************************************************/
+    //-------------------------------UTILISATEURS ACTIFS---------------------------------------//
+    Route::get('/alluseractif', [UserController::class, 'allActifUser']);
+    //----------------------------------------------------------------------------------------//
+    //--------------------------------UTILISATEURS INACTIFS------------------------------------//
+    Route::get('/allinactifuser', [UserController::class, 'allInactifUser']);
+    //----------------------------------------------------------------------------------------//
+    //---------------------------------UTILISATEURS CLIENTS-----------------------------------//
+    Route::get('/allcustomers', [UserController::class, 'allCustomerUser']);
+    //----------------------------------------------------------------------------------------//
+    //------------------------------UTILISATEURS DEMENAGEURS-----------------------------------//
+    Route::get('/allmovers', [UserController::class, 'allMoverUser']);
+    //----------------------------------------------------------------------------------------//
 });
 
 

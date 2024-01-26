@@ -39,7 +39,7 @@ class DevisController extends Controller
             $devis->nom_client = $demandeDevis->nom_client;
             $devis->date_demenagement = $demandeDevis->date_demenagement;
             $devis->adresse_actuelle = $demandeDevis->adresse_actuelle;
-            $devis->nouvvelle_adresse = $demandeDevis->nouvelle_adresse;
+            $devis->nouvelle_adresse = $demandeDevis->nouvelle_adresse;
             $devis->prix_total = $request->prix_total;
             $devis->description = $request->description;
             $devis->save();
@@ -101,7 +101,8 @@ class DevisController extends Controller
     }
     public function activate(Devis $devis){
         if(auth()->user()->id == $devis->demenageur_id){
-            $devis->statut = 'Actif';
+            if($devis->statut == 'Inactif'){
+                $devis->statut = 'Actif';
             return response()->json([
                 "message"=>"Devis activé avec succès",
                 "Informations du devis"=> [
@@ -111,31 +112,38 @@ class DevisController extends Controller
                     'Nouvelle adresse actuelle du client' =>$devis->nouvelle_adresse,
                 ]
             ], 200);
+                }else{
+                    return response()->json([
+                    'Message' => "Vous ne pouvez modifier ce devis"
+                    ], 403);
+            }
         }else{
             return response()->json([
-                'Message' => "Vous ne pouvez modifier ce devis"
-            ], 403);
+                'Message' => "Ce devis est déjà actif"
+                ], 200);
         }
+            
         
     }
     public function desactivate(Devis $devis){
         if(auth()->user()->id == $devis->demenageur_id){
-            $devis->statut = 'Inactif';
-        return response()->json([
-            "message"=>"Devis désactivé avec succès",
-            "Informations du devis"=> [
-                'Nom du client' => $devis->nom_client,
-                'Prix du déménagement'=> $devis->prix_total,
-                'Adresse actuelle du client' => $devis->adresse_actuelle,
-                'Nouvelle adresse actuelle du client' =>$devis->nouvelle_adresse,
-            ]
-        ], 200);
-        }else{
-            return response()->json([
-                'Message' => "Vous ne pouvez modifier ce devis"
-            ], 403);
-        }
-        
+            if( $devis->statut = 'Actif'){
+                $devis->statut = 'Inactif';
+                return response()->json([
+                    "message"=>"Devis désactivé avec succès",
+                    "Informations du devis"=> [
+                        'Nom du client' => $devis->nom_client,
+                        'Prix du déménagement'=> $devis->prix_total,
+                        'Adresse actuelle du client' => $devis->adresse_actuelle,
+                        'Nouvelle adresse actuelle du client' =>$devis->nouvelle_adresse,
+                        ]
+                        ], 200);
+                }else{
+                    return response()->json([
+                        'Message' => "Vous ne pouvez modifier ce devis"
+                        ], 403);
+            }
+            } 
     }
     public function valider(Devis $devis){
         if($devis->statut == 'Actif'){

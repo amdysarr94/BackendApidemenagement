@@ -68,60 +68,88 @@ class OffreController extends Controller
      */
     public function update(OffreUpdateRequest $request, Offre $offre)
     {
-        $offre->nom_offre = $request->nom_offre;
-        $offre->description_offre = $request->description_offre;
-        $offre->prix_offre = $request->prix_offre;
-        $offre->update();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'offre modifié avec succès',
-            'Infos offre' => [
-                "Nom de l'offre" =>$offre->nom_offre,
-                "Description de l'offre" =>$offre->description_offre,
-                "Prix de l'offre" =>$offre->prix_offre
-                ]
-        ], 200);
+        if(auth()->user()->id == $offre->user_id){
+            $offre->nom_offre = $request->nom_offre;
+            $offre->description_offre = $request->description_offre;
+            $offre->prix_offre = $request->prix_offre;
+            $offre->update();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'offre modifié avec succès',
+                'Infos offre' => [
+                    "Nom de l'offre" =>$offre->nom_offre,
+                    "Description de l'offre" =>$offre->description_offre,
+                    "Prix de l'offre" =>$offre->prix_offre
+                    ]
+            ], 200);
+        }else{
+            return response()->json([
+                "message"=>"Accès refusé !",
+            ], 403);
+        }
+        
     }
     public function activate(Offre $offre){
-        $offre->statut = 'Actif';
-        $offre->update();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'offre activé avec succès',
-            'Infos offre' => [
-                "Nom de l'offre" =>$offre->nom_offre,
-                "Description de l'offre" =>$offre->description_offre,
-                "Prix de l'offre" =>$offre->prix_offre
-                ]
-        ], 200);
+        if( $offre->statut == 'Inactif'){
+            $offre->statut = 'Actif';
+            $offre->update();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'offre activé avec succès',
+                'Infos offre' => [
+                    "Nom de l'offre" =>$offre->nom_offre,
+                    "Description de l'offre" =>$offre->description_offre,
+                    "Prix de l'offre" =>$offre->prix_offre
+                    ]
+            ], 200);
+        }else{
+            return response()->json([
+                "message"=>"Cette offre est déjà actif",
+            ], 200);
+        }
+        
     }
     public function desactivate(Offre $offre){
-        $offre->statut = 'Inactif';
-        $offre->update();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'offre désactivé avec succès',
-            'Infos offre' => [
-                "Nom de l'offre" =>$offre->nom_offre,
-                "Description de l'offre" =>$offre->description_offre,
-                "Prix  de l'offre" =>$offre->prix_offre
-                ]
-        ], 200);
+        if($offre->statut == 'Actif'){
+            $offre->statut = 'Inactif';
+            $offre->update();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'offre désactivé avec succès',
+                'Infos offre' => [
+                    "Nom de l'offre" =>$offre->nom_offre,
+                    "Description de l'offre" =>$offre->description_offre,
+                    "Prix  de l'offre" =>$offre->prix_offre
+                    ]
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "Cette offre est déjà supprimé"
+            ], 200);
+        }
+        
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Offre $offre)
     {
-       $offre->delete();
-       return response()->json([
-        'status' => 'success',
-        'Message' => 'offre supprimé avec succès',
-        'Infos offre' => [
-            "Nom de l'offre" =>$offre->nom_offre,
-            "Description de l'offre" =>$offre->description_offre,
-            "Prix de l'offre" =>$offre->prix_offre
-            ]
-    ], 200);
+        if($offre){
+            $offre->delete();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'offre supprimé avec succès',
+                'Infos offre' => [
+                    "Nom de l'offre" =>$offre->nom_offre,
+                    "Description de l'offre" =>$offre->description_offre,
+                    "Prix de l'offre" =>$offre->prix_offre
+                    ]
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "Cette offre est déjà supprimé"
+            ], 200);
+        }
+       
     }
 }

@@ -6,6 +6,8 @@ use App\Models\DemandeDevis;
 use Illuminate\Http\Request;
 use App\Http\Requests\DemandeDevisStoreRequest;
 use App\Http\Requests\DemandeDevisUpdateRequest;
+use Illuminate\Support\Carbon;
+use DateTime;
 
 class DemandeDevisController extends Controller
 {
@@ -37,17 +39,43 @@ class DemandeDevisController extends Controller
         $demandedevis->adresse_actuelle = $request->adresse_actuelle;
         $demandedevis->nouvelle_adresse = $request->nouvelle_adresse;
         $demandedevis->informations_bagages = $request->informations_bagages;
-        $demandedevis->date_demenagement = $request->date_demenagement;
-        $demandedevis->save();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'Demande de devis envoyé avec succès',
-            'Infos demande de devis' => [
-                $demandedevis->nom_client,
-                $demandedevis->adresse_actuelle,
-                $demandedevis->nouvelle_adresse
-                ]
-        ], 201);
+        // $demandedevis->date_demenagement = $request->date_demenagement;
+        $date = new DateTime($request->date_demenagement);
+        $jour_j = Carbon::parse($date);
+        $interval = $jour_j->subDays(10);
+        $currentDay = Carbon::now();
+        $dateLimiteMax = $currentDay->addDays(40);
+        dd(
+            'ok',
+            $currentDay, 
+        );
+        if($interval->gt($currentDay) ){
+            // if($jour_j->lte($dateLimiteMax)){
+            //     dd('ouf');
+            // }
+            dd(
+                'ok',
+                $currentDay,
+                $interval->isPast() 
+            );
+            $demandedevis->date_demenagement = $request->date_demenagement;
+            $demandedevis->save();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'Demande de devis envoyé avec succès',
+                'Infos demande de devis' => [
+                    $demandedevis->nom_client,
+                    $demandedevis->adresse_actuelle,
+                    $demandedevis->nouvelle_adresse
+                    ]
+            ], 201);
+        }else{
+            return response()->json([
+                'message' => "Votre date de déménagement doit être à plus de 10 jours de la date d'aujourd'hui"
+            ]);
+            dd("c'est passé");
+        }
+        
     }
 
     /**
