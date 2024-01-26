@@ -37,13 +37,14 @@ _________________________________
 ## Installer et démarrer l'Api
 ------------------------------------------------------------------------------------------
 1) Installer composer sur sa machine, si c'est pas déjà fait.
-            • site : https://getcomposer.org/
+
+    • site : https://getcomposer.org/
 
 3) Créer un fichier .env
 
-4) Copier le contenu du  fichier .env.example qui se trouve dans le répertoire courant du projet dans le fichier .env
+4) Copier le contenu du  fichier .env.example qui se trouve dans le répertoire courant du projet dans le nouveau fichier .env créé.
 
-5) Installer composer sur le projet
+5) Installer composer sur le projet, en tapant la commande : 
 ```bash
   composer install
 ```
