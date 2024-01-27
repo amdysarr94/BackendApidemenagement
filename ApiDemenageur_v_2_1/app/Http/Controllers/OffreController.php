@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Offre;
 use App\Models\Prestation;
 use Illuminate\Http\Request;
@@ -152,5 +153,11 @@ class OffreController extends Controller
             ], 200);
         }
        
+    }
+    public function chatwhatsapp(User $demenageur){
+            // try catch 
+            $whatsappPhone = $demenageur->telephone;
+            $whatsappUrl = "https://api.whatsapp.com/send?phone=$whatsappPhone";
+            return $whatsappUrl;
     }
 }

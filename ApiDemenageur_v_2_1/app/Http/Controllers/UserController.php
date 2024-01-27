@@ -103,4 +103,34 @@ class UserController extends Controller
             }
         }
     }
+    public function activate(User $user){
+        if(auth()->user()->id == $user->id || auth()->user()->role = 'Admin'){
+            if($user->etat == 'Actif'){
+                $user->etat = 'Inactif';
+            }else{
+                return response()->json([
+                    'messsage'=>"Ce compte est déjà actif !"
+                ]);
+            }
+        }else{
+            return response()->json([
+                'message'=> "Vous n'êtes pas autorisé à effectué cet action"
+            ], 403);
+        }
+    }
+    public function desactivate(User $user){
+        if(auth()->user()->id == $user->id || auth()->user()->role = 'Admin'){
+            if($user->etat == 'Inactif'){
+                $user->etat = 'Actif';
+            }else{
+                return response()->json([
+                    'messsage'=>"Ce compte est déjà inactif !"
+                ]);
+            }
+        }else{
+            return response()->json([
+                'message'=> "Vous n'êtes pas autorisé à effectué cet action"
+            ], 403);
+        }
+    }
 }

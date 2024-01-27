@@ -56,6 +56,7 @@ class DemandeDevisController extends Controller
                     $demandedevis->nouvelle_adresse
                     ]
             ], 201);
+            
         }else{
             return response()->json([
                 'message' => "Votre date de déménagement doit être à plus de 10 jours et 60 jours de la date d'aujourd'hui"

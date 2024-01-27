@@ -30,7 +30,7 @@ class User extends Authenticatable implements JWTSubject
       return $this->hasMany(Offre::class);
     }
     public function informationssupp(){
-      return $this->hasOne(InformationsSupp::class);
+      return $this->belongsTo(InformationsSupp::class);
     }
     /**
      * The attributes that should be hidden for serialization.

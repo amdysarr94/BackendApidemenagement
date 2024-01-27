@@ -17,6 +17,7 @@ use App\Http\Requests\SouscriptionUpdateRequest;
 use App\Http\Controllers\InformationsSuppController;
 use App\Http\Controllers\PrestationController;
 use App\Http\Controllers\UserController;
+use App\Models\Article;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,10 +51,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 |--------------------------------------------------------------------------------------------------------------------  
 |      REINITIALISER LE MOT DE PASSE
 |       - réinitialiser le mot de passe => resetpassword;
+|---------------------------------------------------------------------------------------------------------------------
+|       AFFICHAGE ARTICLE
+|       - Affichage de l'article => articlepost;
 |
 */
 // ------------------------------AFFICHAGE ARTICLE------------------------------------//
-
+Route::get('articlepost', [Article::class, 'index']);
 // ----------------------------------------------------------------------------------//
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -219,6 +223,9 @@ Route::middleware(['auth:api','role:Admin'])->group(function (){
 |----------------------------------------------------------------------------------------------------------------------
 |       ANNULER UNE PRESTATION
 |       - Annuler une prestation ;
+|---------------------------------------------------------------------------------------------------------------------
+|       INTEGRATION DE L'API WHATSAPP
+|       - Gérer le chat entre les clients et le déménageur => /whatsappchat/{demenageur};
 */
 Route::middleware(['auth:api','role:Client'])->group(function (){
      //-------------------------------------CRUD DEMANDE DE DEVIS---------------------------------------------------//
@@ -246,6 +253,12 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
      //---------------------------------------ANNULER UNE PRESTATION--------------------------------------------------//
      Route::post('/prestationcancel/{prestation}', [PrestationController::class, 'cancel']);
      //-------------------------------------------------------------------------------------------------------------//
+      /***************************************************************************************************************
+    *                                       UTILISATION DE L'API WHATSAPP
+    *****************************************************************************************************************/
+    //------------------------------------------API WHATSAPP--------------------------------------------------------//
+     Route::post('/whatsappchat/{demenageur}', [OffreController::class, 'chatwhatsapp']);
+    //-------------------------------------------------------------------------------------------------------------//
 });
 
 

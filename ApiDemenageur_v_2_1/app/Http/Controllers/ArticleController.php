@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleEditRequest;
 use App\Http\Requests\ArticleStoreRequest;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $articlesActifs = Article::where('statut', 'Actif')->paginate(10);
+        return ArticleResource::collection($articlesActifs);
     }
 
     /**

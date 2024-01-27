@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\DevisValiderEvent;
+use App\Models\User;
 use App\Models\Devis;
+use App\Models\DemandeDevis;
 use Illuminate\Http\Request;
+use App\Events\DevisValiderEvent;
 use App\Http\Requests\DevisStoreRequest;
 use App\Http\Requests\DevisUpdateRequest;
-use App\Models\DemandeDevis;
+use App\Notifications\DevisSendNotification;
 
 class DevisController extends Controller
 {
@@ -32,6 +34,7 @@ class DevisController extends Controller
      */
     public function store(DevisStoreRequest $request, DemandeDevis $demandeDevis)
     {
+        
         if($demandeDevis->statut == 'Actif'){
             $devis = new Devis();
             $devis->demenageur_id = auth()->user()->id;
@@ -51,6 +54,8 @@ class DevisController extends Controller
                     'Description' => $devis->description,
                 ]
             ], 201);
+            $client = User::where('name', $devis->nom_client)->get()->first();
+            $client->notify(new DevisSendNotification($devis));
         }else{
             return response()->json([
                 'Message' => "Cette demande a été supprimée"

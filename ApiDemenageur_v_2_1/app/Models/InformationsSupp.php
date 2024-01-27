@@ -17,6 +17,6 @@ class InformationsSupp extends Model
         'annee_creation',
     ];
     public function user(){
-      return $this->belongsToOne(User::class);
+      return $this->hasOne(User::class);
     }
 }
