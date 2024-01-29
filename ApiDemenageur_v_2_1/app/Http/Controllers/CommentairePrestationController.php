@@ -17,7 +17,18 @@ class CommentairePrestationController extends Controller
     {
         //
     }
-
+    public function actifCommentPrestation(Prestation $prestation){
+        $actifPostsPrestations = CommentairePrestation::where('prestation_id', $prestation->id)->get();
+        foreach($actifPostsPrestations as $actifPostsPrestation){
+            if($actifPostsPrestation->statut == 'Actif'){
+                return response()->json(compact('actifPostsPrestation'), 200);
+            }else{
+                return response()->json([
+                    'message'=>"Cet prestation n'a pas de commentaire actif"
+                ]);
+            }
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

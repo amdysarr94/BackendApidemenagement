@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
     public function allActifUser(){
+       
         $usersActifs = User::where('etat', 'Actif')->paginate(10);
         return UserResource::collection($usersActifs);
     }
@@ -50,6 +51,12 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             // $user->photo_profile = $request->photo_profile;
+            if($request->file('photo_profile')){
+                $file = $request->file('photo_profile'); 
+                $filename = date('YmdHi') . $file->getClientOriginalName();
+                $file->move(public_path('images'), $filename);
+                $user['photo_profile'] = $filename;
+            }
             $user->password = $request->password;
             $user->telephone = $request->telephone;
             switch($user->role){

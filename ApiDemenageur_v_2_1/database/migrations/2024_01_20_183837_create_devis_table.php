@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('nouvelle_adresse');
             $table->string('description');
             $table->enum('statut', ['Actif', 'Inactif'])->default('Actif');
-            $table->enum('action', ['En cours', 'Valide', 'Refuse'])->default('En cours');
+            $table->enum('etat', ['En cours', 'Valide', 'Refuse'])->default('En cours');
             $table->timestamps();
         });
     }

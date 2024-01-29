@@ -17,7 +17,31 @@ class CommentaireController extends Controller
     {
         //
     }
+    public function activeCommentPost(Article $article){
+        $comments = Commentaire::where('article_id', $article->id)->get();
+        foreach($comments as $comment){
+            if($comment->statut == 'Actif'){
+                return response()->json(compact('comment'), 200);
+            }else{
+                return response()->json([
+                    'message'=>"Cet article n'a pas de commentaire actif."
+                ]);
 
+            }
+        }
+    }
+    public function inactiveCommentPost(Article $article){
+        $comments = Commentaire::where('article_id', $article->id)->get();
+        foreach($comments as $comment){
+            if($comment->statut == 'Inactif'){
+                return response()->json(compact('comment'), 200);
+            }else{
+                return response()->json([
+                    'message'=>"Cet article n'a pas de commentaire inactif."
+                ]);
+            }
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

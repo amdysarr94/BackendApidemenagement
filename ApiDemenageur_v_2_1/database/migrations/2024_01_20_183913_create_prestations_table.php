@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('prestations', function (Blueprint $table) {
             $table->id();
             $table->string('nom_client');
+            $table->string('nom_entreprise');
             $table->dateTime('delai');
             $table->dateTime('date_demenagement');
             $table->string('adresse_actuelle');
             $table->string('nouvelle_adresse');
             $table->string('description');
             $table->integer('prix_total');
-            $table->enum('statut', ['En Cours', 'Termine', 'Annule'])->default('En Cours');
+            $table->enum('statut', ['Actif', 'Inactif'])->default('Actif');
+            $table->enum('etat', ['En Cours', 'Termine', 'Annule'])->default('En Cours');
             $table->timestamps();
         });
     }

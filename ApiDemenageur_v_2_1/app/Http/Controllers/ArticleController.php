@@ -18,7 +18,10 @@ class ArticleController extends Controller
         $articlesActifs = Article::where('statut', 'Actif')->paginate(10);
         return ArticleResource::collection($articlesActifs);
     }
-
+    public function inactifPosts(){
+        $articlesInactifs = Article::where('statut', 'Inactif')->paginate(10);
+        return ArticleResource::collection($articlesInactifs);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -49,7 +52,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        return response()->json(compact('article'), 200);
     }
 
     /**

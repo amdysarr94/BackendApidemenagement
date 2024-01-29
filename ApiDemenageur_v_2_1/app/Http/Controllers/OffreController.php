@@ -16,9 +16,37 @@ class OffreController extends Controller
      */
     public function index()
     {
-        //
+        $actifoffers = Offre::where('statut', 'Actif')->get();
+        return response()->json(compact('actifoffers'), 200);
     }
-
+    public function inactifOffers(){
+        $inactifoffers = Offre::where('statut', 'Inactif')->get();
+        return response()->json(compact('inactifoffers'), 200);
+    }
+    public function allActifOfferOfOneMover(User $demenageur){
+        $actifoffers = Offre::where('statut', 'Actif')->get();
+        foreach($actifoffers as $actifoffer){
+            if($actifoffer->user_id == $demenageur->id){
+                return response()->json(compact('actifoffer'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce déménageur n'a pas d'offres actives"
+                ]);
+            }
+        }
+    }
+    public function allInactifOfferOfOneMover(User $demenageur){
+        $inactifoffers = Offre::where('statut', 'Inactif')->get();
+        foreach($inactifoffers as $inactifoffer){
+            if($inactifoffer->user_id == $demenageur->id){
+                return response()->json(compact('inactifoffer'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce déménageur n'a pas d'offres inactives"
+                ]);
+            }
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

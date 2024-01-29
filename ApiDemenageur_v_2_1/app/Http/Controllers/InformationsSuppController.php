@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\InformationsSupp;
 use App\Http\Requests\InformationsSuppStoreRequest;
@@ -51,9 +52,16 @@ class InformationsSuppController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InformationsSupp $informationsSupp)
+    public function show(User $demenageur)
     {
-        //
+        $informationsSupp = InformationsSupp::where('user_id', $demenageur->id)->get();
+        if($informationsSupp){
+            return response()->json(compact('informationsSupp'), 200);
+        }else{
+            return response()->json([
+                'message'=> "Ce déménageur n'a pas d'informations supplémentaires"
+            ], 200);
+        }
     }
 
     /**

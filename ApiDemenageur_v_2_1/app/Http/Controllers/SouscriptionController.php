@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 use DateTime;
-use App\Events\SouscriptionValiderEvent;
+use App\Models\User;
+use App\Models\Offre;
 use App\Models\Souscription;
 use Illuminate\Http\Request;
+use App\Events\SouscriptionValiderEvent;
 use App\Http\Requests\SouscriptionStoreRequest;
 use App\Http\Requests\SouscriptionUpdateRequest;
-use App\Models\Offre;
 
 class SouscriptionController extends Controller
 {
@@ -18,7 +19,74 @@ class SouscriptionController extends Controller
     {
         //
     }
-
+    public function souscriptionActifOfOneCustomer(User $customer){
+        $souscriptionofMovers = Souscription::where('client_id', $customer->id)->get();
+        foreach($souscriptionofMovers as $souscriptionofMover){
+            if($souscriptionofMover->statut == 'Actif'){
+                return response()->json(compact('souscriptionofMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription actif pour ce client"
+                ], 200);
+            }
+        }
+    }
+    public function souscriptionInactifOfOneCustomer(User $customer){
+        $souscriptionofMovers = Souscription::where('client_id', $customer->id)->get();
+        foreach($souscriptionofMovers as $souscriptionofMover){
+            if($souscriptionofMover->statut == 'Inactif'){
+                return response()->json(compact('souscriptionofMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription inactif pour ce client"
+                ], 200);
+            }
+        }
+    }
+    public function allSouscriptionOfOneCustomer(User $customer){
+        $souscriptionofMovers = Souscription::where('client_id', $customer->id)->get();
+        if($souscriptionofMovers){
+            return response()->json(compact('souscriptionofMovers'), 200);
+        }else{
+            return response()->json([
+                'message'=> "Il n'y a pas de souscription pour ce client"
+            ], 200);
+        }
+    }
+    public function souscriptionActifOfOneMover(Offre $offre){
+        $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->get();
+        foreach($souscriptionofMovers as $souscriptionofMover){
+            if($souscriptionofMover->statut == 'Actif'){
+                return response()->json(compact('souscriptionofMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription actif pour cet offre"
+                ], 200);
+            }
+        }
+    }
+    public function souscriptionInactifOfOneMover(Offre $offre){
+        $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->get();
+        foreach($souscriptionofMovers as $souscriptionofMover){
+            if($souscriptionofMover->statut == 'Inactif'){
+                return response()->json(compact('souscriptionofMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription inactif pour cet offre"
+                ], 200);
+            }
+        }
+    }
+    public function allSouscriptionOfOneMover(Offre $offre){
+        $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->get();
+        if($souscriptionofMovers){
+            return response()->json(compact('souscriptionofMovers'), 200);
+        }else{
+            return response()->json([
+                'message'=> "Il n'y a pas de souscription pour cet offre"
+            ], 200);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -88,7 +156,7 @@ class SouscriptionController extends Controller
     public function update(SouscriptionUpdateRequest $request, Souscription $souscription)
     {
 
-        if(auth()->user()->id == $souscription->client_id){
+        if(auth()->user()->id == $souscription->client_id && $souscription->etat == 'En cours'){
             $souscription->adresse_actuelle = $request->adresse_actuelle;
             $souscription->nouvelle_adresse = $request->nouvelle_adresse;
             $currentDay = new DateTime();
@@ -123,15 +191,16 @@ class SouscriptionController extends Controller
     public function valider(Souscription $souscription){
         $user_id= auth()->user()->id;
         $nom_offre = $souscription->nom_offre;
-        // $offresOfDemenageur = Offre::where('user_id', $userconnectedId)->get();
         $souscriptions = Souscription::whereHas('offre', function ($query) use ($user_id, $nom_offre) {
             $query->where('user_id', $user_id)
                   ->where('nom_offre', $nom_offre);
         })->get();
         foreach($souscriptions as $souscript){
             if($souscript == $souscription){
-                if(auth()->user()->role == 'Demenageur'){
+                if(auth()->user()->role == 'Demenageur' && $souscription->etat == 'En cours'){
                     event(new SouscriptionValiderEvent($souscription->id));
+                    $souscription->etat == 'Valide';
+                    $souscription->update();
                     return response()->json([
                         "message"=>"Souscription validée avec succès",
                         "Informations de la souscription"=> [
@@ -154,6 +223,28 @@ class SouscriptionController extends Controller
         
         
     }
+    public function refuser(Souscription $souscription){
+        $user_id= auth()->user()->id;
+        $nom_offre = $souscription->nom_offre;
+        $souscriptions = Souscription::whereHas('offre', function ($query) use ($user_id, $nom_offre) {
+            $query->where('user_id', $user_id)
+                  ->where('nom_offre', $nom_offre);
+        })->get();
+        foreach($souscriptions as $souscript){
+            if($souscript == $souscription && auth()->user()->role  == 'Demenageur'){
+                $souscription->etat = 'Refuse';
+                $souscription->statut = 'Inactif';
+                $souscription->update();
+                return response()->json([
+                    'message'=>"Souscription refusé avec succès."
+                ]);
+            }else{
+                return response()->json([
+                    'message'=>"Vous ne pouvez effectué cet action."
+                ]);
+            }
+        }
+    }
     public function activate(Souscription $souscription){
         if($souscription->statut == 'Inactif'){
             $souscription->statut = 'Actif';
@@ -174,7 +265,7 @@ class SouscriptionController extends Controller
         
     }
     public function desactivate(Souscription $souscription){
-        if(auth()->user()->id == $souscription->client_id){
+        if(auth()->user()->id == $souscription->client_id && $souscription->etat == 'En cours'){
             if($souscription->statut == 'Actif'){
                 $souscription->statut = 'Inactif';
                 $souscription->update();
@@ -194,7 +285,7 @@ class SouscriptionController extends Controller
             
         }else{
             return response()->json([
-                "message"=>"Accès refusé !",
+                "message"=>"Impossible d'effectué cet action",
             ], 403);
         }
         

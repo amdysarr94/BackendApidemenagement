@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('description');
             $table->dateTime('date_demenagement');
             $table->enum('statut', ['Actif', 'Inactif'])->default('Actif');
+            $table->enum('etat', ['Valide', 'Refuse', 'En cours'])->default('En cours');
             $table->timestamps();
         });
     }

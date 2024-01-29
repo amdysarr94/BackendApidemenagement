@@ -26,7 +26,7 @@ class InformationsSuppStoreRequest extends FormRequest
         return [
             'presentation' => 'required|string|max:255', 
             'NINEA' => 'sometimes|string|max:9',
-            'nom_entreprise' => 'required|string|max:255',
+            'nom_entreprise' => 'required|string|max:255|unique:informations_supps, nom_entreprise',
             'forme_juridique' =>'sometimes|string|max:255',
             'annee_creation'=> 'required|string|max:255',
         ];
@@ -43,6 +43,7 @@ class InformationsSuppStoreRequest extends FormRequest
             'nom_entreprise.required'=>"Le nom de l'entreprise doit être fourni",
             'nom_entreprise.max'=>"Le nom de l'entreprise ne doit pas dépassé 255 caractères",
             'nom_entreprise.string'=>"Le nom de l'entreprise doit être une chaîne de caractères",
+            'nom_entreprise.unique'=>"Le nom de l'entreprise doit être unique",
 
             'forme_juridique.string'=>"La forme juridique fourni est invalide !!!",
             'forme_juridique.max'=>"Nombre de caractères trop élevés",

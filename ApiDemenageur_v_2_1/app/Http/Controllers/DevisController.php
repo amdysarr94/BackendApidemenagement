@@ -20,7 +20,74 @@ class DevisController extends Controller
     {
         //
     }
-
+    public function devisActifOfOneCustomer(User $customer){
+        $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->get();
+        foreach($devisOfMovers as $devisOfMover){
+            if($devisOfMover->statut == 'Actif'){
+                return response()->json(compact('devisOfMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce client n'a pas de devis actifs"
+                ]);
+            }
+        }
+    }
+    public function devisInactifOfOneCustomer(User $customer){
+        $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->get();
+        foreach($devisOfMovers as $devisOfMover){
+            if($devisOfMover->statut == 'Inactif'){
+                return response()->json(compact('devisOfMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce client n'a pas de devis inactifs"
+                ]);
+            }
+        }
+    }
+    public function allDevisOfOneCustomer(User $customer){
+        $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->get();
+        if($devisOfMovers){
+            return response()->json(compact('devisOfMovers'), 200);
+        }else{
+            return response()->json([
+                'message'=> "Ce client n'a pas reçu de devis."
+            ]);
+        }
+    }
+    public function devisActifOfOneMover(User $demenageur){
+        $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->get();
+        foreach($devisOfMovers as $devisOfMover){
+            if($devisOfMover->statut == 'Actif'){
+                return response()->json(compact('devisOfMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce déménageur n'a pas de devis actifs"
+                ]);
+            }
+        }
+    }
+    public function devisInactifOfOneMover(User $demenageur){
+        $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->get();
+        foreach($devisOfMovers as $devisOfMover){
+            if($devisOfMover->statut == 'Inactif'){
+                return response()->json(compact('devisOfMover'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce déménageur n'a pas de devis inactifs"
+                ]);
+            }
+        }
+    }
+    public function AllDevisOfOneMover(User $demenageur){
+        $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->get();
+        if($devisOfMovers){
+            return response()->json(compact('devisOfMovers'), 200);
+        }else{
+            return response()->json([
+                'message'=> "Ce déménageur n'a pas de devis."
+            ]);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -85,7 +152,7 @@ class DevisController extends Controller
      */
     public function update(DevisUpdateRequest $request, Devis $devis)
     {
-        if(auth()->user()->id == $devis->demenageur_id){
+        if(auth()->user()->id == $devis->demenageur_id && $devis->etat == 'En cours'){
             $devis->prix_total = $request->prix_total;
             $devis->description = $request->description;
             $devis->update();
@@ -131,7 +198,7 @@ class DevisController extends Controller
         
     }
     public function desactivate(Devis $devis){
-        if(auth()->user()->id == $devis->demenageur_id){
+        if(auth()->user()->id == $devis->demenageur_id && $devis->etat == 'En cours'){
             if( $devis->statut = 'Actif'){
                 $devis->statut = 'Inactif';
                 return response()->json([
@@ -151,9 +218,11 @@ class DevisController extends Controller
             } 
     }
     public function valider(Devis $devis){
-        if($devis->statut == 'Actif'){
+        if($devis->statut == 'Actif' && $devis->etat == 'En cours'){
             if(auth()->user()->name == $devis->nom_client){
                 event(new DevisValiderEvent($devis->id));
+                $devis->etat == 'Valide';
+                $devis->update();
                 return response()->json([
                     "message"=>"Devis validé avec succès",
                     "Informations du devis"=> [
@@ -177,7 +246,24 @@ class DevisController extends Controller
         
     }
     public function refuser(Devis $devis){
-
+        if($devis->statut == 'Actif' && $devis->etat == 'En cours'){
+            if(auth()->user()->name == $devis->nom_client){
+                $devis->etat = 'Refuse';
+                $devis->statut = 'Inactif';
+                $devis->update();
+                return response()->json([
+                    'message'=>"Devis refusé avec succès.",
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Vous ne pouvez pas faire cet action."
+                ]);
+            }
+        }else{
+            return response()->json([
+                'message'=>"Vous ne pouvez pas faire cet action."
+            ]);
+        }
     }
     /**
      * Remove the specified resource from storage.
