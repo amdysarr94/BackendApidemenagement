@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use App\Models\User;
+use App\Mail\DevisSendMail;
 use App\Models\DemandeDevis;
-use Illuminate\Http\Request;
 // use Illuminate\Support\Carbon;
+use Illuminate\Http\Request;
+use App\Models\InformationsSupp;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\DemandeDevisStoreRequest;
 use App\Http\Requests\DemandeDevisUpdateRequest;
-use App\Models\InformationsSupp;
 use App\Notifications\DemandeDevisSendNotification;
 
 class DemandeDevisController extends Controller
@@ -117,9 +119,17 @@ class DemandeDevisController extends Controller
             $jour_j = new DateTime($request->date_demenagement);
             $diff = $jour_j->diff($currentDay);
             $limiteMax = $currentDay->modify('+60 days');
-            if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
+            if($diff->days >= 10 || $jour_j > $currentDay || $jour_j <= $limiteMax){
                 $demandedevis->date_demenagement = $request->date_demenagement;
                 $demandedevis->save();
+                // $contenus = [
+                //     'title' => 'Annonce acceptée',
+                //     'body' => 'Félicitations ! Votre demande de devis a été envoyée.',
+                // ];
+                // Mail::to('amdysarr94@gmail.com')->send(new DevisSendMail($contenus));
+                $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
+                $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
+                $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
                 return response()->json([
                     'status' => 'success',
                     'Message' => 'Demande de devis envoyé avec succès',
@@ -129,10 +139,8 @@ class DemandeDevisController extends Controller
                         $demandedevis->nouvelle_adresse
                         ]
                 ], 201);
-                $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
-                $demenageur = User::where('user_id', $infoSupp->user_id)->get();
-                $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
-
+                
+                
             }else{
                 return response()->json([
                     'message' => "Votre date de déménagement doit être à plus de 10 jours 

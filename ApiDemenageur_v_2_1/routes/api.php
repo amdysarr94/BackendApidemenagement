@@ -121,7 +121,7 @@ Route::middleware(['auth:api'])->group(function (){
         Route::delete('/deletecommentarticle/{commentaire}', [CommentaireController::class, 'destroy']);
     //-------------------------------------------------------------------------------------------------//
     //----------------------------------MODIFIER LES INFORMATIONS DE PROFILS---------------------------------------//
-    Route::put('/editprofil/{user}', [UserController::class, 'update']);
+     Route::put('/editprofil/{user}', [UserController::class, 'update']);
     //-----------------------------------------------------------------------------------------------------------//
     /**************************************************************************************************************
     *                           LES ROUTES D'AFFICHAGES [CONNECTED]

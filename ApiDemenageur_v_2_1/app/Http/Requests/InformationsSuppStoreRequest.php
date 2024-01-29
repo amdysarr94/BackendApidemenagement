@@ -26,7 +26,7 @@ class InformationsSuppStoreRequest extends FormRequest
         return [
             'presentation' => 'required|string|max:255', 
             'NINEA' => 'sometimes|string|max:9',
-            'nom_entreprise' => 'required|string|max:255|unique:informations_supps, nom_entreprise',
+            'nom_entreprise' => 'required|string|max:255|unique:informations_supps',
             'forme_juridique' =>'sometimes|string|max:255',
             'annee_creation'=> 'required|string|max:255',
         ];

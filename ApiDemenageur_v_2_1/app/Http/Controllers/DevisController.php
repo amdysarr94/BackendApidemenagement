@@ -113,6 +113,8 @@ class DevisController extends Controller
             $devis->prix_total = $request->prix_total;
             $devis->description = $request->description;
             $devis->save();
+            $client = User::where('name', $devis->nom_client)->get()->first();
+            $client->notify(new DevisSendNotification($devis));
             return response()->json([
                 "message"=>"Devis envoyé avec succès",
                 "Informations du devis"=> [
@@ -121,8 +123,7 @@ class DevisController extends Controller
                     'Description' => $devis->description,
                 ]
             ], 201);
-            $client = User::where('name', $devis->nom_client)->get()->first();
-            $client->notify(new DevisSendNotification($devis));
+            
         }else{
             return response()->json([
                 'Message' => "Cette demande a été supprimée"

@@ -17,7 +17,7 @@ class DemandeDevisSendNotification extends Notification
      */
     public function __construct(private DemandeDevis $demandeDevis)
     {
-        
+        $this->demandeDevis = $demandeDevis;
     }
 
     /**
@@ -27,7 +27,7 @@ class DemandeDevisSendNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail','database'];
     }
 
     /**
@@ -63,7 +63,7 @@ class DemandeDevisSendNotification extends Notification
             'Adresse actuelle du client' => $this->demandeDevis->adresse_actuelle,
             'Nouvelle adresse du client'=> $this->demandeDevis->nouvelle_adresse,
             'Information sur les bagages'=> $this->demandeDevis->informations_bagages, 
-            'Date du déménagement'=>$this->demandeDevis->date_demenagement
+            'Date du déménagement'=>$this->demandeDevis->date_demenagement,
 
         ];
     }
