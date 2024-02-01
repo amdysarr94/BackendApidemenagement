@@ -3,19 +3,21 @@ services:
     # Mysql database container
     db:
         image: mysql
-        container_name: ContainerMysql
+        container_name: demenageur_db
         restart: always
         volumes:
             - db-data:/var/lib/mysql
         environment:
             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        ports:
+            - '3306'
         networks:
             - tutorial
 
     # phpmyadmin container
     phpmyadmin:
         image: phpmyadmin
-        container_name: ContainerPhpMyAdmin
+        container_name: demenageur_phpmyadmin
         restart: always
         depends_on:
             - db
@@ -25,9 +27,11 @@ services:
             PMA_HOST: db
         networks:
             - tutorial
+
+    # laravel apache project container
     www:
         build: docker/php
-        container_name: ContainerDemenageur
+        container_name: demenageur_app
         ports:
           - "8741:80"
         volumes:
