@@ -48,21 +48,25 @@ _________________________________
 ```bash
   composer install
 ```
-5) Définir le nom de la  base de données dans le fichier .env 
+6) Générer la clé de l'Api : 
+```bash
+  php artisan key:generate
+```
+7) Définir le nom de la  base de données dans le fichier .env 
 
-6) Effectuer une migration
+8) Effectuer une migration
 ```bash
   php artisan migrate
 ```
-7) Executer un seeder pour créer un Admin 
+9) Executer un seeder pour créer un Admin 
 ```bash
   php artisan db:seed
 ```
-8) Générer la clé Jwt
+10) Générer la clé Jwt
 ```bash
   php artisan jwt:secret
 ```
-9) Activer le server pour run le projet laravel avec : 
+11) Activer le server pour run le projet laravel avec : 
 ```bash
   php artisan serve
 ```
