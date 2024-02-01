@@ -162,7 +162,8 @@ class SouscriptionController extends Controller
             $currentDay = new DateTime();
             $jour_j = new DateTime($request->date_demenagement);
             $diff = $jour_j->diff($currentDay);
-            $limiteMax = $currentDay->modify('+60 days');
+            $currentDayTwo = new DateTime();
+            $limiteMax = $currentDayTwo->modify('+60 days');
             // dd($limiteMax, $jour_j, );
             if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
                 $souscription->date_demenagement = $request->date_demenagement;

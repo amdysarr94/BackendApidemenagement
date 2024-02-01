@@ -105,21 +105,27 @@ class DemandeDevisController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DemandeDevisStoreRequest $request)
+    public function store(DemandeDevisStoreRequest $request, User $demenageur)
     {
         if(auth()->user()->role == 'Client'){
             $demandedevis = new DemandeDevis();
             $demandedevis->client_id = auth()->user()->id;
             $demandedevis->nom_client = auth()->user()->name;
-            $demandedevis->nom_entreprise = $request->nom_entreprise;
+            $nom_entreprise = InformationsSupp::where('user_id', $demenageur->id)->get()->first()->nom_entreprise;
+            $demandedevis->nom_entreprise = $nom_entreprise;
             $demandedevis->adresse_actuelle = $request->adresse_actuelle;
             $demandedevis->nouvelle_adresse = $request->nouvelle_adresse;
             $demandedevis->informations_bagages = $request->informations_bagages;
             $currentDay = new DateTime();
+            // dd($currentDay);
             $jour_j = new DateTime($request->date_demenagement);
             $diff = $jour_j->diff($currentDay);
-            $limiteMax = $currentDay->modify('+60 days');
-            if($diff->days >= 10 || $jour_j > $currentDay || $jour_j <= $limiteMax){
+            
+            $currentDayTwo = new DateTime();
+            $limiteMax = $currentDayTwo->modify('+60 days');
+            // dd($jour_j);
+            // dd($diff->days >= 10 && $jour_j > $currentDay && $jour_j < $limiteMax);
+            if($diff->days >= 10 && $jour_j > $currentDay && $jour_j < $limiteMax){
                 $demandedevis->date_demenagement = $request->date_demenagement;
                 $demandedevis->save();
                 // $contenus = [
@@ -127,9 +133,10 @@ class DemandeDevisController extends Controller
                 //     'body' => 'Félicitations ! Votre demande de devis a été envoyée.',
                 // ];
                 // Mail::to('amdysarr94@gmail.com')->send(new DevisSendMail($contenus));
-                $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
-                $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
-                $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
+                //Commenter pour les besoins du test.
+                // $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
+                // $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
+                // $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
                 return response()->json([
                     'status' => 'success',
                     'Message' => 'Demande de devis envoyé avec succès',

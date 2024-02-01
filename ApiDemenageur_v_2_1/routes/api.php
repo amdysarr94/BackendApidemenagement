@@ -276,7 +276,7 @@ Route::middleware(['auth:api','role:Admin'])->group(function (){
 */
 Route::middleware(['auth:api','role:Client'])->group(function (){
     //-------------------------------------CRUD DEMANDE DE DEVIS---------------------------------------------------//
-     Route::post('/demandedevisstore', [DemandeDevisController::class, 'store']);
+     Route::post('/demandedevisstore/{demenageur}', [DemandeDevisController::class, 'store']);
      Route::put('/demandedevisupdate/{demandeDevis}', [DemandeDevisController::class, 'update']);
      Route::put('/demandedevisdesactivate/{demandeDevis}', [DemandeDevisController::class, 'desactivate']);
     //------------------------------------------------------------------------------------------------------------//

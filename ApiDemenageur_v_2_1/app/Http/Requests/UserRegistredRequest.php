@@ -39,7 +39,7 @@ class UserRegistredRequest extends FormRequest
             'name.required' => 'Desolé! Veuillez choisir une image svp',
 
             'email.required' => 'Desolé! le champ email est Obligatoire',
-            
+            'email.unique' => 'Desolé! le champ email est Obligatoire',
             'telephone.regex' => 'Desolé! veuillez saisir un numéro de téléphone correcte',
 
             'role.required' => 'Desolé! veuillez choisir un status svp',

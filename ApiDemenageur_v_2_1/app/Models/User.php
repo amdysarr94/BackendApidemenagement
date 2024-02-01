@@ -22,6 +22,10 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'passwordconfirm',
+        'telephone',
+        'role',
+        'localite'
     ];
     public function demandedevis(){
       return $this->hasMany(DemandeDevis::class);
