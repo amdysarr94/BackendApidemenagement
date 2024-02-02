@@ -134,9 +134,9 @@ class DemandeDevisController extends Controller
                 // ];
                 // Mail::to('amdysarr94@gmail.com')->send(new DevisSendMail($contenus));
                 //Commenter pour les besoins du test.
-                // $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
-                // $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
-                // $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
+                $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
+                $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
+                $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
                 return response()->json([
                     'status' => 'success',
                     'Message' => 'Demande de devis envoyé avec succès',
@@ -190,7 +190,8 @@ class DemandeDevisController extends Controller
             $demandeDevis->informations_bagages = $request->informations_bagages;
             $currentDay = new DateTime();
             $jour_j = new DateTime($request->date_demenagement);
-            $diff = $jour_j->diff($currentDay);
+            $currentDayTwo = new DateTime();
+            $diff = $jour_j->diff($currentDayTwo);
             $limiteMax = $currentDay->modify('+60 days');
             // dd($limiteMax, $jour_j, );
             if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){

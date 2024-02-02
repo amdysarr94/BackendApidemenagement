@@ -60,6 +60,7 @@ class OffreController extends Controller
      */
     public function store(OffreStoreRequest $request)
     {   
+       
         $offre = Offre::create([
             'user_id'=> auth()->user()->id,
             'nom_offre' => $request->nom_offre,
