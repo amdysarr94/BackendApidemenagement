@@ -23,16 +23,14 @@ class DevisController extends Controller
     }
     public function devisActifOfOneCustomer(User $customer){
         try{
-            $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->get();
-            foreach($devisOfMovers as $devisOfMover){
-                if($devisOfMover->statut == 'Actif'){
-                    return response()->json(compact('devisOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Ce client n'a pas de devis actifs"
-                    ]);
-                }
-            }          
+            $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->where('statut', 'Actif')->get();
+            if($devisOfMovers){
+                return response()->json(compact('devisOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce client n'a pas de devis actifs"
+                ]);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -41,16 +39,14 @@ class DevisController extends Controller
     }
     public function devisInactifOfOneCustomer(User $customer){
         try{
-            $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->get();
-            foreach($devisOfMovers as $devisOfMover){
-                if($devisOfMover->statut == 'Inactif'){
-                    return response()->json(compact('devisOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Ce client n'a pas de devis inactifs"
-                    ]);
-                }
-            }          
+            $devisOfMovers = Devis::where('nom_client', $customer->nom_client)->where('statut', 'Inactif')->get();
+            if($devisOfMovers){
+                return response()->json(compact('devisOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce client n'a pas de devis inactifs"
+                ]);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -75,16 +71,14 @@ class DevisController extends Controller
     }
     public function devisActifOfOneMover(User $demenageur){
         try{
-            $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->get();
-            foreach($devisOfMovers as $devisOfMover){
-                if($devisOfMover->statut == 'Actif'){
-                    return response()->json(compact('devisOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Ce déménageur n'a pas de devis actifs"
-                    ]);
-                }
-            }          
+            $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->where('statut', 'Actif')->get();
+            if($devisOfMovers){
+                return response()->json(compact('devisOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce demenageur n'a pas de devis actifs"
+                ]);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -93,16 +87,14 @@ class DevisController extends Controller
     }
     public function devisInactifOfOneMover(User $demenageur){
         try{
-            $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->get();
-            foreach($devisOfMovers as $devisOfMover){
-                if($devisOfMover->statut == 'Inactif'){
-                    return response()->json(compact('devisOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Ce déménageur n'a pas de devis inactifs"
-                    ]);
-                }
-            }          
+            $devisOfMovers = Devis::where('demenageur_id', $demenageur->id)->where('statut', 'Inactif')->get();
+            if($devisOfMovers){
+                return response()->json(compact('devisOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce demenageur n'a pas de devis inactifs"
+                ]);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }

@@ -22,16 +22,14 @@ class SouscriptionController extends Controller
     }
     public function souscriptionActifOfOneCustomer(User $customer){
         try{
-            $souscriptionofMovers = Souscription::where('client_id', $customer->id)->get();
-            foreach($souscriptionofMovers as $souscriptionofMover){
-                if($souscriptionofMover->statut == 'Actif'){
-                    return response()->json(compact('souscriptionofMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de souscription actif pour ce client"
-                    ], 200);
-                }
-            }          
+            $souscriptionofMovers = Souscription::where('client_id', $customer->id)->where('statut', 'Actif')->get();
+            if($souscriptionofMovers){
+                return response()->json(compact('souscriptionofMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription actif pour ce client"
+                ], 200);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -40,16 +38,14 @@ class SouscriptionController extends Controller
     }
     public function souscriptionInactifOfOneCustomer(User $customer){
         try{
-            $souscriptionofMovers = Souscription::where('client_id', $customer->id)->get();
-            foreach($souscriptionofMovers as $souscriptionofMover){
-                if($souscriptionofMover->statut == 'Inactif'){
-                    return response()->json(compact('souscriptionofMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de souscription inactif pour ce client"
-                    ], 200);
-                }
-            }           
+            $souscriptionofMovers = Souscription::where('client_id', $customer->id)->where('statut', 'Inactif')->get();
+            if($souscriptionofMovers){
+                return response()->json(compact('souscriptionofMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription inactif pour ce client"
+                ], 200);
+            } 
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -74,16 +70,14 @@ class SouscriptionController extends Controller
     }
     public function souscriptionActifOfOneMover(Offre $offre){
         try{
-            $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->get();
-            foreach($souscriptionofMovers as $souscriptionofMover){
-                if($souscriptionofMover->statut == 'Actif'){
-                    return response()->json(compact('souscriptionofMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de souscription actif pour cette offre"
-                    ], 200);
-                }
-            }          
+            $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->where('statut', 'Actif')->get();
+            if($souscriptionofMovers){
+                return response()->json(compact('souscriptionofMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription actif pour cette offre"
+                ], 200);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -92,16 +86,14 @@ class SouscriptionController extends Controller
     }
     public function souscriptionInactifOfOneMover(Offre $offre){
         try{
-            $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->get();
-            foreach($souscriptionofMovers as $souscriptionofMover){
-                if($souscriptionofMover->statut == 'Inactif'){
-                    return response()->json(compact('souscriptionofMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de souscription inactif pour cette offre"
-                    ], 200);
-                }
-            }          
+            $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->where('statut', 'Inactif')->get();
+            if($souscriptionofMovers){
+                return response()->json(compact('souscriptionofMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de souscription inactif pour cette offre"
+                ], 200);
+            } 
         }catch(Exception $e){
             return response()->json($e);
         }

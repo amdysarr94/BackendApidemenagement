@@ -93,16 +93,14 @@ class DemandeDevisController extends Controller
     public function demandeDevisActifOfOneMover(User $demenageur){
         try{
             $infoSupp = InformationsSupp::where('user_id', $demenageur->id)->get()->first();
-            $demandeDevisOfMovers = DemandeDevis::where('nom_entreprise', $infoSupp->nom_entreprise)->get();
-            foreach($demandeDevisOfMovers as $demandeDevisOfMover){
-                if ($demandeDevisOfMover->statut == 'Actif'){
-                    return response()->json(compact('demandeDevisOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Vous n'avez pas reçu de demande de devis"
-                    ], 200);
-                }
-            }          
+            $demandeDevisOfMovers = DemandeDevis::where('nom_entreprise', $infoSupp->nom_entreprise)->where('statut', 'Actif')->get();
+            if($demandeDevisOfMovers){
+                return response()->json(compact('demandeDevisOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Vous n'avez pas reclamation de demande de devis"
+                ], 200);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -112,16 +110,14 @@ class DemandeDevisController extends Controller
     public function demandeDevisInactifOfOneMover(User $demenageur){
         try{
             $infoSupp = InformationsSupp::where('user_id', $demenageur->id)->get()->first();
-            $demandeDevisOfMovers = DemandeDevis::where('nom_entreprise', $infoSupp->nom_entreprise)->get();
-            foreach($demandeDevisOfMovers as $demandeDevisOfMover){
-                if ($demandeDevisOfMover->statut == 'Inactif'){
-                    return response()->json(compact('demandeDevisOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Vous n'avez pas  de demande de devis inactif"
-                    ], 200);
-                }
-            }         
+            $demandeDevisOfMovers = DemandeDevis::where('nom_entreprise', $infoSupp->nom_entreprise)->where('statut', 'Inactif')->get();
+            if($demandeDevisOfMovers){
+                return response()->json(compact('demandeDevisOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Vous n'avez pas reclamation de demande de devis"
+                ], 200);
+            }        
         }catch(Exception $e){
             return response()->json($e);
         }

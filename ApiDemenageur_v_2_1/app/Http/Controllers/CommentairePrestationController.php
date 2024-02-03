@@ -20,16 +20,14 @@ class CommentairePrestationController extends Controller
     }
     public function actifCommentPrestation(Prestation $prestation){
         try{
-            $actifPostsPrestations = CommentairePrestation::where('prestation_id', $prestation->id)->get();
-            foreach($actifPostsPrestations as $actifPostsPrestation){
-                if($actifPostsPrestation->statut == 'Actif'){
-                    return response()->json(compact('actifPostsPrestation'), 200);
-                }else{
-                    return response()->json([
-                        'message'=>"Cet prestation n'a pas de commentaire actif"
-                    ]);
-                }
-            }          
+            $actifPostsPrestations = CommentairePrestation::where('prestation_id', $prestation->id)->where('statut', 'Actif')->get();
+            if($actifPostsPrestations){
+                return response()->json(compact('actifPostsPrestations'), 200);
+            }else{
+                return response()->json([
+                    'message'=>"Cet prestation n'a pas de commentaire actif"
+                ]);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }

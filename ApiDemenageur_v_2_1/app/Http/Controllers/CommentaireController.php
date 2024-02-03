@@ -20,17 +20,14 @@ class CommentaireController extends Controller
     }
     public function activeCommentPost(Article $article){
         try{
-            $comments = Commentaire::where('article_id', $article->id)->get();
-            foreach($comments as $comment){
-                if($comment->statut == 'Actif'){
-                    return response()->json(compact('comment'), 200);
-                }else{
-                    return response()->json([
-                        'message'=>"Cet article n'a pas de commentaire actif."
-                    ]);
-    
-                }
-            }          
+            $comments = Commentaire::where('article_id', $article->id)->where('statut', 'Actif')->get();
+            if($comments){
+                return response()->json(compact('comments'), 200);
+            }else{
+                return response()->json([
+                    'message'=>"Cet article n'a pas de commentaire actif."
+                ]);
+            }       
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -39,16 +36,14 @@ class CommentaireController extends Controller
     }
     public function inactiveCommentPost(Article $article){
         try{
-            $comments = Commentaire::where('article_id', $article->id)->get();
-            foreach($comments as $comment){
-                if($comment->statut == 'Inactif'){
-                    return response()->json(compact('comment'), 200);
-                }else{
-                    return response()->json([
-                        'message'=>"Cet article n'a pas de commentaire inactif."
-                    ]);
-                }
-            }           
+            $comments = Commentaire::where('article_id', $article->id)->where('statut', 'Inactif')->get();
+            if($comments){
+                return response()->json(compact('comments'), 200);
+            }else{
+                return response()->json([
+                    'message'=>"Cet article n'a pas de commentaire inactif."
+                ]);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }

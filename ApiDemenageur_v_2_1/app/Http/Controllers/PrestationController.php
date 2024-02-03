@@ -19,16 +19,14 @@ class PrestationController extends Controller
     }
     public function prestationActifOfOneCustomer(User $customer){
         try{
-            $prestationOfMovers= Prestation::where('nom_client', $customer->name)->get();
-            foreach($prestationOfMovers as $prestationOfMover){
-                if($prestationOfMover->statut == 'Actif'){
-                    return response()->json(compact('prestationOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de prestation actif pour ce client"
-                    ], 200);
-                }
-            }          
+            $prestationOfMovers= Prestation::where('nom_client', $customer->name)->where('statut', 'Actif')->get();
+            if($prestationOfMovers){
+                return response()->json(compact('prestationOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de prestation actif pour ce client"
+                ], 200);
+            }
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -37,16 +35,14 @@ class PrestationController extends Controller
     }
     public function prestationInactifOfOneCustomer(User $customer){
         try{
-            $prestationOfMovers= Prestation::where('nom_client', $customer->name)->get();
-            foreach($prestationOfMovers as $prestationOfMover){
-                if($prestationOfMover->statut == 'Inactif'){
-                    return response()->json(compact('prestationOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de prestation actif pour ce client"
-                    ], 200);
-                }
-            }          
+            $prestationOfMovers= Prestation::where('nom_client', $customer->name)->where('statut', 'Inactif')->get();
+            if($prestationOfMovers){
+                return response()->json(compact('prestationOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de prestation inactif pour ce client"
+                ], 200);
+            }         
         }catch(Exception $e){
             return response()->json($e);
         }
@@ -71,15 +67,13 @@ class PrestationController extends Controller
     }
     public function prestationActifOfOneMover(User $demenageur){
         try{
-            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->get();
-            foreach($prestationOfMovers as $prestationOfMover){
-                if($prestationOfMover->statut == 'Actif'){
-                    return response()->json(compact('prestationOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de prestation actif pour ce déménageur"
-                    ], 200);
-                }
+            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->where('statut', 'Actif')->get();
+            if($prestationOfMovers){
+                return response()->json(compact('prestationOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de prestation actif pour ce demenageur"
+                ], 200);
             }           
         }catch(Exception $e){
             return response()->json($e);
@@ -89,16 +83,14 @@ class PrestationController extends Controller
     }
     public function prestationInactifOfOneMover(User $demenageur){
         try{
-            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->get();
-            foreach($prestationOfMovers as $prestationOfMover){
-                if($prestationOfMover->statut == 'Inactif'){
-                    return response()->json(compact('prestationOfMover'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Il n'y a pas de prestation inactif pour ce déménageur"
-                    ], 200);
-                }
-            }           
+            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->where('statut', 'Inactif')->get();
+            if($prestationOfMovers){
+                return response()->json(compact('prestationOfMovers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Il n'y a pas de prestation inactif pour ce demenageur"
+                ], 200);
+            }     
         }catch(Exception $e){
             return response()->json($e);
         }

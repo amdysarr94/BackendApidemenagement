@@ -38,15 +38,13 @@ class OffreController extends Controller
     }
     public function allActifOfferOfOneMover(User $demenageur){
         try{
-            $actifoffers = Offre::where('statut', 'Actif')->get();
-            foreach($actifoffers as $actifoffer){
-                if($actifoffer->user_id == $demenageur->id){
-                    return response()->json(compact('actifoffer'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Ce déménageur n'a pas d'offres actives"
-                    ]);
-                }
+            $actifoffers = Offre::where('statut', 'Actif')->where('user_id', $demenageur->id)->get();
+            if($actifoffers){
+                return response()->json(compact('actifoffers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce demenageur n'a pas d'offres actives"
+                ]);
             }           
         }catch(Exception $e){
             return response()->json($e);
@@ -56,16 +54,14 @@ class OffreController extends Controller
     }
     public function allInactifOfferOfOneMover(User $demenageur){
         try{
-            $inactifoffers = Offre::where('statut', 'Inactif')->get();
-            foreach($inactifoffers as $inactifoffer){
-                if($inactifoffer->user_id == $demenageur->id){
-                    return response()->json(compact('inactifoffer'), 200);
-                }else{
-                    return response()->json([
-                        'message'=> "Ce déménageur n'a pas d'offres inactives"
-                    ]);
-                }
-            }           
+            $inactifoffers = Offre::where('statut', 'Inactif')->where('user_id', $demenageur->id)->get();
+            if($inactifoffers){
+                return response()->json(compact('inactifoffers'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce demenageur n'a pas d'offres inactives"
+                ]);
+            }          
         }catch(Exception $e){
             return response()->json($e);
         }
