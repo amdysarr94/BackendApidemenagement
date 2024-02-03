@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use App\Models\Offre;
 use App\Models\Prestation;
@@ -16,36 +17,60 @@ class OffreController extends Controller
      */
     public function index()
     {
-        $actifoffers = Offre::where('statut', 'Actif')->get();
-        return response()->json(compact('actifoffers'), 200);
+        try{
+            $actifoffers = Offre::where('statut', 'Actif')->get();
+            return response()->json(compact('actifoffers'), 200);           
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
     public function inactifOffers(){
-        $inactifoffers = Offre::where('statut', 'Inactif')->get();
-        return response()->json(compact('inactifoffers'), 200);
+        try{
+            $inactifoffers = Offre::where('statut', 'Inactif')->get();
+            return response()->json(compact('inactifoffers'), 200);          
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
     public function allActifOfferOfOneMover(User $demenageur){
-        $actifoffers = Offre::where('statut', 'Actif')->get();
-        foreach($actifoffers as $actifoffer){
-            if($actifoffer->user_id == $demenageur->id){
-                return response()->json(compact('actifoffer'), 200);
-            }else{
-                return response()->json([
-                    'message'=> "Ce déménageur n'a pas d'offres actives"
-                ]);
-            }
+        try{
+            $actifoffers = Offre::where('statut', 'Actif')->get();
+            foreach($actifoffers as $actifoffer){
+                if($actifoffer->user_id == $demenageur->id){
+                    return response()->json(compact('actifoffer'), 200);
+                }else{
+                    return response()->json([
+                        'message'=> "Ce déménageur n'a pas d'offres actives"
+                    ]);
+                }
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
     }
     public function allInactifOfferOfOneMover(User $demenageur){
-        $inactifoffers = Offre::where('statut', 'Inactif')->get();
-        foreach($inactifoffers as $inactifoffer){
-            if($inactifoffer->user_id == $demenageur->id){
-                return response()->json(compact('inactifoffer'), 200);
-            }else{
-                return response()->json([
-                    'message'=> "Ce déménageur n'a pas d'offres inactives"
-                ]);
-            }
+        try{
+            $inactifoffers = Offre::where('statut', 'Inactif')->get();
+            foreach($inactifoffers as $inactifoffer){
+                if($inactifoffer->user_id == $demenageur->id){
+                    return response()->json(compact('inactifoffer'), 200);
+                }else{
+                    return response()->json([
+                        'message'=> "Ce déménageur n'a pas d'offres inactives"
+                    ]);
+                }
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
     }
     /**
      * Show the form for creating a new resource.
@@ -60,22 +85,27 @@ class OffreController extends Controller
      */
     public function store(OffreStoreRequest $request)
     {   
-       
-        $offre = Offre::create([
-            'user_id'=> auth()->user()->id,
-            'nom_offre' => $request->nom_offre,
-            'description_offre'=>$request->description_offre,
-            'prix_offre'=>$request->prix_offre
-        ]);
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'offre ajouté avec succès',
-            'Infos offre' => [
-                "Nom de l'offre" => $offre->nom_offre,
-                "Description de l'offre" => $offre->description_offre,
-                "Prix de l'offre" =>  $offre->prix_offre
-                ]
-        ], 201);
+        try{
+            $offre = Offre::create([
+                'user_id'=> auth()->user()->id,
+                'nom_offre' => $request->nom_offre,
+                'description_offre'=>$request->description_offre,
+                'prix_offre'=>$request->prix_offre
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'offre ajouté avec succès',
+                'Infos offre' => [
+                    "Nom de l'offre" => $offre->nom_offre,
+                    "Description de l'offre" => $offre->description_offre,
+                    "Prix de l'offre" =>  $offre->prix_offre
+                    ]
+            ], 201);            
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -99,94 +129,122 @@ class OffreController extends Controller
      */
     public function update(OffreUpdateRequest $request, Offre $offre)
     {
-        if(auth()->user()->id == $offre->user_id){
-            $offre->nom_offre = $request->nom_offre;
-            $offre->description_offre = $request->description_offre;
-            $offre->prix_offre = $request->prix_offre;
-            $offre->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'offre modifié avec succès',
-                'Infos offre' => [
-                    "Nom de l'offre" =>$offre->nom_offre,
-                    "Description de l'offre" =>$offre->description_offre,
-                    "Prix de l'offre" =>$offre->prix_offre
-                    ]
-            ], 200);
-        }else{
-            return response()->json([
-                "message"=>"Accès refusé !",
-            ], 403);
+        try{
+            if(auth()->user()->id == $offre->user_id){
+                $offre->nom_offre = $request->nom_offre;
+                $offre->description_offre = $request->description_offre;
+                $offre->prix_offre = $request->prix_offre;
+                $offre->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'offre modifié avec succès',
+                    'Infos offre' => [
+                        "Nom de l'offre" =>$offre->nom_offre,
+                        "Description de l'offre" =>$offre->description_offre,
+                        "Prix de l'offre" =>$offre->prix_offre
+                        ]
+                ], 200);
+            }else{
+                return response()->json([
+                    "message"=>"Accès refusé !",
+                ], 403);
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
     public function activate(Offre $offre){
-        if( $offre->statut == 'Inactif'){
-            $offre->statut = 'Actif';
-            $offre->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'offre activé avec succès',
-                'Infos offre' => [
-                    "Nom de l'offre" =>$offre->nom_offre,
-                    "Description de l'offre" =>$offre->description_offre,
-                    "Prix de l'offre" =>$offre->prix_offre
-                    ]
-            ], 200);
-        }else{
-            return response()->json([
-                "message"=>"Cette offre est déjà actif",
-            ], 200);
+        try{
+            if( $offre->statut == 'Inactif'){
+                $offre->statut = 'Actif';
+                $offre->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'offre activé avec succès',
+                    'Infos offre' => [
+                        "Nom de l'offre" =>$offre->nom_offre,
+                        "Description de l'offre" =>$offre->description_offre,
+                        "Prix de l'offre" =>$offre->prix_offre
+                        ]
+                ], 200);
+            }else{
+                return response()->json([
+                    "message"=>"Cette offre est déjà actif",
+                ], 200);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
     public function desactivate(Offre $offre){
-        if($offre->statut == 'Actif'){
-            $offre->statut = 'Inactif';
-            $offre->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'offre désactivé avec succès',
-                'Infos offre' => [
-                    "Nom de l'offre" =>$offre->nom_offre,
-                    "Description de l'offre" =>$offre->description_offre,
-                    "Prix  de l'offre" =>$offre->prix_offre
-                    ]
-            ], 200);
-        }else{
-            return response()->json([
-                'message'=> "Cette offre est déjà supprimé"
-            ], 200);
+        try{
+            if($offre->statut == 'Actif'){
+                $offre->statut = 'Inactif';
+                $offre->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'offre désactivé avec succès',
+                    'Infos offre' => [
+                        "Nom de l'offre" =>$offre->nom_offre,
+                        "Description de l'offre" =>$offre->description_offre,
+                        "Prix  de l'offre" =>$offre->prix_offre
+                        ]
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=> "Cette offre est déjà supprimé"
+                ], 200);
+            }
+                       
+        }catch(Exception $e){
+            return response()->json($e);
         }
-        
+
+       
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Offre $offre)
     {
-        if($offre){
-            $offre->delete();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'offre supprimé avec succès',
-                'Infos offre' => [
-                    "Nom de l'offre" =>$offre->nom_offre,
-                    "Description de l'offre" =>$offre->description_offre,
-                    "Prix de l'offre" =>$offre->prix_offre
-                    ]
-            ], 200);
-        }else{
-            return response()->json([
-                'message'=> "Cette offre est déjà supprimé"
-            ], 200);
+        try{
+            if($offre){
+                $offre->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'offre supprimé avec succès',
+                    'Infos offre' => [
+                        "Nom de l'offre" =>$offre->nom_offre,
+                        "Description de l'offre" =>$offre->description_offre,
+                        "Prix de l'offre" =>$offre->prix_offre
+                        ]
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=> "Cette offre est déjà supprimé"
+                ], 200);
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
        
     }
     public function chatwhatsapp(User $demenageur){
+        try{
             // try catch 
             $whatsappPhone = $demenageur->telephone;
             $whatsappUrl = "https://api.whatsapp.com/send?phone=$whatsappPhone";
-            return $whatsappUrl;
+            return $whatsappUrl;           
+        }catch(Exception $e){
+            return response()->json($e);
+        }      
     }
 }

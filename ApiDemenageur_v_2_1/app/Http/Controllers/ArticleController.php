@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ArticleEditRequest;
-use App\Http\Requests\ArticleStoreRequest;
-use App\Http\Resources\ArticleResource;
+use Exception;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Http\Resources\ArticleResource;
+use App\Http\Requests\ArticleEditRequest;
+use App\Http\Requests\ArticleStoreRequest;
 
 class ArticleController extends Controller
 {
@@ -15,12 +16,24 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articlesActifs = Article::where('statut', 'Actif')->paginate(10);
-        return ArticleResource::collection($articlesActifs);
+        try{
+            $articlesActifs = Article::where('statut', 'Actif')->paginate(10);
+            return ArticleResource::collection($articlesActifs);        
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+       
     }
     public function inactifPosts(){
-        $articlesInactifs = Article::where('statut', 'Inactif')->paginate(10);
-        return ArticleResource::collection($articlesInactifs);
+        try{
+            $articlesInactifs = Article::where('statut', 'Inactif')->paginate(10);
+            return ArticleResource::collection($articlesInactifs);         
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
     /**
      * Show the form for creating a new resource.
@@ -35,16 +48,22 @@ class ArticleController extends Controller
      */
     public function store(ArticleStoreRequest $request)
     {
-        $article = new Article();
-        $article->titre = $request->titre;
-        $article->contenu = $request->contenu;
-        $article->user_id = auth()->user()->id;
-        $article->save();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'Article ajouté avec succès',
-            'Article' => $article->titre
-        ], 201);
+        try{
+            $article = new Article();
+            $article->titre = $request->titre;
+            $article->contenu = $request->contenu;
+            $article->user_id = auth()->user()->id;
+            $article->save();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'Article ajouté avec succès',
+                'Article' => $article->titre
+            ], 201);         
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -52,7 +71,13 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return response()->json(compact('article'), 200);
+        try{
+            return response()->json(compact('article'), 200);        
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -69,39 +94,63 @@ class ArticleController extends Controller
      */
     public function update(ArticleEditRequest $request, Article $article)
     {
-        $article->titre = $request->titre;
-        $article->contenu = $request->contenu;
-        $article->update();
-        return response()->json([
-            "message"=>"Article modifié avec succès",
-            "article"=> $article->titre
-        ], 200);
+        try{
+            $article->titre = $request->titre;
+            $article->contenu = $request->contenu;
+            $article->update();
+            return response()->json([
+                "message"=>"Article modifié avec succès",
+                "article"=> $article->titre
+            ], 200);      
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+       
     }
     public function activate(Article $article){
-        $article->statut = 'Actif';
-        $article->update();
-        return response()->json([
-            "message"=>"Article activé avec succès",
-            "article"=> $article->titre
-        ], 200);
+        try{
+            $article->statut = 'Actif';
+            $article->update();
+            return response()->json([
+                "message"=>"Article activé avec succès",
+                "article"=> $article->titre
+            ], 200);          
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
     public function desactivate(Article $article){
-        $article->statut = 'Inactif';
-        $article->update();
-        return response()->json([
-            "message"=>"Article désactivé avec succès",
-            "article"=> $article->titre
-        ], 200);
+        try{
+            $article->statut = 'Inactif';
+            $article->update();
+            return response()->json([
+                "message"=>"Article désactivé avec succès",
+                "article"=> $article->titre
+            ], 200);          
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Article $article)
     {
-        $article->delete();
-        return response()->json([
-            "message"=>"Article supprimé avec succès",
-            "article"=> $article->titre
-        ], 200);
+        try{
+            $article->delete();
+            return response()->json([
+                "message"=>"Article supprimé avec succès",
+                "article"=> $article->titre
+            ], 200);         
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 }

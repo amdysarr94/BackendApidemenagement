@@ -24,7 +24,7 @@ class DemandeDevisStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_entreprise' => 'required|string|max:255', 
+            // 'nom_entreprise' => 'required|string|max:255', 
             'adresse_actuelle' => 'required|string|max:300',
             'nouvelle_adresse' => 'required|string|max:300',
             'informations_bagages'=> 'required|string|max:900',

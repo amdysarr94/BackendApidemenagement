@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\InformationsSupp;
@@ -31,22 +32,28 @@ class InformationsSuppController extends Controller
      */
     public function store(InformationsSuppStoreRequest $request)
     {
-        $informationsSupp = InformationsSupp::create([
-            'user_id' => auth()->user()->id,
-            'presentation' => $request->presentation,
-            'NINEA' => $request->NINEA,
-            'nom_entreprise' => $request->nom_entreprise,
-            'forme_juridique' => $request->forme_juridique,
-            'annee_creation'  => $request->annee_creation,
-        ]);
-        return response()->json([
-            'status' => 'success',
-            'Message' => "Informations de l'entreprise ajoutées avec succès",
-            'Infos offre' => [
-                "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
-                "Présentation de l'entreprise" => $informationsSupp->presentation,
-                ]
-        ], 201);
+        try{
+            $informationsSupp = InformationsSupp::create([
+                'user_id' => auth()->user()->id,
+                'presentation' => $request->presentation,
+                'NINEA' => $request->NINEA,
+                'nom_entreprise' => $request->nom_entreprise,
+                'forme_juridique' => $request->forme_juridique,
+                'annee_creation'  => $request->annee_creation,
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'Message' => "Informations de l'entreprise ajoutées avec succès",
+                'Infos offre' => [
+                    "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
+                    "Présentation de l'entreprise" => $informationsSupp->presentation,
+                    ]
+            ], 201);          
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -54,13 +61,17 @@ class InformationsSuppController extends Controller
      */
     public function show(User $demenageur)
     {
-        $informationsSupp = InformationsSupp::where('user_id', $demenageur->id)->get();
-        if($informationsSupp){
-            return response()->json(compact('informationsSupp'), 200);
-        }else{
-            return response()->json([
-                'message'=> "Ce déménageur n'a pas d'informations supplémentaires"
-            ], 200);
+        try{
+            $informationsSupp = InformationsSupp::where('user_id', $demenageur->id)->get();
+            if($informationsSupp){
+                return response()->json(compact('informationsSupp'), 200);
+            }else{
+                return response()->json([
+                    'message'=> "Ce déménageur n'a pas d'informations supplémentaires"
+                ], 200);
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
     }
 
@@ -77,22 +88,28 @@ class InformationsSuppController extends Controller
      */
     public function update(InformationsSuppUpdateRequest $request, InformationsSupp $informationsSupp)
     {
-        if(auth()->user()->id == $informationsSupp->user_id){
-            $informationsSupp->nom_entreprise  = $request->nom_entreprise;  
-            $informationsSupp->presentation = $request->presentation; 
-            $informationsSupp->NINEA = $request->NINEA; 
-            $informationsSupp->forme_juridique = $request->forme_juridique; 
-            $informationsSupp->annee_creation = $request->annee_creation; 
-            $informationsSupp->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => "Informations de l'entreprise mises-à-jour avec succès",
-                'Infos offre' => [
-                    "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
-                    "Présentation de l'entreprise" => $informationsSupp->presentation,
-                    ]
-            ], 200);
+        try{
+            if(auth()->user()->id == $informationsSupp->user_id){
+                $informationsSupp->nom_entreprise  = $request->nom_entreprise;  
+                $informationsSupp->presentation = $request->presentation; 
+                $informationsSupp->NINEA = $request->NINEA; 
+                $informationsSupp->forme_juridique = $request->forme_juridique; 
+                $informationsSupp->annee_creation = $request->annee_creation; 
+                $informationsSupp->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => "Informations de l'entreprise mises-à-jour avec succès",
+                    'Infos offre' => [
+                        "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
+                        "Présentation de l'entreprise" => $informationsSupp->presentation,
+                        ]
+                ], 200);
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
 
@@ -100,52 +117,61 @@ class InformationsSuppController extends Controller
      * Activer une information supplémentaires.
      */
     public function activate(InformationsSupp $informationsSupp){
-        if($informationsSupp->statut == 'Inactif'){
-            $informationsSupp->statut = 'Actif';
-            $informationsSupp->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => "Informations de l'entreprise activées avec succès",
-                'Infos offre' => [
-                    "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
-                    "Présentation de l'entreprise" => $informationsSupp->presentation,
-                    ]
-            ], 200);
-        }else{
-            return response()->json([
-                'message'=>"Informations de l'entreprise déjà actif"
-            ]);
-        }
-        
+        try{
+            if($informationsSupp->statut == 'Inactif'){
+                $informationsSupp->statut = 'Actif';
+                $informationsSupp->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => "Informations de l'entreprise activées avec succès",
+                    'Infos offre' => [
+                        "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
+                        "Présentation de l'entreprise" => $informationsSupp->presentation,
+                        ]
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Informations de l'entreprise déjà actif"
+                ]);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
+        }  
     }
 
     /**
      * Désactiver une information supplémentaires.
      */
     public function desactivate(InformationsSupp $informationsSupp){
-        if(auth()->user()->id == $informationsSupp->user_id ){
-            if($informationsSupp->statut == 'Actif'){
-                $informationsSupp->statut = 'Inactif';
-                $informationsSupp->update();
-                return response()->json([
-                    'status' => 'success',
-                    'Message' => "Informations de l'entreprise désactivées avec succès",
-                    'Infos offre' => [
-                        "Nom de l'entreprise" => $informationsSupp->presentation,
-                        "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
-                        ]
-                ], 200);
+        try{
+            if(auth()->user()->id == $informationsSupp->user_id ){
+                if($informationsSupp->statut == 'Actif'){
+                    $informationsSupp->statut = 'Inactif';
+                    $informationsSupp->update();
+                    return response()->json([
+                        'status' => 'success',
+                        'Message' => "Informations de l'entreprise désactivées avec succès",
+                        'Infos offre' => [
+                            "Nom de l'entreprise" => $informationsSupp->presentation,
+                            "Présentation de l'entreprise" => $informationsSupp->nom_entreprise,
+                            ]
+                    ], 200);
+                }else{
+                    return response()->json([
+                        'message'=> "Ces  informations n'existent plus"
+                    ]);
+                }
+                
             }else{
                 return response()->json([
-                    'message'=> "Ces  informations n'existent plus"
+                    'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
                 ]);
-            }
-            
-        }else{
-            return response()->json([
-                'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
-            ]);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
 
@@ -155,28 +181,30 @@ class InformationsSuppController extends Controller
      */
     public function destroy(InformationsSupp $informationsSupp)
     {
-        if($informationsSupp){
-            if(auth()->user()->id = $informationsSupp->user_id){
-                $informationsSupp->delete();
-                return response()->json([
-                    'status' => 'success',
-                    'Message' => "Informations de l'entreprise supprimées avec succès",
-                    'Infos offre' => [
-                        "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
-                        "Présentation de l'entreprise" => $informationsSupp->presentation,
-                        ]
-                ], 200);
+        try{
+            if($informationsSupp){
+                if(auth()->user()->id = $informationsSupp->user_id){
+                    $informationsSupp->delete();
+                    return response()->json([
+                        'status' => 'success',
+                        'Message' => "Informations de l'entreprise supprimées avec succès",
+                        'Infos offre' => [
+                            "Nom de l'entreprise" => $informationsSupp->nom_entreprise,
+                            "Présentation de l'entreprise" => $informationsSupp->presentation,
+                            ]
+                    ], 200);
+                }else{
+                    return response()->json([
+                        'message' => "Vous n'êtes pas autorisé à effectué cet action"
+                    ], 403);
+                }
             }else{
                 return response()->json([
-                    'message' => "Vous n'êtes pas autorisé à effectué cet action"
-                ], 403);
-            }
-        }else{
-            return response()->json([
-                'message' => "Ces informations n'existe plus"
-            ], 200);
-        }
-        
-        
+                    'message' => "Ces informations n'existe plus"
+                ], 200);
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
+        }  
     }
 }

@@ -43,13 +43,13 @@ class InformationsSuppStoreRequest extends FormRequest
             'nom_entreprise.required'=>"Le nom de l'entreprise doit être fourni",
             'nom_entreprise.max'=>"Le nom de l'entreprise ne doit pas dépassé 255 caractères",
             'nom_entreprise.string'=>"Le nom de l'entreprise doit être une chaîne de caractères",
-            'nom_entreprise.unique'=>"Le nom de l'entreprise doit être unique",
+            'nom_entreprise.unique'=>"Ce nom d'entreprise existe déjà !",
 
             'forme_juridique.string'=>"La forme juridique fourni est invalide !!!",
             'forme_juridique.max'=>"Nombre de caractères trop élevés",
             
             'annee_creation.required'=>"L'année de création de l'entreprise doit être fourni",
-            'annee_creation.string'=>"Type des données invalide !!!",
+            'annee_creation.string'=>"Type des données invalide !",
             'annee_creation.max'=>"Le champs année de création renseigné contient trop de caractères",
         ];
     }

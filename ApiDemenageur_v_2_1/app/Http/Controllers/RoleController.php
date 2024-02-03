@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleStoreRequest;
@@ -30,13 +31,19 @@ class RoleController extends Controller
      */
     public function store(RoleStoreRequest $request)
     {
-        $role = Role::create([
-            'nom_role' => $request->nom_role
-        ]);
-        return response()->json([
-            "message"=>"le role a été créé avec succès",
-            "nom du role"=> $role->nom_role
-        ], 201);
+        try{
+            $role = Role::create([
+                'nom_role' => $request->nom_role
+            ]);
+            return response()->json([
+                "message"=>"le role a été créé avec succès",
+                "nom du role"=> $role->nom_role
+            ], 201);           
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -60,12 +67,18 @@ class RoleController extends Controller
      */
     public function update(RoleUpdateRequest $request, Role $role)
     {
-        $role->nom_role = $request->nom_role;
-        $role->update();
-        return response()->json([
-            "message"=>"Le nom du role modifié avec succès",
-            "nom du role"=> $role->nom_role
-        ], 200);
+        try{
+            $role->nom_role = $request->nom_role;
+            $role->update();
+            return response()->json([
+                "message"=>"Le nom du role modifié avec succès",
+                "nom du role"=> $role->nom_role
+            ], 200);           
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -73,10 +86,16 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->delete();
-        return response()->json([
-            "message"=>"Le role a été supprimé avec succès",
-            "nom du role"=> $role->nom_role
-        ], 200);
+        try{
+            $role->delete();
+            return response()->json([
+                "message"=>"Le role a été supprimé avec succès",
+                "nom du role"=> $role->nom_role
+            ], 200);          
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 }

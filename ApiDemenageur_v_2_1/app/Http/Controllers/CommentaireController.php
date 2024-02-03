@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Article;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
@@ -18,29 +19,41 @@ class CommentaireController extends Controller
         //
     }
     public function activeCommentPost(Article $article){
-        $comments = Commentaire::where('article_id', $article->id)->get();
-        foreach($comments as $comment){
-            if($comment->statut == 'Actif'){
-                return response()->json(compact('comment'), 200);
-            }else{
-                return response()->json([
-                    'message'=>"Cet article n'a pas de commentaire actif."
-                ]);
-
-            }
+        try{
+            $comments = Commentaire::where('article_id', $article->id)->get();
+            foreach($comments as $comment){
+                if($comment->statut == 'Actif'){
+                    return response()->json(compact('comment'), 200);
+                }else{
+                    return response()->json([
+                        'message'=>"Cet article n'a pas de commentaire actif."
+                    ]);
+    
+                }
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
     }
     public function inactiveCommentPost(Article $article){
-        $comments = Commentaire::where('article_id', $article->id)->get();
-        foreach($comments as $comment){
-            if($comment->statut == 'Inactif'){
-                return response()->json(compact('comment'), 200);
-            }else{
-                return response()->json([
-                    'message'=>"Cet article n'a pas de commentaire inactif."
-                ]);
-            }
+        try{
+            $comments = Commentaire::where('article_id', $article->id)->get();
+            foreach($comments as $comment){
+                if($comment->statut == 'Inactif'){
+                    return response()->json(compact('comment'), 200);
+                }else{
+                    return response()->json([
+                        'message'=>"Cet article n'a pas de commentaire inactif."
+                    ]);
+                }
+            }           
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
     }
     /**
      * Show the form for creating a new resource.
@@ -55,16 +68,22 @@ class CommentaireController extends Controller
      */
     public function store(CommentStoreRequest $request, Article $article)
     {
-        $comment = new Commentaire();
-        $comment->user_id = auth()->user()->id;
-        $comment->article_id = $article->id;
-        $comment->contenu = $request->contenu;
-        $comment->save();
-        return response()->json([
-            'status' => 'success',
-            'Message' => 'Commentaire ajouté avec succès',
-            'Commentaire' => $comment->contenu
-        ], 201);
+        try{
+            $comment = new Commentaire();
+            $comment->user_id = auth()->user()->id;
+            $comment->article_id = $article->id;
+            $comment->contenu = $request->contenu;
+            $comment->save();
+            return response()->json([
+                'status' => 'success',
+                'Message' => 'Commentaire ajouté avec succès',
+                'Commentaire' => $comment->contenu
+            ], 201);          
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+
+        
     }
 
     /**
@@ -88,15 +107,21 @@ class CommentaireController extends Controller
      */
     public function update(CommentUpdateRequest $request, Commentaire $commentaire)
     {
-        if(auth()->user()->id = $commentaire->user_id){
-            $commentaire->contenu = $request->contenu;
-            $commentaire->update();
-            return response()->json([
-            'status' => 'success',
-            'Message' => 'Commentaire modifié avec succès',
-            'Commentaire' => $commentaire->contenu
-            ], 200);
+        try{
+            if(auth()->user()->id = $commentaire->user_id){
+                $commentaire->contenu = $request->contenu;
+                $commentaire->update();
+                return response()->json([
+                'status' => 'success',
+                'Message' => 'Commentaire modifié avec succès',
+                'Commentaire' => $commentaire->contenu
+                ], 200);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
 
     }
@@ -106,43 +131,61 @@ class CommentaireController extends Controller
      */
     public function destroy(Commentaire $commentaire)
     {
-        if(auth()->user()->id = $commentaire->user_id || auth()->user()->role == 'Admin'){
-            $commentaire->delete();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'Commentaire supprimé avec succès',
-                'Commentaire' => $commentaire->contenu
-            ], 200);
+        try{
+            if(auth()->user()->id = $commentaire->user_id || auth()->user()->role == 'Admin'){
+                $commentaire->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'Commentaire supprimé avec succès',
+                    'Commentaire' => $commentaire->contenu
+                ], 200);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
     public function activate(Commentaire $commentaire){
-        if(auth()->user()->role == 'Admin'){
-            $commentaire->statut = "Actif";
-            $commentaire->update();
-            return response()->json([
-            'status' => 'success',
-            'Message' => 'Commentaire activé avec succès',
-            'Commentaire' => $commentaire->contenu
-            ], 200);
-        }else{
-            return response()->json([
-                'status' => 'error',
-                'Message' => "Vous n'êtes pas autorisé à effectuer cet action"
-            ]);
+        try{
+            if(auth()->user()->role == 'Admin'){
+                $commentaire->statut = "Actif";
+                $commentaire->update();
+                return response()->json([
+                'status' => 'success',
+                'Message' => 'Commentaire activé avec succès',
+                'Commentaire' => $commentaire->contenu
+                ], 200);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'Message' => "Vous n'êtes pas autorisé à effectuer cet action"
+                ]);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
     public function desactivate(Commentaire $commentaire){
-        if(auth()->user()->id = $commentaire->user_id || auth()->user()->role == 'Admin'){
-            $commentaire->statut = "Inactif";
-            $commentaire->update();
-            return response()->json([
-                'status' => 'success',
-                'Message' => 'Commentaire désactivé avec succès',
-                'Commentaire' => $commentaire->contenu
-            ], 200);
+        try{
+            if(auth()->user()->id = $commentaire->user_id || auth()->user()->role == 'Admin'){
+                $commentaire->statut = "Inactif";
+                $commentaire->update();
+                return response()->json([
+                    'status' => 'success',
+                    'Message' => 'Commentaire désactivé avec succès',
+                    'Commentaire' => $commentaire->contenu
+                ], 200);
+            }          
+        }catch(Exception $e){
+            return response()->json($e);
         }
+
+        
         
     }
 }
