@@ -28,7 +28,11 @@ class DemandeDevisController extends Controller
         try{
             $demandeDevisOfCustomers = DemandeDevis::where('nom_client', $customer->name)->where('statut', 'Actif')->get();
             if($demandeDevisOfCustomers){
-                return response()->json(compact('demandeDevisOfCustomers'), 200);
+                return response()->json([
+                    'status' => 'success',
+                    'status_message' => 'tous les demandes de devis ont été recupérées',
+                    'data' => $demandeDevisOfCustomers,
+                ], 200);
             }else{
                 return response()->json([
                     'message'=> "Vous n'avez pas reçu de demande de devis"
