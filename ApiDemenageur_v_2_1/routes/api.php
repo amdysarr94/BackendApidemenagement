@@ -348,6 +348,9 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
     //-----------------------------------TOUS PRESTATIONS D'UN CLIENT----------------------------------------------------//
      Route::get('/allprestationofonecustomer/{customer}', [PrestationController::class, 'allPrestationOfOneCustomer']);
     //-------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------INFORMATIONS SUPPLEMENTAIRES DES DEMENAGEURS----------------------------------------------------//
+    Route::get('/allinformationsuppofallmover', [InformationsSuppController::class, 'allInformationsSuppOfAllMovers']);
+    //-------------------------------------------------------------------------------------------------------------------//
 });
 
 

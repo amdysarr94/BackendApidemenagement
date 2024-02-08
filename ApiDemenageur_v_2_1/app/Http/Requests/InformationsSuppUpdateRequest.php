@@ -29,6 +29,7 @@ class InformationsSuppUpdateRequest extends FormRequest
             'nom_entreprise' => 'required|string|max:255',
             'forme_juridique' =>'sometimes|string|max:255',
             'annee_creation'=> 'required|string|max:255',
+            'user_id' => 'required|unique:informations_supps',
         ];
     }
     public function messages(){
@@ -50,6 +51,9 @@ class InformationsSuppUpdateRequest extends FormRequest
             'annee_creation.required'=>"L'année de création de l'entreprise doit être fourni",
             'annee_creation.string'=>"Type des données invalide !!!",
             'annee_creation.max'=>"Le champs année de création renseigné contient trop de caractères",
+
+            'user_id.required' => "L'utilisateur doit être renseigné",
+            'user_id.unique' => "Cette entreprise a déjà renseignée les informations supplémentaires le concernant",
         ];
     }
     public function failedValidation(Validator $validator){

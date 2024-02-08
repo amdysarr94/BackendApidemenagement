@@ -14,6 +14,14 @@ class InformationsSuppController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function allInformationsSuppOfAllMovers(){
+        $informationsSupps = InformationsSupp::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Toutes les informations des entreprises de déménagement',
+            'data' => $informationsSupps
+        ]);
+    }
     public function index()
     {
         //
