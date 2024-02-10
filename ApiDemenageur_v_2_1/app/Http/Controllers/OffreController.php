@@ -237,6 +237,8 @@ class OffreController extends Controller
         try{
             // try catch 
             $whatsappPhone = $demenageur->telephone;
+            $whatsappPhone = substr($whatsappPhone, 4);
+            // dd($whatsappPhone);
             $whatsappUrl = "https://api.whatsapp.com/send?phone=$whatsappPhone";
             return $whatsappUrl;           
         }catch(Exception $e){
