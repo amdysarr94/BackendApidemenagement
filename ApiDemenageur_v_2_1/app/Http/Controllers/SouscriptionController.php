@@ -13,13 +13,6 @@ use App\Http\Requests\SouscriptionUpdateRequest;
 
 class SouscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
     public function souscriptionActifOfOneCustomer(User $customer){
         try{
             $souscriptionofMovers = Souscription::where('client_id', $customer->id)->where('statut', 'Actif')->get();
@@ -31,7 +24,7 @@ class SouscriptionController extends Controller
                 ], 200);
             }
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -47,7 +40,7 @@ class SouscriptionController extends Controller
                 ], 200);
             } 
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -63,7 +56,7 @@ class SouscriptionController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -79,7 +72,7 @@ class SouscriptionController extends Controller
                 ], 200);
             }
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -95,7 +88,7 @@ class SouscriptionController extends Controller
                 ], 200);
             } 
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -111,19 +104,12 @@ class SouscriptionController extends Controller
                 ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
+   
     /**
      * Store a newly created resource in storage.
      */
@@ -161,7 +147,7 @@ class SouscriptionController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -169,21 +155,6 @@ class SouscriptionController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Souscription $souscription)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Souscription $souscription)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -223,7 +194,7 @@ class SouscriptionController extends Controller
                 ], 403);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -263,7 +234,7 @@ class SouscriptionController extends Controller
                 }
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -293,7 +264,7 @@ class SouscriptionController extends Controller
                 }
             }         
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -317,7 +288,7 @@ class SouscriptionController extends Controller
                 ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -349,7 +320,7 @@ class SouscriptionController extends Controller
                 ], 403);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -371,7 +342,7 @@ class SouscriptionController extends Controller
                 ]
             ], 200);          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }  
     }
 }

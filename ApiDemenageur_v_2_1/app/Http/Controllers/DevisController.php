@@ -112,18 +112,12 @@ class DevisController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -159,27 +153,13 @@ class DevisController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         } 
         
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Devis $devis)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Devis $devis)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -205,7 +185,7 @@ class DevisController extends Controller
                 ], 403);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
     public function activate(Devis $devis){
@@ -233,7 +213,7 @@ class DevisController extends Controller
                     ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }  
     }
     public function desactivate(Devis $devis){
@@ -257,7 +237,7 @@ class DevisController extends Controller
                 }
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
          
@@ -289,7 +269,7 @@ class DevisController extends Controller
                 ], 404);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -317,7 +297,7 @@ class DevisController extends Controller
                 ]);
             }        
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -345,7 +325,7 @@ class DevisController extends Controller
                 ], 404);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         

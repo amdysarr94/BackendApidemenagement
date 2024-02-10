@@ -31,13 +31,6 @@ use App\Models\Prestation;
 |
 */
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
-
 /*
 |----------------------------------------------------------------------------------------------------------------------
 |                               Les routes publiques

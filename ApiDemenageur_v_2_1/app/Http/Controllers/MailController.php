@@ -18,7 +18,7 @@ class MailController extends Controller
             ];
             Mail::to('amdysarr94@gmail.com')->send(new DevisSendMail($mailData));           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         

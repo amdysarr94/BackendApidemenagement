@@ -21,7 +21,7 @@ class OffreController extends Controller
             $actifoffers = Offre::where('statut', 'Actif')->get();
             return response()->json(compact('actifoffers'), 200);           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -31,7 +31,7 @@ class OffreController extends Controller
             $inactifoffers = Offre::where('statut', 'Inactif')->get();
             return response()->json(compact('inactifoffers'), 200);          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -63,18 +63,12 @@ class OffreController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -98,7 +92,7 @@ class OffreController extends Controller
                     ]
             ], 201);            
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -112,14 +106,7 @@ class OffreController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Offre $offre)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      */
@@ -146,7 +133,7 @@ class OffreController extends Controller
                 ], 403);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -172,7 +159,7 @@ class OffreController extends Controller
                 ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -199,7 +186,7 @@ class OffreController extends Controller
             }
                        
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
        
@@ -227,7 +214,7 @@ class OffreController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -240,9 +227,9 @@ class OffreController extends Controller
             $whatsappPhone = substr($whatsappPhone, 4);
             // dd($whatsappPhone);
             $whatsappUrl = "https://api.whatsapp.com/send?phone=$whatsappPhone";
-            return $whatsappUrl;           
+            return redirect()->to($whatsappUrl);           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }      
     }
 }

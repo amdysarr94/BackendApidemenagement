@@ -16,7 +16,7 @@ class UserController extends Controller
             $usersActifs = User::where('etat', 'Actif')->paginate(10);
             return UserResource::collection($usersActifs);           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
        
@@ -27,7 +27,7 @@ class UserController extends Controller
             $usersInactifs = User::where('etat', 'Inactif')->paginate(10);
             return UserResource::collection($usersInactifs);           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -37,7 +37,7 @@ class UserController extends Controller
             $usersCustomer = User::where('role', 'Client')->paginate(10);
             return UserResource::collection($usersCustomer);            
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -47,7 +47,7 @@ class UserController extends Controller
             $usersCustomer = User::where('role', 'Demenageur')->paginate(10);
             return UserResource::collection($usersCustomer);           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -71,7 +71,7 @@ class UserController extends Controller
                 ], 403);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -118,7 +118,7 @@ class UserController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -148,7 +148,7 @@ class UserController extends Controller
                 }
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -169,7 +169,7 @@ class UserController extends Controller
                 ], 403);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -190,7 +190,7 @@ class UserController extends Controller
                 ], 403);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         

@@ -22,18 +22,9 @@ class InformationsSuppController extends Controller
             'data' => $informationsSupps
         ]);
     }
-    public function index()
-    {
-        //
-    }
+    
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -58,7 +49,7 @@ class InformationsSuppController extends Controller
                     ]
             ], 201);          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -79,17 +70,10 @@ class InformationsSuppController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(InformationsSupp $informationsSupp)
-    {
-        //
-    }
 
     /**
      * Modifier une information supplémentaire spécifique.
@@ -114,7 +98,7 @@ class InformationsSuppController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -143,7 +127,7 @@ class InformationsSuppController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }  
     }
 
@@ -176,7 +160,7 @@ class InformationsSuppController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -212,7 +196,7 @@ class InformationsSuppController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }  
     }
 }

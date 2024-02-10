@@ -10,13 +10,6 @@ use Illuminate\Http\Request;
 
 class PrestationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
     public function prestationActifOfOneCustomer(User $customer){
         try{
             $prestationOfMovers= Prestation::where('nom_client', $customer->name)->where('statut', 'Actif')->get();
@@ -28,7 +21,7 @@ class PrestationController extends Controller
                 ], 200);
             }
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -44,7 +37,7 @@ class PrestationController extends Controller
                 ], 200);
             }         
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -60,7 +53,7 @@ class PrestationController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -76,7 +69,7 @@ class PrestationController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -92,7 +85,7 @@ class PrestationController extends Controller
                 ], 200);
             }     
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -108,51 +101,12 @@ class PrestationController extends Controller
                 ], 200);
             }           
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Prestation $prestation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Prestation $prestation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Prestation $prestation)
-    {
-        //
-    }
-
+   
     /**
      * Remove the specified resource from storage.
      */
@@ -178,7 +132,7 @@ class PrestationController extends Controller
                 }
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         

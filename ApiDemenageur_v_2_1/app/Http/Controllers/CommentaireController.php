@@ -11,13 +11,7 @@ use App\Http\Requests\CommentUpdateRequest;
 
 class CommentaireController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    
     public function activeCommentPost(Article $article){
         try{
             $comments = Commentaire::where('article_id', $article->id)->where('statut', 'Actif')->get();
@@ -29,7 +23,7 @@ class CommentaireController extends Controller
                 ]);
             }       
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -45,18 +39,12 @@ class CommentaireController extends Controller
                 ]);
             }
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -75,27 +63,13 @@ class CommentaireController extends Controller
                 'Commentaire' => $comment->contenu
             ], 201);          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Commentaire $commentaire)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Commentaire $commentaire)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -113,7 +87,7 @@ class CommentaireController extends Controller
                 ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -136,7 +110,7 @@ class CommentaireController extends Controller
                 ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -159,7 +133,7 @@ class CommentaireController extends Controller
                 ]);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -177,7 +151,7 @@ class CommentaireController extends Controller
                 ], 200);
             }          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         

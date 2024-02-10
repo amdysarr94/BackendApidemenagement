@@ -20,7 +20,7 @@ class ArticleController extends Controller
             $articlesActifs = Article::where('statut', 'Actif')->paginate(10);
             return ArticleResource::collection($articlesActifs);        
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
        
@@ -30,19 +30,12 @@ class ArticleController extends Controller
             $articlesInactifs = Article::where('statut', 'Inactif')->paginate(10);
             return ArticleResource::collection($articlesInactifs);         
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -60,7 +53,7 @@ class ArticleController extends Controller
                 'Article' => $article->titre
             ], 201);         
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -74,21 +67,13 @@ class ArticleController extends Controller
         try{
             return response()->json(compact('article'), 200);        
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Request $request, Article $article)
-    {
-        
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      */
@@ -103,7 +88,7 @@ class ArticleController extends Controller
                 "article"=> $article->titre
             ], 200);      
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
        
@@ -117,7 +102,7 @@ class ArticleController extends Controller
                 "article"=> $article->titre
             ], 200);          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -131,7 +116,7 @@ class ArticleController extends Controller
                 "article"=> $article->titre
             ], 200);          
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
@@ -148,7 +133,7 @@ class ArticleController extends Controller
                 "article"=> $article->titre
             ], 200);         
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         
