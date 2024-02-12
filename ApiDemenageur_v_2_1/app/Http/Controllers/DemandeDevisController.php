@@ -26,6 +26,11 @@ class DemandeDevisController extends Controller
                     'status' => 'success',
                     'status_message' => 'tous les demandes de devis ont été recupérées',
                     'data' => $demandeDevisOfCustomers,
+                    'informations du client' => [
+                        "Nom complet"=>$customer->name,
+                        "Email"=>$customer->email,
+                        "Telephone"=>$customer->telephone
+                    ]
                 ], 200);
             }else{
                 return response()->json([
@@ -74,9 +79,15 @@ class DemandeDevisController extends Controller
     public function allDemandeDevisOfOneMover(User $demenageur){
         try{
             $infoSupp = InformationsSupp::where('user_id', $demenageur->id)->get()->first();
-            $demandeDevisOfMovers = DemandeDevis::where('nom_entreprise', $infoSupp->nom_entreprise)->get();
+            $demandeDevisOfMovers = DemandeDevis::where('nom_entreprise', $infoSupp->nom_entreprise)->with('user')->get();
             if($demandeDevisOfMovers){
-                return response()->json(compact('demandeDevisOfMovers'), 200);
+                return response()->json([
+                    'status' => "succes",
+                    'message' => "La liste des demandes de devis d'un déménageur",
+                    'data 1'=>$demandeDevisOfMovers,
+                ], 200);
+               
+                
             }else{
                 return response()->json([
                     'message'=> "Vous n'avez pas reçu de demande de devis"

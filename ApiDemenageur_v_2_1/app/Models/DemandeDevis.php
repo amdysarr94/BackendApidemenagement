@@ -19,6 +19,6 @@ class DemandeDevis extends Model
         'statut'
     ];
     public function user(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class, 'client_id');
     }
 }
