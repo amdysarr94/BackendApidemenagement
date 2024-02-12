@@ -68,7 +68,7 @@ class infosSuppUpdateTest extends TestCase
         ]);
         // $response->assertStatus(201);
         $response = $this->actingAs($user)
-        ->postJson('/api/infosupupdate/'.$infosupp->id, [
+        ->putJson('/api/infosupupdate/'.$infosupp->id, [
                             'user_id' =>$user->id,
                             'presentation'=> 'présentation 2',
                             'NINEA'=> '12345678',
@@ -78,6 +78,7 @@ class infosSuppUpdateTest extends TestCase
                         ], [
                             'Authorization' => 'Bearer ' . $token,
                         ]);
+        $response->assertStatus(200);
     }
 
 }

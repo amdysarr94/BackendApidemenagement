@@ -16,7 +16,11 @@ class CommentaireController extends Controller
         try{
             $comments = Commentaire::where('article_id', $article->id)->where('statut', 'Actif')->get();
             if($comments){
-                return response()->json(compact('comments'), 200);
+                return response()->json([
+                    'status'=>"succes",
+                    'message'=>"La liste de tous les commentaires actifs d'un article",
+                    'data'=>$comments
+                ], 200);
             }else{
                 return response()->json([
                     'message'=>"Cet article n'a pas de commentaire actif."
@@ -32,7 +36,11 @@ class CommentaireController extends Controller
         try{
             $comments = Commentaire::where('article_id', $article->id)->where('statut', 'Inactif')->get();
             if($comments){
-                return response()->json(compact('comments'), 200);
+                return response()->json([
+                    'status'=>"succes",
+                    'message'=>"La liste de tous les commentaires inactifs d'un article",
+                    'data'=>$comments
+                ], 200);
             }else{
                 return response()->json([
                     'message'=>"Cet article n'a pas de commentaire inactif."

@@ -19,7 +19,11 @@ class OffreController extends Controller
     {
         try{
             $actifoffers = Offre::where('statut', 'Actif')->get();
-            return response()->json(compact('actifoffers'), 200);           
+            return response()->json([
+                'status'=>"success",
+                'message'=>"La liste de toutes les offres actives",
+                'data'=>$actifoffers
+            ], 200);           
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -29,7 +33,11 @@ class OffreController extends Controller
     public function inactifOffers(){
         try{
             $inactifoffers = Offre::where('statut', 'Inactif')->get();
-            return response()->json(compact('inactifoffers'), 200);          
+            return response()->json([
+                'status'=>"success",
+                'message'=>"La liste de toutes les offres inactives",
+                'data'=>$inactifoffers
+            ], 200);          
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -40,7 +48,11 @@ class OffreController extends Controller
         try{
             $actifoffers = Offre::where('statut', 'Actif')->where('user_id', $demenageur->id)->get();
             if($actifoffers){
-                return response()->json(compact('actifoffers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"La liste des offres actives d'un déménageur",
+                    'data'=>$actifoffers
+                ], 200);
             }else{
                 return response()->json([
                     'message'=> "Ce demenageur n'a pas d'offres actives"
@@ -56,7 +68,11 @@ class OffreController extends Controller
         try{
             $inactifoffers = Offre::where('statut', 'Inactif')->where('user_id', $demenageur->id)->get();
             if($inactifoffers){
-                return response()->json(compact('inactifoffers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"La liste des offres inactives d'un déménageur",
+                    'data'=>$inactifoffers
+                ], 200);
             }else{
                 return response()->json([
                     'message'=> "Ce demenageur n'a pas d'offres inactives"
@@ -222,10 +238,8 @@ class OffreController extends Controller
     }
     public function chatwhatsapp(User $demenageur){
         try{
-            // try catch 
             $whatsappPhone = $demenageur->telephone;
             $whatsappPhone = substr($whatsappPhone, 4);
-            // dd($whatsappPhone);
             $whatsappUrl = "https://api.whatsapp.com/send?phone=$whatsappPhone";
             return redirect()->to($whatsappUrl);           
         }catch(Exception $e){

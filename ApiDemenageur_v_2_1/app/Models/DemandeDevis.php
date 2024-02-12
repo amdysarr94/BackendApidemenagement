@@ -15,7 +15,8 @@ class DemandeDevis extends Model
         'adresse_actuelle',
         'nouvelle_adresse',
         'informations_bagages',
-        'date_demenagement'
+        'date_demenagement',
+        'statut'
     ];
     public function user(){
         return $this->belongsToMany(User::class);

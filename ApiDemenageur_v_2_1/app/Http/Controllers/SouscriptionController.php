@@ -17,10 +17,14 @@ class SouscriptionController extends Controller
         try{
             $souscriptionofMovers = Souscription::where('client_id', $customer->id)->where('statut', 'Actif')->get();
             if($souscriptionofMovers){
-                return response()->json(compact('souscriptionofMovers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"Liste des souscriptions actives d'un client",
+                    'données'=>$souscriptionofMovers
+                ], 200);
             }else{
                 return response()->json([
-                    'message'=> "Il n'y a pas de souscription actif pour ce client"
+                    'message'=> "Il n'y a pas de souscriptions actives pour ce client"
                 ], 200);
             }
         }catch(Exception $e){
@@ -33,10 +37,14 @@ class SouscriptionController extends Controller
         try{
             $souscriptionofMovers = Souscription::where('client_id', $customer->id)->where('statut', 'Inactif')->get();
             if($souscriptionofMovers){
-                return response()->json(compact('souscriptionofMovers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"Liste des souscriptions inactives d'un client",
+                    'données'=>$souscriptionofMovers
+                ], 200);
             }else{
                 return response()->json([
-                    'message'=> "Il n'y a pas de souscription inactif pour ce client"
+                    'message'=> "Il n'y a pas de souscription inactive pour ce client"
                 ], 200);
             } 
         }catch(Exception $e){
@@ -49,7 +57,11 @@ class SouscriptionController extends Controller
         try{
             $souscriptionofMovers = Souscription::where('client_id', $customer->id)->get();
             if($souscriptionofMovers){
-                return response()->json(compact('souscriptionofMovers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"Liste de toutes les souscriptions d'un client",
+                    'données'=>$souscriptionofMovers
+                ], 200);
             }else{
                 return response()->json([
                     'message'=> "Il n'y a pas de souscription pour ce client"
@@ -65,7 +77,11 @@ class SouscriptionController extends Controller
         try{
             $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->where('statut', 'Actif')->get();
             if($souscriptionofMovers){
-                return response()->json(compact('souscriptionofMovers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"Liste des souscriptions actives d'un déménageur",
+                    'données'=>$souscriptionofMovers
+                ], 200);
             }else{
                 return response()->json([
                     'message'=> "Il n'y a pas de souscription actif pour cette offre"
@@ -81,10 +97,14 @@ class SouscriptionController extends Controller
         try{
             $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->where('statut', 'Inactif')->get();
             if($souscriptionofMovers){
-                return response()->json(compact('souscriptionofMovers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"Liste des souscriptions inactives d'un déménageur",
+                    'données'=>$souscriptionofMovers
+                ], 200);
             }else{
                 return response()->json([
-                    'message'=> "Il n'y a pas de souscription inactif pour cette offre"
+                    'message'=> "Il n'y a pas de souscription inactives pour cette offre"
                 ], 200);
             } 
         }catch(Exception $e){
@@ -97,10 +117,14 @@ class SouscriptionController extends Controller
         try{
             $souscriptionofMovers = Souscription::where('offre_id', $offre->id)->get();
             if($souscriptionofMovers){
-                return response()->json(compact('souscriptionofMovers'), 200);
+                return response()->json([
+                    'status'=>"success",
+                    'message'=>"Liste de toutes souscriptions  d'un déménageur",
+                    'données'=>$souscriptionofMovers
+                ], 200);
             }else{
                 return response()->json([
-                    'message'=> "Il n'y a pas de souscription pour cette offre"
+                    'message'=> "Il n'y a pas de souscriptions pour cette offre"
                 ], 200);
             }          
         }catch(Exception $e){
@@ -204,12 +228,12 @@ class SouscriptionController extends Controller
         try{
             $user_id= auth()->user()->id;
             $nom_offre = $souscription->nom_offre;
-            $souscriptions = Souscription::whereHas('offre', function ($query) use ($user_id, $nom_offre) {
+            $souscription_id = $souscription->id;
+            $souscription = Souscription::whereHas('offre', function ($query) use ($user_id, $nom_offre) {
                 $query->where('user_id', $user_id)
                       ->where('nom_offre', $nom_offre);
-            })->get();
-            foreach($souscriptions as $souscript){
-                if($souscript == $souscription){
+            })->where('id', $souscription_id)->get()->first();
+            if($souscription){
                     if(auth()->user()->role == 'Demenageur' && $souscription->etat == 'En cours'){
                         event(new SouscriptionValiderEvent($souscription->id));
                         $souscription->etat == 'Valide';
@@ -227,12 +251,12 @@ class SouscriptionController extends Controller
                                 "message"=>"Accès refusé !",
                             ], 403);
                         }
-                }else{
+            }else{
                     return response()->json([
                         'message'=>"Vous n'êtes pas autorisé à effectuer cette action"
                     ], 403);
                 }
-            }          
+                     
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -245,24 +269,25 @@ class SouscriptionController extends Controller
         try{
             $user_id= auth()->user()->id;
             $nom_offre = $souscription->nom_offre;
-            $souscriptions = Souscription::whereHas('offre', function ($query) use ($user_id, $nom_offre) {
+            $souscription_id = $souscription->id;
+            $souscription = Souscription::whereHas('offre', function ($query) use ($user_id, $nom_offre) {
                 $query->where('user_id', $user_id)
                       ->where('nom_offre', $nom_offre);
-            })->get();
-            foreach($souscriptions as $souscript){
-                if($souscript == $souscription && auth()->user()->role  == 'Demenageur'){
+            })->where('id', $souscription_id)->get()->first();
+            
+            if($souscription && auth()->user()->role == 'Demenageur'){
                     $souscription->etat = 'Refuse';
                     $souscription->statut = 'Inactif';
                     $souscription->update();
                     return response()->json([
                         'message'=>"Souscription refusé avec succès."
                     ]);
-                }else{
+            }else{
                     return response()->json([
                         'message'=>"Vous ne pouvez effectué cet action."
                     ]);
                 }
-            }         
+                     
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }

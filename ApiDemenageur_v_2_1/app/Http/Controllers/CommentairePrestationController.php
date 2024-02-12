@@ -16,7 +16,11 @@ class CommentairePrestationController extends Controller
         try{
             $actifPostsPrestations = CommentairePrestation::where('prestation_id', $prestation->id)->where('statut', 'Actif')->get();
             if($actifPostsPrestations){
-                return response()->json(compact('actifPostsPrestations'), 200);
+                return response()->json([
+                    'status'=>"succes",
+                    'message'=>"La liste de tous les commentaires actifs d'une prestation",
+                    'data'=>$actifPostsPrestations
+                ], 200);
             }else{
                 return response()->json([
                     'message'=>"Cet prestation n'a pas de commentaire actif"
