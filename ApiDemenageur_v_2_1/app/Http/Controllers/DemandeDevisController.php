@@ -17,7 +17,32 @@ use App\Notifications\DemandeDevisSendNotification;
 
 class DemandeDevisController extends Controller
 {
-    
+    public function oneDemandeDevisActifOfOneMover(DemandeDevis $demandeDevis){
+        $idMovers = auth()->user()->id;
+        $informationsSuppOfMover = InformationsSupp::where('user_id', $idMovers)->get()->first();
+        // dd($informationsSuppOfMover);
+        $demandeDevis = DemandeDevis::find($demandeDevis->id);
+        if($demandeDevis->nom_entreprise == $informationsSuppOfMover->nom_entreprise){
+            if($demandeDevis){
+                return response()->json([
+                    'status'=>'success',
+                    'message'=>"Les informations sur une demande de devis",
+                    'data'=>$demandeDevis,
+                ], 200);
+            }else{
+                return response()->json([
+                    'status'=>'error',
+                    'message'=>"Cette ressource n'existe pas"
+                ], 404);
+            }
+        }else{
+            return response()->json([
+                'status'=>"error",
+                'message'=>"Vous ne pouvez effectué cet action"
+            ], 404);
+        }
+        
+    }
     public function demandeDevisActifOfOneCustomer(User $customer){
         try{
             $demandeDevisOfCustomers = DemandeDevis::where('nom_client', $customer->name)->where('statut', 'Actif')->get();

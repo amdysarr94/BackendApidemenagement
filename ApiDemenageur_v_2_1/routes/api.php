@@ -433,6 +433,9 @@ Route::middleware(['auth:api','role:Demenageur'])->group(function (){
     //-----------------------------------DEMANDE DE DEVIS ACTIFS D'UN DEMENAGEUR----------------------------------------//
      Route::get('/demandedevisactiflistofonemover/{demenageur}', [DemandeDevisController::class, 'demandeDevisActifOfOneMover']);
     //-----------------------------------------------------------------------------------------------------------------//
+     //-----------------------------------DEMANDE DE DEVIS ACTIFS D'UN DEMENAGEUR----------------------------------------//
+     Route::get('/demandedevisactiflistofonedemandeofonemover/{demandeDevis}', [DemandeDevisController::class, 'oneDemandeDevisActifOfOneMover']);
+    //-----------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DEMANDE DE DEVIS INACTIFS D'UN DEMENAGEUR----------------------------------------//
      Route::get('/demandedevisinactiflistofonemover/{demenageur}', [DemandeDevisController::class, 'demandeDevisInactifOfOneMover']);
     //-----------------------------------------------------------------------------------------------------------------//
