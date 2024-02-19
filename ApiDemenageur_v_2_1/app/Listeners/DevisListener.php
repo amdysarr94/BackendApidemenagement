@@ -33,6 +33,7 @@ class DevisListener
         $devis = Devis::findOrfail($devisId);
         $prestation = new Prestation();
         $prestation->nom_client = $devis->nom_client;
+        $clientid = User::where('name', $devis->nom_client)->get()->first()->id;
         $demenageurInfos = InformationsSupp::where('user_id', $devis->demenageur_id)->get()->first();
         $nom_demenageur = $demenageurInfos->nom_entreprise;
         $prestation->nom_entreprise = $nom_demenageur;
@@ -47,6 +48,7 @@ class DevisListener
         $delai = new DateTime($delaiscarbon);
         $prestation->delai = $delai;
         $prestation->prix_total = $devis->prix_total;
+        $prestation->client_id = $clientid;
         $prestation->save();
         $client = User::where('name', $prestation->nom_client)->get()->first();
         $client->notify(new PrestationNotification($prestation));

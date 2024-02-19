@@ -287,12 +287,15 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
      Route::post('/devisdeny/{devis}', [DevisController::class, 'refuser']);
     //-------------------------------------------------------------------------------------------------------//
     //------------------------------------CRUD COMMENTAIRE PRESTATION---------------------------------------//
-        Route::post('/commentpreststore/{prestation}', [CommentairePrestationController::class, 'store']);
-        Route::put('/commentprestupdate/{commentairePrestation}', [CommentairePrestationController::class, 'update']);
-        Route::put('/commentprestactivate/{commentairePrestation}', [CommentairePrestationController::class, 'activer']);
-        Route::put('/commentprestdesactivate/{commentairePrestation}', [CommentairePrestationController::class, 'desactiver']);
-        Route::delete('/commentprestdelete/{commentairePrestation}', [CommentairePrestationController::class, 'destroy']);
+        // Route::post('/commentpreststore/{prestation}', [CommentairePrestationController::class, 'store']);
+        // Route::put('/commentprestupdate/{commentairePrestation}', [CommentairePrestationController::class, 'update']);
+        // Route::put('/commentprestactivate/{commentairePrestation}', [CommentairePrestationController::class, 'activer']);
+        // Route::put('/commentprestdesactivate/{commentairePrestation}', [CommentairePrestationController::class, 'desactiver']);
+        // Route::delete('/commentprestdelete/{commentairePrestation}', [CommentairePrestationController::class, 'destroy']);
     //-----------------------------------------------------------------------------------------------------//
+    //-------------------------------------CRUD COMMENTAIRE PRESTATION NEW--------------------------------------------//
+        Route::put('/commentprestsend/{prestation}', [PrestationController::class, 'send']);
+    //----------------------------------------------------------------------------------------------------------------//
     //---------------------------------------ANNULER UNE PRESTATION--------------------------------------------------//
        Route::post('/prestationcancel/{prestation}', [PrestationController::class, 'cancel']);
     //-------------------------------------------------------------------------------------------------------------//
@@ -307,6 +310,9 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
         *************************************************************************************************************/
     //-----------------------------------DEMANDE DE DEVIS ACTIFS D'UN CLIENT--------------------------------------------------//
      Route::get('/demandedevisactifofcustomer/{customer}', [DemandeDevisController::class, 'demandeDevisActifOfOneCustomer']);
+    //-------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------DEMANDE DE DEVIS SPECIFIQUE D'UN CLIENT--------------------------------------------------//
+    Route::get('/onedemandedevisofonecustomer/{demandeDevis}', [DemandeDevisController::class, 'oneDemandeDevisActifOfOneCustomer']);
     //-------------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DEMANDE DE DEVIS INACTIFS D'UN CLIENT-------------------------------------------------//
      Route::get('/demandedevisinactifofcustomer/{customer}', [DemandeDevisController::class, 'demandeDevisInactifOfOneCustomer']);
@@ -430,46 +436,46 @@ Route::middleware(['auth:api','role:Demenageur'])->group(function (){
     /**************************************************************************************************************
         *                                     ROUTES D'AFFICHAGE
         *************************************************************************************************************/
-    //-----------------------------------DEMANDE DE DEVIS ACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //--------------------------------------------DEMANDE DE DEVIS ACTIFS D'UN DEMENAGEUR--------------------------------------------------------------------//
      Route::get('/demandedevisactiflistofonemover/{demenageur}', [DemandeDevisController::class, 'demandeDevisActifOfOneMover']);
-    //-----------------------------------------------------------------------------------------------------------------//
-     //-----------------------------------DEMANDE DE DEVIS ACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //------------------------------------------------------------------------------------------------------------------------------------------------------//
+     //-----------------------------------UNE DEMANDE DE DEVIS SPECIFIQUE D'UN DEMENAGEUR------------------------------------------------------------------//
      Route::get('/demandedevisactiflistofonedemandeofonemover/{demandeDevis}', [DemandeDevisController::class, 'oneDemandeDevisActifOfOneMover']);
-    //-----------------------------------------------------------------------------------------------------------------//
-    //-----------------------------------DEMANDE DE DEVIS INACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //----------------------------------------------------------------------------------------------------------------------------------------------------//
+    //------------------------------------DEMANDE DE DEVIS INACTIFS D'UN DEMENAGEUR----------------------------------------------------------------------//
      Route::get('/demandedevisinactiflistofonemover/{demenageur}', [DemandeDevisController::class, 'demandeDevisInactifOfOneMover']);
-    //-----------------------------------------------------------------------------------------------------------------//
-    //-----------------------------------TOUS LES DEMANDES DE DEVIS D'UN DEMENAGEUR----------------------------------------//
+    //--------------------------------------------------------------------------------------------------------------------------------------------------//
+    //------------------------------------TOUS LES DEMANDES DE DEVIS D'UN DEMENAGEUR-------------------------------------------------------------------//
      Route::get('/alldemandedevislistofonemover/{demenageur}', [DemandeDevisController::class, 'allDemandeDevisOfOneMover']);
-    //-----------------------------------------------------------------------------------------------------------------//
-    //-----------------------------------INFORMATIONS SUPP D'UN DEMENAGEUR----------------------------------------//
+    //------------------------------------------------------------------------------------------------------------------------------------------------//
+    //-------------------------------------INFORMATIONS SUPP D'UN DEMENAGEUR-------------------------------------------------------------------------//
      Route::get('/allinfosuppofonemover/{demenageur}', [InformationsSuppController::class, 'show']);
-    //-----------------------------------------------------------------------------------------------------------//
-    //-----------------------------------DEVIS ACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //----------------------------------------------------------------------------------------------------------------------------------------------//
+    //----------------------------------------------DEVIS ACTIFS D'UN DEMENAGEUR-------------------------------------------------------------------//
      Route::get('/devisactifofonemover/{demenageur}', [DevisController::class, 'devisActifOfOneMover']);
-    //------------------------------------------------------------------------------------------------------//
-    //-----------------------------------DEVIS INACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //--------------------------------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------------DEVIS INACTIFS D'UN DEMENAGEUR--------------------------------------------------------------------//
      Route::get('/devisinactifofonemover/{demenageur}', [DevisController::class, 'devisInactifOfOneMover']);
-    //------------------------------------------------------------------------------------------------------//
-    //-----------------------------------TOUS DEVIS D'UN DEMENAGEUR----------------------------------------//
+    //------------------------------------------------------------------------------------------------------------------------------------------//
+    //----------------------------------------TOUS DEVIS D'UN DEMENAGEUR-----------------------------------------------------------------------//
      Route::get('/alldevisofonemover/{demenageur}', [DevisController::class, 'allDevisOfOneMover']);
-    //------------------------------------------------------------------------------------------------------//
-    //-----------------------------------SOUSCRIPTIONS ACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //----------------------------------------------------------------------------------------------------------------------------------------//
+    //--------------------------------------------SOUSCRIPTIONS ACTIFS D'UN DEMENAGEUR-------------------------------------------------------//
      Route::get('/souscriptionactifofonemover/{offre}', [SouscriptionController::class, 'souscriptionActifOfOneMover']);
-    //------------------------------------------------------------------------------------------------------//
-    //-----------------------------------SOUSCRIPTIONS INACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //--------------------------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------SOUSCRIPTIONS INACTIFS D'UN DEMENAGEUR------------------------------------------------------------//
      Route::get('/souscriptioninactifofonemover/{offre}', [SouscriptionController::class, 'souscriptionInactifOfOneMover']);
-    //------------------------------------------------------------------------------------------------------------------//
-    //-----------------------------------TOUS SOUSCRIPTIONS D'UN DEMENAGEUR----------------------------------------//
+    //------------------------------------------------------------------------------------------------------------------------------------//
+    //--------------------------------------------TOUS SOUSCRIPTIONS D'UN DEMENAGEUR-----------------------------------------------------//
      Route::get('/allsouscriptionofonemover/{offre}', [SouscriptionController::class, 'allSouscriptionOfOneMover']);
-    //------------------------------------------------------------------------------------------------------------//
-    //-----------------------------------PRESTATIONS ACTIFS D'UN DEMENAGEUR----------------------------------------//
+    //----------------------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------PRESTATIONS ACTIFS D'UN DEMENAGEUR------------------------------------------------------------//
      Route::get('/prestationactifofonemover/{demenageur}', [PrestationController::class, 'prestationActifOfOneMover']);
-    //------------------------------------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------------------------------//
     //-----------------------------------PRESTATIONS INACTIFS D'UN DEMENAGEUR--------------------------------------------------------//
      Route::get('/prestationinactifofonemover/{demenageur}', [PrestationController::class, 'prestationInactifOfOneMover']);
     //----------------------------------------------------------------------------------------------------------------------------//
-    //-----------------------------------TOUS PRESTATIONS D'UN DEMENAGEUR----------------------------------------------------//
+    //-----------------------------------TOUS PRESTATIONS D'UN DEMENAGEUR-------------------------------------------------------//
      Route::get('/allprestationofonemover/{demenageur}', [PrestationController::class, 'allPrestationOfOneMover']);
-    //-------------------------------------------------------------------------------------------------------------------//
+    //------------------------------------------------------------------------------------------------------------------------//
 });

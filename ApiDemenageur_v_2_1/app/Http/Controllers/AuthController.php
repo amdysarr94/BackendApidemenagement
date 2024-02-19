@@ -37,7 +37,8 @@ class AuthController extends Controller
                     'status_message'=> "Utilisateur enregistré",
                     'user'=>[
                         'Nom' => $user->name,
-                        'Email' => $user->email
+                        'Email' => $user->email,
+                        'role'=>$user->role
                     ]
                 ], 201);
             }

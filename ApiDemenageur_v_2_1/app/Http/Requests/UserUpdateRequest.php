@@ -36,19 +36,26 @@ class UserUpdateRequest extends FormRequest
     public function messages()
     {
         return[
-            'name.required' => 'Desolé! Veuillez choisir une image svp',
+            'name.required' => 'Veuillez saisir  votre nom',
+            'name.string' => 'Format de nom invalide',
+            'name.max' => 'Le nom saisie est trop long',
 
-            'email.required' => 'Desolé! le champ email est Obligatoire',
+            'email.required' => "L'adresse email est obligatoire",
+            'email.email'=>'Adresse mail invalide',
+            'email.unique' => 'Cet adresse mail existe déjà',
+
+            'telephone.regex' => 'Veuillez saisir un numéro de téléphone correcte',
+
+            'role.required' => 'Veuillez choisir un role',
             
-            'telephone.regex' => 'Desolé! veuillez saisir un numéro de téléphone correcte',
-
-            'role.required' => 'Desolé! veuillez choisir un status svp',
-
-            'localite.required' => 'Desolé! veuillez choisir une categorie svp',
+            'localite.required' => 'Veuillez saisir votre localité',
 
             'photo_profile.mimes' => 'Desolé! la photo est au mauvais format',
             
-            'password.required'  => 'Désolé ! Le mot de passe est requis'
+            'password.required'  => 'Le mot de passe est requis',
+            'password.string'  => 'Format de mot de passe incorrecte',
+            'password.min'=>'Le mot de passe doit contenir plus de 5 caractères',
+            'password.max'=>'Le mot de passe ne doit pas dépasser plus de 10 caractères'
             
         ];
     }

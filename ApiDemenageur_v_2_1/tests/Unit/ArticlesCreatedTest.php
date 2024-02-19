@@ -16,10 +16,10 @@ class ArticlesCreatedTest extends TestCase
         $userData = [
             'name' => 'Musa',
             'email' => 'musa@gmail.com',
-             'password' => 'password',
-             'passwordconfirm' => 'password', // Champ de confirmation du mot de passe
-             'telephone' => '+221774532345',
-             'role' => 'Admin',
+            'password' => 'password',
+            'passwordconfirm' => 'password', 
+            'telephone' => '+221774532345',
+            'role' => 'Admin',
             'localite' => 'Dakar',
          ];
         $response = $this->postJson('api/register', $userData);

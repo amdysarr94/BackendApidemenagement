@@ -7,6 +7,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Prestation;
 use Illuminate\Http\Request;
+use App\Http\Requests\PrestationCommentRequest;
 
 class PrestationController extends Controller
 {
@@ -137,6 +138,17 @@ class PrestationController extends Controller
     public function destroy(Prestation $prestation)
     {
         //
+    }
+    public function send(PrestationCommentRequest $request, Prestation $prestation){
+        // $now = new DateTime();
+        if(auth()->user()->id == $prestation->client_id && $prestation->etat == 'Termine'){
+            $prestation->commentaire = $request->commentaire;
+            $prestation->update();
+            return response()->json([
+                'message'=> "Votre commentaire a été ajouté avec succès !",
+                "Informations"=> $prestation
+            ], 200);
+        }
     }
     public function cancel(Prestation $prestation){
         try{

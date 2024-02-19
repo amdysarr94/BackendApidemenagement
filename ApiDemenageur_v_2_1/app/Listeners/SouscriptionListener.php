@@ -38,6 +38,7 @@ class SouscriptionListener
         $nom_demenageur = $infosup->nom_entreprise;
         $prestation->nom_entreprise = $nom_demenageur;
         $prestation->nom_client = $souscription->nom_client;
+        $clientid = User::where('name', $souscription->nom_client)->get()->first()->id;
         $prestation->prix_total = $souscription->prix_total;
         $prestation->adresse_actuelle = $souscription->adresse_actuelle;
         $prestation->nouvelle_adresse = $souscription->nouvelle_adresse;
@@ -49,6 +50,7 @@ class SouscriptionListener
         $delai = new DateTime($delaiscarbon);
         $prestation->delai = $delai;
         $prestation->prix_total = $souscription->prix_total;
+        $prestation->client_id = $clientid;
         $prestation->save();
         $client = User::where('name', $prestation->nom_client)->get()->first();
         $client->notify(new PrestationNotification($prestation));

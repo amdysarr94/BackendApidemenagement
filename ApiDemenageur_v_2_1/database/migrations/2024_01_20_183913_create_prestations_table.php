@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('nouvelle_adresse');
             $table->string('description');
             $table->integer('prix_total');
+            $table->string('commentaire')->nullable();
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('users');
             $table->enum('statut', ['Actif', 'Inactif'])->default('Actif');
             $table->enum('etat', ['En Cours', 'Termine', 'Annule'])->default('En Cours');
             $table->timestamps();

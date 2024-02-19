@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use DateTime;
 use Exception;
 use App\Models\User;
-use App\Mail\DevisSendMail;
+use App\Models\Image;
 // use Illuminate\Support\Carbon;
+use App\Mail\DevisSendMail;
 use App\Models\DemandeDevis;
 use Illuminate\Http\Request;
 use App\Models\InformationsSupp;
@@ -17,10 +18,26 @@ use App\Notifications\DemandeDevisSendNotification;
 
 class DemandeDevisController extends Controller
 {
+    public function oneDemandeDevisActifOfOneCustomer(DemandeDevis $demandeDevis){
+        $idCustomer = auth()->user()->id;
+        $nameCustomer = auth()->user()->name;
+        if($demandeDevis->client_id == $idCustomer && $demandeDevis->nom_client == $nameCustomer){
+            $demandeDevisRecup = DemandeDevis::where('client_id', $idCustomer)->where('nom_client', $nameCustomer)->where('id', $demandeDevis->id)->get()->first();
+            return response()->json([
+                'status'=>'success',
+                'data'=>$demandeDevisRecup
+            ], 200);
+        }else{
+            return response()->json([
+                'status'=>'error',
+                'message'=>"Vous ne pouvez pas effectué cette action"
+            ]);
+        }
+        
+    }
     public function oneDemandeDevisActifOfOneMover(DemandeDevis $demandeDevis){
         $idMovers = auth()->user()->id;
         $informationsSuppOfMover = InformationsSupp::where('user_id', $idMovers)->get()->first();
-        // dd($informationsSuppOfMover);
         $demandeDevis = DemandeDevis::find($demandeDevis->id);
         if($demandeDevis->nom_entreprise == $informationsSuppOfMover->nom_entreprise){
             if($demandeDevis){
@@ -187,6 +204,16 @@ class DemandeDevisController extends Controller
                 if($diff->days >= 10 && $jour_j > $currentDay && $jour_j < $limiteMax){
                     $demandedevis->date_demenagement = $request->date_demenagement;
                     $demandedevis->save();
+                    if ($request->hasFile('images')) {
+                        foreach ($request->file('images') as $imageFile) {
+                            $filename = date('YmdHi') . '_' . uniqid() . '.' . $imageFile->getClientOriginalExtension();
+                            $imageFile->move(public_path('public/images'), $filename);
+                            $image = new Image();      
+                            $image->url = $filename;
+                            $image->demandedevis_id = $demandedevis->id;
+                            $image->save();
+                        }
+                    }
                     $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
                     $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
                     $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
@@ -214,11 +241,7 @@ class DemandeDevisController extends Controller
             }          
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
-        }
-
-        
-        
-        
+        } 
         
     }
 
@@ -244,6 +267,16 @@ class DemandeDevisController extends Controller
                 if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
                     $demandeDevis->date_demenagement = $request->date_demenagement;
                     $demandeDevis->update();
+                    if ($request->hasFile('images')) {
+                        foreach ($request->file('images') as $imageFile) {
+                            $filename = date('YmdHi') . '_' . uniqid() . '.' . $imageFile->getClientOriginalExtension();
+                            $imageFile->move(public_path('public/images'), $filename);
+                            $image = new Image();      
+                            $image->url = $filename;
+                            $image->demandedevis_id = $demandeDevis->id;
+                            $image->save();
+                        }
+                    }
                     return response()->json([
                         'status' => 'success',
                         'Message' => 'Demande de devis modifié avec succès',
