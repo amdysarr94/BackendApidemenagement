@@ -62,7 +62,7 @@ class DemandeDevisController extends Controller
     }
     public function demandeDevisActifOfOneCustomer(User $customer){
         try{
-            $demandeDevisOfCustomers = DemandeDevis::where('nom_client', $customer->name)->where('statut', 'Actif')->get();
+            $demandeDevisOfCustomers = DemandeDevis::where('nom_client', $customer->name)->with('images')->where('statut', 'Actif')->get();
             if($demandeDevisOfCustomers){
                 return response()->json([
                     'status' => 'success',
@@ -104,7 +104,7 @@ class DemandeDevisController extends Controller
     }
     public function AlldemandeDevisOfOneCustomer(User $customer){
         try{
-            $demandeDevisOfCustomers = DemandeDevis::where('nom_client', $customer->name)->get();
+            $demandeDevisOfCustomers = DemandeDevis::where('nom_client', $customer->name)->where('statut', 'Actif')->get();
             if($demandeDevisOfCustomers){
                 return response()->json(compact('demandeDevisOfCustomers'), 200);
             }else{
@@ -204,9 +204,12 @@ class DemandeDevisController extends Controller
                 if($diff->days >= 10 && $jour_j > $currentDay && $jour_j < $limiteMax){
                     $demandedevis->date_demenagement = $request->date_demenagement;
                     $demandedevis->save();
+
                     if ($request->hasFile('images')) {
+                        $count = 0;
                         foreach ($request->file('images') as $imageFile) {
-                            $filename = date('YmdHi') . '_' . uniqid() . '.' . $imageFile->getClientOriginalExtension();
+                            // dd('ok');
+                            $filename = date('YmdHi') . $imageFile->getClientOriginalName();
                             $imageFile->move(public_path('public/images'), $filename);
                             $image = new Image();      
                             $image->url = $filename;
@@ -214,6 +217,7 @@ class DemandeDevisController extends Controller
                             $image->save();
                         }
                     }
+                    // dd('ouf');
                     $infoSupp = InformationsSupp::where('nom_entreprise', $demandedevis->nom_entreprise)->get()->first();
                     $demenageur = User::where('id', $infoSupp->user_id)->get()->first();
                     $demenageur->notify(new DemandeDevisSendNotification($demandedevis));
@@ -262,7 +266,7 @@ class DemandeDevisController extends Controller
                 $jour_j = new DateTime($request->date_demenagement);
                 $currentDayTwo = new DateTime();
                 $diff = $jour_j->diff($currentDayTwo);
-                $limiteMax = $currentDay->modify('+60 days');
+                $limiteMax = $currentDayTwo->modify('+60 days');
                 // dd($limiteMax, $jour_j, );
                 if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
                     $demandeDevis->date_demenagement = $request->date_demenagement;

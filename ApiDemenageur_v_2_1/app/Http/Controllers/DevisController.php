@@ -23,12 +23,18 @@ class DevisController extends Controller
     }
     public function devisActifOfOneCustomer(User $customer){
         try{
-            $devisOfCustomer = Devis::where('nom_client', $customer->nom_client)->where('statut', 'Actif')->get();
+            $devisOfCustomer = Devis::where('nom_client', $customer->nom_client)->where('statut', 'Actif')->with('user')->get();
+
             if($devisOfCustomer){
                 return response()->json([
                     'status' => 'success',
                     'status_message' => " La liste de tous les devis actifs d'un client",
                     'data' => $devisOfCustomer,
+                    'informations entreprise' => [
+                        "Nom de l'entreprise"=> $devisOfCustomer,
+                        "Email"=> $devisOfCustomer,
+                        "Numéro de téléphone"=> $devisOfCustomer
+                    ]
                 ], 200);
             }else{
                 return response()->json([
@@ -63,7 +69,7 @@ class DevisController extends Controller
     }
     public function allDevisOfOneCustomer(User $customer){
         try{
-            $devisOfCustomer = Devis::where('nom_client', $customer->nom_client)->get();
+            $devisOfCustomer = Devis::where('nom_client', $customer->name)->with('user')->with('user.informationssupp')->get();
             if($devisOfCustomer){
                 return response()->json([
                     'status' => 'success',
@@ -80,6 +86,47 @@ class DevisController extends Controller
         }
 
         
+    }
+    public function onedevisactifofonemover(Devis $devis){
+        $oneDevisOfOneMover = Devis::find($devis->id);
+        if($oneDevisOfOneMover){
+            if(auth()->user()->id == $devis->demenageur_id){
+                return response()->json([
+                    'status' => 'success',
+                    'status_message' => " La liste des détails d'un devis",
+                    'data' => $oneDevisOfOneMover,
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Vous ne pouvez accéder à ce devis !",
+                ], 200);
+            }
+        }else{
+            return response()->json([
+                'message'=>"Cette ressource n'existe pas !",
+            ], 200);
+        }
+        
+    }
+    public function onedevisactifofonecustomer(Devis $devis){
+        $oneDevisOfOneCustomer = Devis::find($devis->id);
+        if($oneDevisOfOneCustomer){
+            if(auth()->user()->name == $devis->nom_client){
+                return response()->json([
+                    'status' => 'success',
+                    'status_message' => " La liste des détails d'un devis",
+                    'data' => $oneDevisOfOneCustomer,
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Vous ne pouvez accéder à ce devis !",
+                ], 200);
+            }
+        }else{
+            return response()->json([
+                'message'=>"Cette ressource n'existe pas !",
+            ], 200);
+        }
     }
     public function devisActifOfOneMover(User $demenageur){
         try{

@@ -30,11 +30,14 @@ class User extends Authenticatable implements JWTSubject
     public function demandedevis(){
       return $this->hasMany(DemandeDevis::class);
     }
+    public function devis(){
+      return $this->hasMany(Devis::class);
+    }
     public function offre(){
       return $this->hasMany(Offre::class);
     }
     public function informationssupp(){
-      return $this->belongsTo(InformationsSupp::class);
+      return $this->hasOne(InformationsSupp::class);
     }
     /**
      * The attributes that should be hidden for serialization.

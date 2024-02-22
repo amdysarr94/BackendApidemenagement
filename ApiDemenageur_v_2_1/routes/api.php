@@ -323,6 +323,9 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
     //-----------------------------------DEVIS ACTIFS D'UN CLIENT--------------------------------------------------//
      Route::get('/devisactifofonecustomer/{customer}', [DevisController::class, 'devisActifOfOneCustomer']);
     //--------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------DETAILS D'UN DEVIS ACTIF D'UN CLIENT--------------------------------------------------//
+    Route::get('/onedevisactifofonecustomer/{devis}', [DevisController::class, 'onedevisactifofonecustomer']);
+    //--------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DEVIS INACTIFS D'UN CLIENT-------------------------------------------------//
      Route::get('/devisinactifofonecustomer/{customer}', [DevisController::class, 'devisInactifOfOneCustomer']);
     //-------------------------------------------------------------------------------------------------------------//

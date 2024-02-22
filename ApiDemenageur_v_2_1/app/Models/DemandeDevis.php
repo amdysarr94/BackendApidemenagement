@@ -24,7 +24,10 @@ class DemandeDevis extends Model
     }
     public function images()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class, 'demandedevis_id');
     }
-
+    public function devis()
+    {
+        return $this->hasMany(Devis::class);
+    }
 }

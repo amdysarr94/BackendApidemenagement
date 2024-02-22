@@ -12,10 +12,10 @@ class Devis extends Model
         
     ];
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'demenageur_id');
     }
     public function demandedevis(){
-        return $this->belongsTo(DemandeDevis::class);
+        return $this->belongsTo(DemandeDevis::class, 'demande_devis_id');
     }
     public function prestation(){
         return $this->hasOne(Prestation::class);
