@@ -319,6 +319,10 @@ class DevisController extends Controller
                 if(auth()->user()->name == $devis->nom_client){
                     event(new DevisValiderEvent($devis->id));
                     $devis->etat == 'Valide';
+                    $autresDevis = Devis::where('nom_client', auth()->user()->name)
+                                        ->where('id', '!=', $devis->id)
+                                        ->get();
+                    dd($autresDevis);
                     $devis->update();
                     return response()->json([
                         "message"=>"Devis validé avec succès",

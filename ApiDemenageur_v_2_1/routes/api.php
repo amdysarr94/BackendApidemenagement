@@ -281,7 +281,7 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
      Route::put('/souscriptiondelete/{souscription}', [SouscriptionController::class, 'destroy']);
     //----------------------------------------------------------------------------------------------------------//
     //--------------------------------------VALIDER / REFUSER DEVIS--------------------------------------------//
-     Route::post('/devisvalidate/{devis}', [DevisController::class, 'valider']);
+     Route::put('/devisvalidate/{devis}', [DevisController::class, 'valider']);
     //-------------------------------------------------------------------------------------------------------//
     //--------------------------------------VALIDER / REFUSER DEVIS--------------------------------------------//
      Route::post('/devisdeny/{devis}', [DevisController::class, 'refuser']);
