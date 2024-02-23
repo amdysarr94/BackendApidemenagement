@@ -328,6 +328,7 @@ class DevisController extends Controller
                                         ->get();
                     foreach($autresDevis as $autreDevis){
                         $autreDevis->etat = 'Refuse';
+                        $autreDevis->statut = 'Inactif';
                         $autreDevis->update();
                     }
                     
