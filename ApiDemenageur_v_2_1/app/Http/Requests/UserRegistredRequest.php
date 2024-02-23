@@ -25,7 +25,7 @@ class UserRegistredRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'telephone' => ['sometimes', 'regex:/^\+221(77|78|76|70)\d{7}$/'],
+            'telephone' => ['sometimes', 'regex:/^\+221(77|78|76|70)\d{7}$/', 'unique:users'],
             'role' => ['required'], 
             // 'exists:roles,nom_role' dans le tableau après | 'regex:/^(Client|Demenageur)$/i'
             'localite' => 'required|string|max:255',
@@ -45,6 +45,7 @@ class UserRegistredRequest extends FormRequest
             'email.unique' => 'Cet adresse mail existe déjà',
 
             'telephone.regex' => 'Veuillez saisir un numéro de téléphone correcte',
+            'telephone.unique'=> 'Ce numéro de téléphone existe déjà',
 
             'role.required' => 'Veuillez choisir un role',
             
