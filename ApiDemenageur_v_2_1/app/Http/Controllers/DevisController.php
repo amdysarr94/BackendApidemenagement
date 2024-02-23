@@ -317,13 +317,20 @@ class DevisController extends Controller
          try{
             if($devis->statut == 'Actif' && $devis->etat == 'En cours'){
                 if(auth()->user()->name == $devis->nom_client){
+                    $devis->etat = 'Valide';
+                    $devis->update();
                     event(new DevisValiderEvent($devis->id));
-                    $devis->etat == 'Valide';
+                    
                     $autresDevis = Devis::where('nom_client', auth()->user()->name)
                                         ->where('id', '!=', $devis->id)
+                                        ->where('date_demenagement', '=', $devis->date_demenagement)
+                                        ->where('etat', "En cours")
                                         ->get();
-                    dd($autresDevis);
-                    $devis->update();
+                    foreach($autresDevis as $autreDevis){
+                        $autreDevis->etat = 'Termine';
+                        $autreDevis->update();
+                    }
+                    
                     return response()->json([
                         "message"=>"Devis validé avec succès",
                         "Informations du devis"=> [
