@@ -327,7 +327,7 @@ class DevisController extends Controller
                                         ->where('etat', "En cours")
                                         ->get();
                     foreach($autresDevis as $autreDevis){
-                        $autreDevis->etat = 'Termine';
+                        $autreDevis->etat = 'Refuse';
                         $autreDevis->update();
                     }
                     
