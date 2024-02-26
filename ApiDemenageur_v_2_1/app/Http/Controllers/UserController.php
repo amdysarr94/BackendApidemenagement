@@ -156,8 +156,13 @@ class UserController extends Controller
     public function activate(User $user){
         try{
             if(auth()->user()->id == $user->id || auth()->user()->role = 'Admin'){
-                if($user->etat == 'Actif'){
-                    $user->etat = 'Inactif';
+                if($user->etat == 'Inactif'){
+                    $user->etat = 'Actif';
+                    $user->update();
+                    return response()->json([
+                        'messsage'=>"Ce compte est activé avec succès !",
+                        'data'=>$user
+                    ]);
                 }else{
                     return response()->json([
                         'messsage'=>"Ce compte est déjà actif !"
@@ -177,8 +182,13 @@ class UserController extends Controller
     public function desactivate(User $user){
         try{
             if(auth()->user()->id == $user->id || auth()->user()->role = 'Admin'){
-                if($user->etat == 'Inactif'){
-                    $user->etat = 'Actif';
+                if($user->etat == 'Actif'){
+                    $user->etat = 'Inactif';
+                    $user->update();
+                    return response()->json([
+                        'messsage'=>"Ce compte est désactivé avec succès !",
+                        'data'=>$user
+                    ]);
                 }else{
                     return response()->json([
                         'messsage'=>"Ce compte est déjà inactif !"

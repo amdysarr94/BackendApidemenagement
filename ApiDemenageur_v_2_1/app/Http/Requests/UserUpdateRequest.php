@@ -42,7 +42,7 @@ class UserUpdateRequest extends FormRequest
 
             'email.required' => "L'adresse email est obligatoire",
             'email.email'=>'Adresse mail invalide',
-            'email.unique' => 'Cet adresse mail existe déjà',
+            'email.unique' => 'Cette adresse mail existe déjà',
 
             'telephone.regex' => 'Veuillez saisir un numéro de téléphone correcte',
 
@@ -50,10 +50,10 @@ class UserUpdateRequest extends FormRequest
             
             'localite.required' => 'Veuillez saisir votre localité',
 
-            'photo_profile.mimes' => 'Desolé! la photo est au mauvais format',
+            'photo_profile.mimes' => 'Le format de la photo est incorrect',
             
             'password.required'  => 'Le mot de passe est requis',
-            'password.string'  => 'Format de mot de passe incorrecte',
+            'password.string'  => 'Le format de mot de passe incorrecte',
             'password.min'=>'Le mot de passe doit contenir plus de 5 caractères',
             'password.max'=>'Le mot de passe ne doit pas dépasser plus de 10 caractères'
             

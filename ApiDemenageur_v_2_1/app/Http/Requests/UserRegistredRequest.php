@@ -26,7 +26,7 @@ class UserRegistredRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'telephone' => ['sometimes', 'regex:/^\+221(77|78|76|70)\d{7}$/', 'unique:users'],
-            'role' => ['required'], 
+            'role' => ['required', 'regex:/^(Client|Demenageur)$/i'], 
             // 'exists:roles,nom_role' dans le tableau après | 'regex:/^(Client|Demenageur)$/i'
             'localite' => 'required|string|max:255',
             'photo_profile' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -42,16 +42,17 @@ class UserRegistredRequest extends FormRequest
 
             'email.required' => "L'adresse email est obligatoire",
             'email.email'=>'Adresse mail invalide',
-            'email.unique' => 'Cet adresse mail existe déjà',
+            'email.unique' => 'Cette adresse mail existe déjà',
 
             'telephone.regex' => 'Veuillez saisir un numéro de téléphone correcte',
             'telephone.unique'=> 'Ce numéro de téléphone existe déjà',
 
             'role.required' => 'Veuillez choisir un role',
+            'role.regex'=> "Le role choisi est incorrect !",
             
             'localite.required' => 'Veuillez saisir votre localité',
 
-            'photo_profile.mimes' => 'Desolé! la photo est au mauvais format',
+            'photo_profile.mimes' => 'Le format de la photo est invalide',
             
             'password.required'  => 'Le mot de passe est requis',
             'password.string'  => 'Format de mot de passe incorrecte',

@@ -6,7 +6,6 @@ use Exception;
 use App\Models\User;
 use App\Models\Offre;
 use App\Models\Souscription;
-use Illuminate\Http\Request;
 use App\Events\SouscriptionValiderEvent;
 use App\Http\Requests\SouscriptionStoreRequest;
 use App\Http\Requests\SouscriptionUpdateRequest;
@@ -238,6 +237,17 @@ class SouscriptionController extends Controller
                         event(new SouscriptionValiderEvent($souscription->id));
                         $souscription->etat == 'Valide';
                         $souscription->update();
+                        //Les autres souscriptions du client pour la même date de déménagement
+                        $autresSouscriptions = Souscription::where('nom_client', $souscription->nom_client)
+                                                           ->where('id', '!=', $souscription->id)
+                                                           ->where('date_demenagement', '=', $souscription->date_demenagement)
+                                                           ->where('etat', 'En cours')
+                                                           ->get();
+                        foreach($autresSouscriptions as $autreSouscription){
+                            $autreSouscription->etat = 'Refuse';
+                            $autreSouscription->statut = 'Inactif';
+                            $autreSouscription->update();
+                        }
                         return response()->json([
                             "message"=>"Souscription validée avec succès",
                             "Informations de la souscription"=> [

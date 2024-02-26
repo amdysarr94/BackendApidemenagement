@@ -25,7 +25,7 @@ class InformationsSuppStoreRequest extends FormRequest
     {
         return [
             'presentation' => 'required|string|max:255', 
-            'NINEA' => 'sometimes|string|max:9',
+            'NINEA' => 'sometimes|string|max:9|unique:informations_supps',
             'nom_entreprise' => 'required|string|max:255|unique:informations_supps',
             'forme_juridique' =>'sometimes|string|max:255',
             'annee_creation'=> 'required|string|max:255',
@@ -39,6 +39,7 @@ class InformationsSuppStoreRequest extends FormRequest
             
             'NINEA.string' => 'Le NINEA doit être une suite de caractères alphanumériques',
             'NINEA.max' => 'Le NINEA est invalide !',
+            'NINEA.unique' => 'Ce NINEA existe déjà !',
 
             'nom_entreprise.required'=>"Le nom de l'entreprise doit être fourni",
             'nom_entreprise.max'=>"Le nom de l'entreprise ne doit pas dépassé 255 caractères",

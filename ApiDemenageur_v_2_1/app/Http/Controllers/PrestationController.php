@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Prestation;
 use Illuminate\Http\Request;
 use App\Http\Requests\PrestationCommentRequest;
+use App\Models\InformationsSupp;
 
 class PrestationController extends Controller
 {
@@ -148,6 +149,18 @@ class PrestationController extends Controller
                 'message'=> "Votre commentaire a été ajouté avec succès !",
                 "Informations"=> $prestation
             ], 200);
+        }
+    }
+    public function finish(Prestation $prestation){
+        // nom_entreprise
+        $infosSuppOfMover = InformationsSupp::where('nom_entreprise', $prestation->nom_entreprise)
+                                            ->where('user_id', auth()->user()->id)->get()->first();
+        if($infosSuppOfMover){
+            if(auth()->user()->id == $infosSuppOfMover->user_id){
+                dd('Terminé');
+            }
+        }else{
+                dd('erreur');
         }
     }
     public function cancel(Prestation $prestation){

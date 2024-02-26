@@ -24,7 +24,8 @@ class OffreStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_offre' => 'required|string|max:255|unique:offres', 
+            'nom_offre' => 'required|string|max:255', 
+            // nom_offre unique : |unique:offres
             'description_offre' => 'required|string|max:900',
             'prix_offre' => 'required|integer',
             

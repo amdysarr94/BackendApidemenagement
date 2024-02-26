@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Souscription;
-use Illuminate\Http\Request;
-use App\Models\InformationsSupp;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
@@ -13,12 +10,10 @@ use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\CommentairePrestationController;
 use App\Http\Controllers\DemandeDevisController;
 use App\Http\Controllers\SouscriptionController;
-use App\Http\Requests\SouscriptionUpdateRequest;
 use App\Http\Controllers\InformationsSuppController;
 use App\Http\Controllers\PrestationController;
 use App\Http\Controllers\UserController;
-use App\Models\Article;
-use App\Models\Prestation;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,23 +48,23 @@ use App\Models\Prestation;
 |       - Affichage des commentaires actifs d'une prestation => /actifcommentPrestation/{prestation}
 |
 */
-//------------------------------AFFICHAGE DE TOUS LES ARTICLES------------------------------------//
- Route::get('/articlepost', [ArticleController::class, 'index']);
-//----------------------------------------------------------------------------------------------//
- Route::post('/register', [AuthController::class, 'register']);
- Route::post('/login', [AuthController::class, 'login']);
+    //----------------------------------AFFICHAGE DE TOUS LES ARTICLES--------------------------------------------------------------//
+    Route::get('/articlepost', [ArticleController::class, 'index']);
+    //-----------------------------------------------------------------------------------------------------------------------------//
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 
-//-----------------------------REINITIALISER LE MOT DE PASSE-----------------------------------//
- Route::put('/resetpassword', [UserController::class, 'resetPassword']);
-//------------------------------------------------------------------------------------------//
-//-------------------------------AFFICHAGE D'UN ARTICLE------------------------------------------//
- Route::get('/articlesinglepost/{article}', [ArticleController::class, 'show']);
-//---------------------------AFFICHAGE DES COMMENTAIRES ACTIFS D'UN ARTICLE---------------------------------//
- Route::get('/actifcommentPostList/{article}', [CommentaireController::class, 'activeCommentPost']);
-//---------------------------------------------------------------------------------------------------------//
-//---------------------------AFFICHAGE DES COMMENTAIRES ACTIFS D'UNE PRESTATION--------------------------------------//
- Route::get('/actifcommentPrestation/{prestation}', [CommentairePrestationController::class, 'actifCommentPrestation']);
-//-------------------------------------------------------------------------------------------------------------------//
+    //--------------------------------REINITIALISER LE MOT DE PASSE--------------------------------------------------------------//
+    Route::put('/resetpassword', [UserController::class, 'resetPassword']);
+    //--------------------------------------------------------------------------------------------------------------------------//
+    //------------------------------------AFFICHAGE D'UN ARTICLE---------------------------------------------------------------//
+    Route::get('/articlesinglepost/{article}', [ArticleController::class, 'show']);
+    //--------------------------------------AFFICHAGE DES COMMENTAIRES ACTIFS D'UN ARTICLE------------------------------------//
+    Route::get('/actifcommentPostList/{article}', [CommentaireController::class, 'activeCommentPost']);
+    //-----------------------------------------------------------------------------------------------------------------------//
+    //------------------------------AFFICHAGE DES COMMENTAIRES ACTIFS D'UNE PRESTATION--------------------------------------//
+    Route::get('/actifcommentPrestation/{prestation}', [CommentairePrestationController::class, 'actifCommentPrestation']);
+    //---------------------------------------------------------------------------------------------------------------------//
 
 
 
@@ -106,13 +101,13 @@ Route::middleware(['auth:api'])->group(function (){
     //----------------------------------------Deconnexion--------------------------------------------------//
      Route::post('/logout', [AuthController::class, 'logout']);
     //---------------------------------------------------------------------------------------------------//
-    //--------------------------------CRUD COMMENTAIRE ARTICLE------------------------------------------//
+    //-------------------------------------CRUD COMMENTAIRE ARTICLE----------------------------------------------------//
         Route::post('/storecommentarticle/{article}', [CommentaireController::class, 'store']);
         Route::put('/updatecommentarticle/{commentaire}', [CommentaireController::class, 'update']);
         Route::put('/activatecommentarticle/{commentaire}', [CommentaireController::class, 'activate']);
         Route::put('/desactivatecommentarticle/{commentaire}', [CommentaireController::class, 'desactivate']);
         Route::delete('/deletecommentarticle/{commentaire}', [CommentaireController::class, 'destroy']);
-    //-------------------------------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------------//
     //----------------------------------MODIFIER LES INFORMATIONS DE PROFILS---------------------------------------//
      Route::put('/editprofil/{user}', [UserController::class, 'update']);
     //-----------------------------------------------------------------------------------------------------------//
