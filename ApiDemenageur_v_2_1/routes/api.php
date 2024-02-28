@@ -288,8 +288,11 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
         // Route::put('/commentprestdesactivate/{commentairePrestation}', [CommentairePrestationController::class, 'desactiver']);
         // Route::delete('/commentprestdelete/{commentairePrestation}', [CommentairePrestationController::class, 'destroy']);
     //-----------------------------------------------------------------------------------------------------//
-    //-------------------------------------CRUD COMMENTAIRE PRESTATION NEW--------------------------------------------//
+    //----------------------------AJOUTER ET MODIFIER COMMENTAIRE PRESTATION NEW--------------------------------------------//
         Route::put('/commentprestsend/{prestation}', [PrestationController::class, 'send']);
+    //----------------------------------------------------------------------------------------------------------------//
+    //-------------------------------------SUPPRIMER COMMENTAIRE PRESTATION NEW--------------------------------------------//
+        Route::put('/commentprestdelete/{prestation}', [PrestationController::class, 'deleteComment']);
     //----------------------------------------------------------------------------------------------------------------//
     //---------------------------------------ANNULER UNE PRESTATION--------------------------------------------------//
        Route::post('/prestationcancel/{prestation}', [PrestationController::class, 'cancel']);

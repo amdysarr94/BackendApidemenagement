@@ -157,6 +157,25 @@ class PrestationController extends Controller
                 'message'=> "Votre commentaire a été ajouté avec succès !",
                 "Informations"=> $prestation
             ], 200);
+        }else{
+            return response()->json([
+                'message'=>"Vous ne pouvez pas effectué cette action"
+            ]);
+        }
+    }
+    public function deleteComment(Prestation $prestation){
+        if(auth()->user()->id == $prestation->client_id){
+            $prestation->commentaire = null;
+            $prestation->update();
+            return response()->json([
+                'message'=> "Votre commentaire a été mis à jour avec succès !",
+                "Informations"=> $prestation
+            ], 200);
+
+        }else{
+            return response()->json([
+                'message'=>"Vous ne pouvez pas effectué cette action"
+            ]);
         }
     }
     public function finish(Prestation $prestation){
