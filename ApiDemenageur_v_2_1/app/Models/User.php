@@ -33,6 +33,12 @@ class User extends Authenticatable implements JWTSubject
     public function devis(){
       return $this->hasMany(Devis::class);
     }
+    public function prestationascustomer(){
+      return $this->hasOne(Prestation::class, 'client_id');
+    }
+    public function prestationasmover(){
+      return $this->hasOne(Prestation::class, 'demenageur_id');
+    }
     public function offre(){
       return $this->hasMany(Offre::class);
     }

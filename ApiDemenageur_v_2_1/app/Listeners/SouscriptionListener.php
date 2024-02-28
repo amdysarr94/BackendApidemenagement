@@ -35,6 +35,8 @@ class SouscriptionListener
         //détermination du nom de l'entreprise
         $offre = Offre::where('nom_offre', $souscription->nom_offre)->get()->first();
         $infosup = InformationsSupp::where('user_id', $offre->user_id)->get()->first();
+        //récupération de l'id du déménageur
+        $demenageurid = $offre->user_id;
         $nom_demenageur = $infosup->nom_entreprise;
         $prestation->nom_entreprise = $nom_demenageur;
         $prestation->nom_client = $souscription->nom_client;
@@ -51,6 +53,7 @@ class SouscriptionListener
         $prestation->delai = $delai;
         $prestation->prix_total = $souscription->prix_total;
         $prestation->client_id = $clientid;
+        $prestation->demenageur_id = $demenageurid;
         $prestation->save();
         $client = User::where('name', $prestation->nom_client)->get()->first();
         $client->notify(new PrestationNotification($prestation));

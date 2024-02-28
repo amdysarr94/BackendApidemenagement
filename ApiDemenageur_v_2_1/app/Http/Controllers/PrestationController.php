@@ -14,7 +14,7 @@ class PrestationController extends Controller
 {
     public function prestationActifOfOneCustomer(User $customer){
         try{
-            $prestationOfCustomer= Prestation::where('nom_client', $customer->name)->where('statut', 'Actif')->get();
+            $prestationOfCustomer= Prestation::where('nom_client', $customer->name)->where('statut', 'Actif')->with(['user','mover'])->get();
             if($prestationOfCustomer){
                 return response()->json([
                     'status'=>"succes",
@@ -34,7 +34,7 @@ class PrestationController extends Controller
     }
     public function prestationInactifOfOneCustomer(User $customer){
         try{
-            $prestationOfCustomer= Prestation::where('nom_client', $customer->name)->where('statut', 'Inactif')->get();
+            $prestationOfCustomer= Prestation::where('nom_client', $customer->name)->where('statut', 'Inactif')->with(['user','mover'])->get();
             if($prestationOfCustomer){
                 return response()->json([
                     'status'=>"succes",
@@ -54,7 +54,7 @@ class PrestationController extends Controller
     }
     public function allPrestationOfOneCustomer(User $customer){
         try{
-            $prestationOfCustomer= Prestation::where('nom_client', $customer->name)->get();
+            $prestationOfCustomer= Prestation::where('nom_client', $customer->name)->with(['user','mover'])->get();
             if($prestationOfCustomer){
                 return response()->json([
                     'status'=>"succes",
@@ -74,12 +74,16 @@ class PrestationController extends Controller
     }
     public function prestationActifOfOneMover(User $demenageur){
         try{
-            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->where('statut', 'Actif')->get();
+            $infoSupp = InformationsSupp::where('user_id', $demenageur->id)->with('user')->get()->first();
+            //  dd($infoSupp);
+            $prestationOfMovers= Prestation::where('nom_entreprise',$infoSupp->nom_entreprise)->where('statut', 'Actif')->with('user')->get();
             if($prestationOfMovers){
+                // dd($prestationOfMovers);
                 return response()->json([
                     'status'=>"succès",
                     'message'=>"La liste des prestations actives d'un déménageur",
-                    'data'=>$prestationOfMovers
+                    'data'=>$prestationOfMovers,
+                    'Informations du déménageur'=> $infoSupp
                 ], 200);
             }else{
                 return response()->json([
@@ -94,12 +98,14 @@ class PrestationController extends Controller
     }
     public function prestationInactifOfOneMover(User $demenageur){
         try{
-            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->where('statut', 'Inactif')->get();
+            $infoSupp = InformationsSupp::where('user_id', $demenageur->id)->with('user')->get()->first();
+            $prestationOfMovers= Prestation::where('nom_entreprise', $infoSupp->nom_entreprise)->where('statut', 'Inactif')->get();
             if($prestationOfMovers){
                 return response()->json([
                     'status'=>"succès",
                     'message'=>"La liste des prestations inactives d'un déménageur",
-                    'data'=>$prestationOfMovers
+                    'data'=>$prestationOfMovers,
+                    'informations supplémentaires'=>$infoSupp
                 ], 200);
             }else{
                 return response()->json([
@@ -114,12 +120,14 @@ class PrestationController extends Controller
     }
     public function allPrestationOfOneMover(User $demenageur){
         try{
-            $prestationOfMovers= Prestation::where('nom_entreprise', $demenageur->name)->get();
+            $infoSupp = InformationsSupp::where('user_id', $demenageur->id)->with('user')->get()->first();
+            $prestationOfMovers= Prestation::where('nom_entreprise', $infoSupp->nom_entreprise)->get();
             if($prestationOfMovers){
                 return response()->json([
                     'status'=>"succès",
                     'message'=>"La liste de toutes les prestations  d'un déménageur",
-                    'data'=>$prestationOfMovers
+                    'data'=>$prestationOfMovers,
+                    'informations supplémentaires'=>$infoSupp
                 ], 200);
             }else{
                 return response()->json([
@@ -154,13 +162,30 @@ class PrestationController extends Controller
     public function finish(Prestation $prestation){
         // nom_entreprise
         $infosSuppOfMover = InformationsSupp::where('nom_entreprise', $prestation->nom_entreprise)
-                                            ->where('user_id', auth()->user()->id)->get()->first();
+                                            ->where('user_id', auth()->user()->id)
+                                            ->get()->first();
         if($infosSuppOfMover){
             if(auth()->user()->id == $infosSuppOfMover->user_id){
-                dd('Terminé');
+                // dd('Terminé');
+                $prestation->etat = 'Termine';
+                // $prestation->statut = 'Inactif';
+                $prestation->update();
+                return response()->json([
+                    'message'=>"Prestation marquée comme terminer !",
+                    "Informations"=>$prestation
+                ], 200);
+
+            }else{
+                // dd("Tu ne peux pas faire ça !");
+                return response()->json([
+                    'message'=>"Vous n'êtes pas autorisé à effectuer cette action !"
+                ], 404);
             }
         }else{
-                dd('erreur');
+                // dd('erreur');
+                return response()->json([
+                    'message'=>""
+                ]);
         }
     }
     public function cancel(Prestation $prestation){

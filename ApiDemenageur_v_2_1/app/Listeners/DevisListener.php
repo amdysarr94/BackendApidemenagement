@@ -33,8 +33,11 @@ class DevisListener
         $devis = Devis::findOrfail($devisId);
         $prestation = new Prestation();
         $prestation->nom_client = $devis->nom_client;
+        //récupération de l'id du client
         $clientid = User::where('name', $devis->nom_client)->get()->first()->id;
         $demenageurInfos = InformationsSupp::where('user_id', $devis->demenageur_id)->get()->first();
+        //récupération de l'id du déménageur
+        $demenageurid = $devis->demenageur_id;
         $nom_demenageur = $demenageurInfos->nom_entreprise;
         $prestation->nom_entreprise = $nom_demenageur;
         $prestation->prix_total = $devis->prix_total;
@@ -49,6 +52,7 @@ class DevisListener
         $prestation->delai = $delai;
         $prestation->prix_total = $devis->prix_total;
         $prestation->client_id = $clientid;
+        $prestation->demenageur_id = $demenageurid;
         $prestation->save();
         $client = User::where('name', $prestation->nom_client)->get()->first();
         $client->notify(new PrestationNotification($prestation));

@@ -425,6 +425,9 @@ Route::middleware(['auth:api','role:Demenageur'])->group(function (){
         Route::put('/devisdesactivate/{devis}',[DevisController::class, 'desactivate']);
         Route::delete('/devisdelete/{devis}',[DevisController::class, 'destroy']);
     //-------------------------------------------------------------------------------------------------------------//
+    //------------------------------------------TERMINER UNE PRESTATION---------------------------------------------//
+        Route::put('/prestationfinish/{prestation}', [PrestationController::class, 'finish']);
+    //-------------------------------------------------------------------------------------------------------------//
     //------------------------------------------VALIDER SOUSCRIPTION----------------------------------------------//
      Route::post('/souscriptionvalidate/{souscription}', [SouscriptionController::class, 'valider']);
     //-----------------------------------------------------------------------------------------------------------//
