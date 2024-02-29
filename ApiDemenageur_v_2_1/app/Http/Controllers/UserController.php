@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\SearchMoverRequest;
 use App\Http\Requests\resetPasswordRequest;
 
 class UserController extends Controller
@@ -17,10 +18,25 @@ class UserController extends Controller
             return UserResource::collection($usersActifs);           
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
+        }   
+    }
+    public function listofmoversofonelocality(SearchMoverRequest $request){
+        try{
+            $localite = $request->localite;
+            $MoversOfLocality = User::where('role', 'Demenageur')->where('etat', 'Actif')->where('localite', $localite)->with('informationssupp')->get();
+            if($MoversOfLocality){
+                return response()->json([
+                    'message'=> "La liste des déménageurs de la localité",
+                    'informations'=>$MoversOfLocality
+                ], 200);
+            }else{
+                return response()->json([
+                    'message'=>"Il n'y a pas de déménageurs dans cette localité"
+                ]);
+            }
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-       
-        
     }
     public function allInactifUser(){
         try{

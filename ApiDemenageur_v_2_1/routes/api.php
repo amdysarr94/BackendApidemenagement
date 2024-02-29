@@ -63,7 +63,7 @@ use App\Http\Controllers\UserController;
     Route::get('/actifcommentPostList/{article}', [CommentaireController::class, 'activeCommentPost']);
     //-----------------------------------------------------------------------------------------------------------------------//
     //------------------------------AFFICHAGE DES COMMENTAIRES ACTIFS D'UNE PRESTATION--------------------------------------//
-    Route::get('/actifcommentPrestation/{prestation}', [CommentairePrestationController::class, 'actifCommentPrestation']);
+    // Route::get('/actifcommentPrestation/{prestation}', [CommentairePrestationController::class, 'actifCommentPrestation']);
     //---------------------------------------------------------------------------------------------------------------------//
 
 
@@ -349,8 +349,12 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
      Route::get('/allprestationofonecustomer/{customer}', [PrestationController::class, 'allPrestationOfOneCustomer']);
     //-------------------------------------------------------------------------------------------------------------------//
     //-----------------------------------INFORMATIONS SUPPLEMENTAIRES DES DEMENAGEURS----------------------------------------------------//
-    Route::get('/allinformationsuppofallmover', [InformationsSuppController::class, 'allInformationsSuppOfAllMovers']);
+     Route::get('/allinformationsuppofallmover', [InformationsSuppController::class, 'allInformationsSuppOfAllMovers']);
     //-------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------RECHERCHER UN DEMENAGEUR PAR LOCALITE----------------------------------------------------//
+     Route::post('/moversoflocalitysearch', [UserController::class, 'listofmoversofonelocality']);
+    //----------------------------------------------------------------------------------------------------------------------------------//
+
 });
 
 

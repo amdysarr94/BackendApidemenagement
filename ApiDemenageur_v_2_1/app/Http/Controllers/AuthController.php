@@ -75,6 +75,8 @@ class AuthController extends Controller
                     'id'=>$user->id,
                     'Nom'=> $user->name,
                     'Email' =>  $user->email,
+                    'Localite'=>$user->localite,
+                    'Telephone'=>$user->telephone
                 ],
                 'authorisation' => [
                     'token' => $token,

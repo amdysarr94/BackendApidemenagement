@@ -1982,56 +1982,7 @@
                 ]
             }
         },
-        "/api/actifcommentPrestation/{prestation}": {
-            "get": {
-                "summary": "Commentaires actifs prestations",
-                "description": "End-point permettant d'afficher la liste de toutes les commentaire actifs concernant une prestation",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Routes Affichage"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "prestation",
-                        "type": "string"
-                    },
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
+        
         "/api/register": {
             "post": {
                 "summary": "Register",
@@ -5049,8 +5000,8 @@
             }
         },
        
-        "/api/commentpreststore/{prestation}": {
-            "post": {
+        "/api/commentprestsend/{prestation}": {
+            "put": {
                 "summary": "Ajouter commentaire prestation",
                 "description": "End-point permettant de commenter une prestation",
                 "responses": {
@@ -5108,59 +5059,10 @@
                 ]
             }
         },
-        "/api/commentprestupdate/{commentairePrestation}": {
+        
+        "/api/commentprestdelete/{prestation}": {
             "put": {
-                "summary": "Modifier commentaire prestation",
-                "description": "End-point permettant de modifier un commentaire sur une prestation",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Gestion commentaire prestation"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "commentairePrestation",
-                        "type": "string"
-                    },
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/commentprestdesactivate/{commentairePrestation}": {
-            "put": {
-                "summary": "Désactiver commentaire prestation",
+                "summary": "Supprimer commentaire d'une prestation",
                 "description": "End-point permettant de désactiver un commentaire d'une prestation",
                 "responses": {
                     "200": {
@@ -5207,106 +5109,7 @@
                     }
                 ]
             }
-        },
-        "/api/commentprestdelete/{commentairePrestation}": {
-            "put": {
-                "summary": "Supprimer commentaire prestation",
-                "description": "End-point permettant de supprimer un commentaire d'une prestation",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Gestion commentaire prestation"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "commentairePrestation",
-                        "type": "string"
-                    },
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/commentprestactivate/{commentairePrestation}": {
-            "put": {
-                "summary": "Activer commentaire prestation",
-                "description": "End-point permettant d'activer un commentaire d'une prestation",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Gestion commentaire prestation"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "commentairePrestation",
-                        "type": "string"
-                    },
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
         }
+        
     }
 }
