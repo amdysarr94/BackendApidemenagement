@@ -171,7 +171,7 @@ class UserController extends Controller
     }
     public function activate(User $user){
         try{
-            if(auth()->user()->id == $user->id || auth()->user()->role = 'Admin'){
+            if(auth()->user()->role = 'Admin'){
                 if($user->etat == 'Inactif'){
                     $user->etat = 'Actif';
                     $user->update();
