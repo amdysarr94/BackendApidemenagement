@@ -149,10 +149,10 @@ class SouscriptionController extends Controller
             $souscription->nouvelle_adresse = $request->nouvelle_adresse;
             $souscription->description = $offre->description_offre;
             $currentDay = new DateTime();
+            $currentDayDeux = new DateTime();
             $jour_j = new DateTime($request->date_demenagement);
-            $diff = $jour_j->diff($currentDay);
-            $limiteMax = $currentDay->modify('+60 days');
-            // dd($limiteMax, $jour_j, );
+            $diff = $jour_j->diff($currentDayDeux);
+            $limiteMax = $currentDayDeux->modify('+60 days');
             if($diff->days >= 10 && $jour_j > $currentDay && $jour_j <= $limiteMax){
                 $souscription->date_demenagement = $request->date_demenagement;
                 $souscription->save();
@@ -172,10 +172,6 @@ class SouscriptionController extends Controller
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        
-        
-
     }
 
 
