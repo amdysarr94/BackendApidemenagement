@@ -23,14 +23,14 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'telephone' => ['sometimes', 'regex:/^\+221(77|78|76|70)\d{7}$/'],
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255',
+            'telephone' => ['sometimes', 'regex:/^\+221(77|78|76|70)\d{7}$/','unique:users'],
             // 'role' => ['required'], 
             // 'exists:roles,nom_role' dans le tableau après | 'regex:/^(Client|Demenageur)$/i'
-            'localite' => 'required|string|max:255',
+            'localite' => 'sometimes|string|max:255',
             'photo_profile' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'password' => 'required|string|min:5|max:10',
+            'password' => 'sometimes|string|min:5|max:10',
         ];
     }
     public function messages()
@@ -45,6 +45,7 @@ class UserUpdateRequest extends FormRequest
             'email.unique' => 'Cette adresse mail existe déjà',
 
             'telephone.regex' => 'Veuillez saisir un numéro de téléphone correcte',
+            'telephone.unique' => 'Ce numéro de téléphone existe déjà !',
 
             'role.required' => 'Veuillez choisir un role',
             

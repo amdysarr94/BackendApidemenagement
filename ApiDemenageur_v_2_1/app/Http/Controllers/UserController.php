@@ -96,8 +96,14 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user){
         try{
             if(auth()->user()->id == $user->id){
-                $user->name = $request->name;
-                $user->email = $request->email;
+                if($request->name){
+                    $user->name = $request->name;
+                }
+                $user->name = $user->name;
+                if($request->email){
+                    $user->email = $request->email;
+                }
+                $user->email = $user->email;
                 // $user->photo_profile = $request->photo_profile;
                 if($request->file('photo_profile')){
                     $file = $request->file('photo_profile'); 
@@ -105,8 +111,14 @@ class UserController extends Controller
                     $file->move(public_path('images'), $filename);
                     $user['photo_profile'] = $filename;
                 }
-                $user->password = $request->password;
-                $user->telephone = $request->telephone;
+                if($request->password){
+                    $user->password = $request->password;
+                }
+                $user->password = $user->password;
+                if($request->telephone){
+                    $user->telephone = $request->telephone;
+                }
+                $user->telephone = $user->telephone;
                 switch($user->role){
                     case 'Admin':
                         $user->role = 'Admin';
@@ -119,7 +131,10 @@ class UserController extends Controller
                         break;
                 }
                 // $user->role = $request->role;
-                $user->localite = $request->localite;
+                if($request->localite){
+                    $user->localite = $request->localite;
+                }
+                $user->localite = $user->localite;
                 $user->update();
                 return response()->json([
                     'status_message'=> "Information de compte modifiées avec succès!",

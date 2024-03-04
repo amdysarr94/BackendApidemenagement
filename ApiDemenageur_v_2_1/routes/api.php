@@ -130,10 +130,10 @@ Route::middleware(['auth:api'])->group(function (){
      Route::get('/allinactifsoffers', [OffreController::class, 'inactifOffers']);
     //-----------------------------------------------------------------------------------------------------------//
     //----------------------------------TOUS LES OFFRES ACTIFS D'UN DEMENAGEUR-----------------------------------//
-     Route::get(' /allactifoffersofonemover/{demenageur}', [OffreController::class, 'allActifOfferOfOneMover']);
+     Route::get('/allactifoffersofonemover/{demenageur}', [OffreController::class, 'allActifOfferOfOneMover']);
     //-----------------------------------------------------------------------------------------------------------//
     //----------------------------------TOUS LES OFFRES INACTIFS D'UN DEMENAGEUR---------------------------------//
-     Route::get(' /allinactifoffersofonemover/{demenageur}', [OffreController::class, 'allInactifOfferOfOneMover']);
+     Route::get('/allinactifoffersofonemover/{demenageur}', [OffreController::class, 'allInactifOfferOfOneMover']);
     //-----------------------------------------------------------------------------------------------------------//
     
 });
@@ -316,7 +316,7 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
      Route::get('/demandedevisactifofcustomer/{customer}', [DemandeDevisController::class, 'demandeDevisActifOfOneCustomer']);
     //-------------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DEMANDE DE DEVIS SPECIFIQUE D'UN CLIENT--------------------------------------------------//
-    Route::get('/onedemandedevisofonecustomer/{demandeDevis}', [DemandeDevisController::class, 'oneDemandeDevisActifOfOneCustomer']);
+     Route::get('/onedemandedevisofonecustomer/{demandeDevis}', [DemandeDevisController::class, 'oneDemandeDevisActifOfOneCustomer']);
     //-------------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DEMANDE DE DEVIS INACTIFS D'UN CLIENT-------------------------------------------------//
      Route::get('/demandedevisinactifofcustomer/{customer}', [DemandeDevisController::class, 'demandeDevisInactifOfOneCustomer']);
@@ -328,7 +328,7 @@ Route::middleware(['auth:api','role:Client'])->group(function (){
      Route::get('/devisactifofonecustomer/{customer}', [DevisController::class, 'devisActifOfOneCustomer']);
     //--------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DETAILS D'UN DEVIS ACTIF D'UN CLIENT--------------------------------------------------//
-    Route::get('/onedevisactifofonecustomer/{devis}', [DevisController::class, 'onedevisactifofonecustomer']);
+     Route::get('/onedevisactifofonecustomer/{devis}', [DevisController::class, 'onedevisactifofonecustomer']);
     //--------------------------------------------------------------------------------------------------------------//
     //-----------------------------------DEVIS INACTIFS D'UN CLIENT-------------------------------------------------//
      Route::get('/devisinactifofonecustomer/{customer}', [DevisController::class, 'devisInactifOfOneCustomer']);
