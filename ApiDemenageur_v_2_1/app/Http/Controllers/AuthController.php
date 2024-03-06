@@ -29,8 +29,7 @@ class AuthController extends Controller
                 $user->password = $request->password;
                 $user->telephone = $request-> telephone;
                 $user->role = $request->role;
-                $user->localite = $request->localite;
-                // dd($user);
+                $user->localite = ucfirst($request->localite);
                 $user->save();
                
                 return response()->json([

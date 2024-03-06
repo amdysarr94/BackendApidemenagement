@@ -65,11 +65,14 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         try{
-            return response()->json(compact('article'), 200);        
+            return response()->json([
+                'status'=>"success",
+                "message"=>"Les détails d'un article",
+                "data"=>$article
+            ], 200);        
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
         
     }
 

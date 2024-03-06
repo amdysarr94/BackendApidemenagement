@@ -329,6 +329,7 @@
                 ]
             }
         },
+        
         "/api/inactifposts": {
             "get": {
                 "summary": "articles inactifs",
@@ -1882,6 +1883,56 @@
                 ]
             }
         },
+        "/api/demandedevisactiflistofonedemandeofonemover/{demandeDevis}": {
+            "get": {
+                "summary": "Une demande devis actif d'un déménageur",
+                "description": "End-point permettant d'afficher les détails d'une demande de devis d'un déménageur de la plateforme",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Routes Affichage"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "demenageur",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/allprestationofonemover/{demenageur}": {
             "get": {
                 "summary": "Tous les prestations déménageur",
@@ -2256,7 +2307,71 @@
                 }
             }
         },
-        
+        "/api/moversoflocalitysearch": {
+            "post": {
+                "summary": "Recherche de déménageur par localité",
+                "description": "End-point permettant de chercher des déménageurs par localité sur la plateforme",
+                "responses": {
+                    "200": {
+                        "description": "La liste des déménageurs de la localité",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Routes connectes"
+                ],
+                
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "localite": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "localite": "Yoff"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/storecommentarticle/{article}": {
             "post": {
                 "summary": "Ajout commentaire",
@@ -5201,7 +5316,56 @@
                 ]
             }
         },
-       
+        "/api/prestationfinish/{prestation}": {
+            "put": {
+                "summary": "Terminer une prestation",
+                "description": "End-point permettant à un déménageur de marquer terminer une prestation",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Gestion Prestation"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "prestation",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/commentprestsend/{prestation}": {
             "put": {
                 "summary": "Ajouter commentaire prestation",

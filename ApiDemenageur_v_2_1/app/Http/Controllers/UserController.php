@@ -22,7 +22,7 @@ class UserController extends Controller
     }
     public function listofmoversofonelocality(SearchMoverRequest $request){
         try{
-            $localite = $request->localite;
+            $localite = ucfirst($request->localite);
             $MoversOfLocality = User::where('role', 'Demenageur')->where('etat', 'Actif')->where('localite', $localite)->with('informationssupp')->get();
             if($MoversOfLocality){
                 return response()->json([
@@ -132,7 +132,7 @@ class UserController extends Controller
                 }
                 // $user->role = $request->role;
                 if($request->localite){
-                    $user->localite = $request->localite;
+                    $user->localite = ucfirst($request->localite);
                 }
                 $user->localite = $user->localite;
                 $user->update();
